@@ -9,7 +9,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-// import { signup } from "../firebase";
+// import { signin } from "../firebase";
 import { useState } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -27,7 +27,7 @@ const useStyles = createUseStyles({
 			bottom: 5,
 		},
 	},
-	signUp: {
+	signIn: {
 		display: "flex",
 		justifyContent: "center",
 		margin: {
@@ -85,16 +85,12 @@ const useStyles = createUseStyles({
 	},
 });
 
-function SignUp(props) {
+function SignIn(props) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [userName, setUserName] = useState("");
-	const [phoneNumber, setPhoneNumber] = useState("");
-	const [taxCode, setTaxCode] = useState("");
-	const [roll, setRoll] = useState("Client");
-	const [enabled, setEnabled] = useState(false);
 	const [signInButtonHover, setSigInButtonHover] = useState(false);
 	const [signInButtonActive, setSignInButtonActive] = useState(false);
+
 	const classes = useStyles();
 	const [values, setValues] = React.useState({
 		amount: "",
@@ -119,24 +115,11 @@ function SignUp(props) {
 		event.preventDefault();
 	};
 
-	// async function userSignUp() {
+	// async function usersignIn() {
 	// 	try {
-	// await signup(
-	// 	email,
-	// 	password,
-	// 	userName,
-	// 	phoneNumber,
-	// 	taxCode,
-	// 	roll,
-	// 	enabled
-	// );
-	// setEmail("");
-	// setPassword("");
-	// setUserName("");
-	// setPhoneNumber("");
-	// setTaxCode("");
-	// setRoll("");
-	// setEnabled("");
+	// 		await signin(email, password);
+	// 		setEmail("");
+	// 		setPassword("");
 	// 	} catch (e) {
 	// 		console.log("Error");
 	// 	}
@@ -145,8 +128,8 @@ function SignUp(props) {
 	return (
 		<>
 			<div className={classes.useSpace}>
-				<h1 className={classes.signUp}>Sign up</h1>
-				<div className={classes.signUp}>
+				<h1 className={classes.signIn}>Sign in</h1>
+				<div className={classes.signIn}>
 					<TextField
 						className={classes.fields}
 						onChange={(e) => setEmail(e.target.value)}
@@ -156,7 +139,7 @@ function SignUp(props) {
 						variant='outlined'
 					/>
 				</div>
-				<div className={classes.signUp}>
+				<div className={classes.signIn}>
 					<FormControl
 						className={classes.fields}
 						sx={{ m: 1, width: "25ch" }}
@@ -186,52 +169,8 @@ function SignUp(props) {
 						/>
 					</FormControl>
 				</div>
-				<div className={classes.signUp}>
-					<TextField
-						className={classes.fields}
-						onChange={(e) => setUserName(e.target.value)}
-						id='userNameId'
-						label='User name'
-						variant='outlined'
-					/>
-				</div>
-				<div className={classes.signUp}>
-					<TextField
-						className={classes.fields}
-						onChange={(e) => setPhoneNumber(e.target.value)}
-						id='phoneNumberId'
-						label='Phone number'
-						variant='outlined'
-					/>
-				</div>
-				<div className={classes.signUp}>
-					<TextField
-						className={classes.fields}
-						onChange={(e) => setTaxCode(e.target.value)}
-						id='taxCodeId'
-						label='Tax code'
-						variant='outlined'
-					/>
-				</div>
-				<div className={classes.signUp}>
-					<FormControl className={classes.fields} sx={{ m: 1, width: "25ch" }}>
-						<InputLabel id='inputRollId'>Roll</InputLabel>
-						<Select
-							labelId='inputRollId'
-							id='RollId'
-							value={roll}
-							label='Age'
-							onChange={(e) => {
-								setRoll(e.target.value);
-								setEnabled(e.target.value === "Admin" ? false : true);
-							}}
-						>
-							<MenuItem value={"Client"}>Client</MenuItem>
-							<MenuItem value={"Admin"}>Admin</MenuItem>
-						</Select>
-					</FormControl>
-				</div>
-				<div className={classes.signUp} id='buttons'>
+
+				<div className={classes.signIn} id='buttons'>
 					<button
 						className={
 							signInButtonHover
@@ -240,7 +179,7 @@ function SignUp(props) {
 								? classes.signInButtonActive
 								: classes.signInButton
 						}
-						// onClick={userSignUp}
+						// onClick={usersignIn}
 						onHover={() => {
 							setSigInButtonHover(true);
 							setSignInButtonActive(false);
@@ -249,11 +188,11 @@ function SignUp(props) {
 							setSigInButtonHover(false);
 							setSignInButtonActive(true);
 						}}
-						id='buttonSignUp'
+						id='buttonsignIn'
 						variant='contained'
 						color='secondary'
 					>
-						Sign up
+						Sign in
 					</button>
 				</div>
 			</div>
@@ -262,4 +201,4 @@ function SignUp(props) {
 	);
 }
 
-export default SignUp;
+export default SignIn;
