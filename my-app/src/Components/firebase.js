@@ -1,15 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import {
-	getDatabase,
-	ref,
-	set,
-	onValue,
-	Database,
-	get,
-	child,
-} from "firebase/database";
+	getAuth,
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+} from "firebase/auth";
+
+import { getDatabase, ref, set, get, child } from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -28,7 +25,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const auth = getAuth();
 const database = getDatabase(app);
 
 export function signup(
@@ -42,34 +39,54 @@ export function signup(
 	roll,
 	enabled
 ) {
-	return createUserWithEmailAndPassword(auth, email, password).then(
-		(userCredential) => {
-			const user = userCredential.user;
-			writeUserData(
-				user,
-				name,
-				lastName,
-				dateOfBirth,
-				phoneNumber,
-				taxCode,
-				roll,
-				enabled
-			);
-		}
-	);
+	console.log(email, password);
+	return createUserWithEmailAndPassword(auth, email, password);
+	// .then(
+	// (userCredential) => {
+	// 	const user = userCredential.user;
+	// 	console.log(user);
+	// writeUserData(
+	// 	user,
+	// 	password,
+	// 	name,
+	// 	lastName,
+	// 	dateOfBirth,
+	// 	phoneNumber,
+	// 	taxCode,
+	// 	roll,
+	// 	enabled
+	// );
 }
+// );
+// }
 
-function writeUserData(user, name, lastName, dateOfBirth, avatar) {
+function writeUserData(
+	user,
+	password,
+	name,
+	lastName,
+	dateOfBirth,
+	phoneNumber,
+	taxCode,
+	roll,
+	enabled,
+	avatar = "https://st2.depositphotos.com/1104517/11965/v/950/depositphotos_119659092-stock-illustration-male-avatar-profile-picture-vector.jpg"
+) {
 	set(ref(database, "users/" + user.uid), {
 		email: user.email,
-		name: name,
-		lastName: lastName,
-		dateOfBirth: dateOfBirth,
-		avatar: avatar,
+		avatar,
+		name,
+		lastName,
+		dateOfBirth,
+		phoneNumber,
+		taxCode,
+		roll,
+		enabled,
 	});
+	// signin(user.email, password);
 }
 
-export async function signin(email, password, val) {
+export async function signin(email, password) {
 	console.log("entered");
 	return signInWithEmailAndPassword(auth, email, password).then(
 		(userCredential) => {

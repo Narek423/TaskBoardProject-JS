@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
@@ -9,10 +9,10 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-// import { signup } from "../firebase";
 import { useState } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { signup } from "./firebase";
 
 const useStyles = createUseStyles({
 	header: {
@@ -130,30 +130,35 @@ function SignUp(props) {
 		event.preventDefault();
 	};
 
-	// async function userSignUp() {
-	// 	try {
-	// await signup(
-	//   email,
-	// password,
-	// name,
-	// lastName,
-	// dateOfBirth,
-	// phoneNumber,
-	// taxCode,
-	// roll,
-	// enabled
-	// );
-	// setEmail("");
-	// setPassword("");
-	// setUserName("");
-	// setPhoneNumber("");
-	// setTaxCode("");
-	// setRoll("");
-	// setEnabled("");
-	// 	} catch (e) {
-	// 		console.log("Error");
-	// 	}
-	// }
+	async function userSignUp() {
+		console.log(password);
+		try {
+			await signup(
+				email,
+				password,
+				name,
+				lastName,
+				dateOfBirth,
+				phoneNumber,
+				taxCode,
+				roll,
+				enabled
+			);
+
+			setEmail("");
+			setPassword("");
+			setRepeatedPassword("");
+			setName("");
+			setLastName("");
+			setPhoneNumber("");
+			setDateOfBirth("");
+			setTaxCode("");
+			setRoll("");
+			setEnabled("");
+		} catch (e) {
+			console.log("Error");
+		}
+	}
 
 	return (
 		<>
@@ -283,7 +288,7 @@ function SignUp(props) {
 								? classes.signInButtonActive
 								: classes.signInButton
 						}
-						// onClick={userSignUp}
+						onClick={userSignUp}
 						onHover={() => {
 							setSigInButtonHover(true);
 							setSignInButtonActive(false);
