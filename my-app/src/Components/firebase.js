@@ -34,7 +34,9 @@ const database = getDatabase(app);
 export function signup(
 	email,
 	password,
-	userName,
+	name,
+	lastName,
+	dateOfBirth,
 	phoneNumber,
 	taxCode,
 	roll,
@@ -43,14 +45,22 @@ export function signup(
 	return createUserWithEmailAndPassword(auth, email, password).then(
 		(userCredential) => {
 			const user = userCredential.user;
-			writeUserData(user, name, lastName, dateOfBirth, avatar);
+			writeUserData(
+				user,
+				name,
+				lastName,
+				dateOfBirth,
+				phoneNumber,
+				taxCode,
+				roll,
+				enabled
+			);
 		}
 	);
 }
 
 function writeUserData(user, name, lastName, dateOfBirth, avatar) {
 	set(ref(database, "users/" + user.uid), {
-		username: user.displayName,
 		email: user.email,
 		name: name,
 		lastName: lastName,
@@ -58,20 +68,6 @@ function writeUserData(user, name, lastName, dateOfBirth, avatar) {
 		avatar: avatar,
 	});
 }
-// async function getUserData(user) {
-// 	const userId = user.uid;
-// 	let value = await get(
-// 		ref(database, "/users/" + userId),
-// 		(v) => {
-// 			let userValue = v.val();
-// 			// console.log(userValue);
-// 		},
-// 		{
-// 			onlyOnce: true,
-// 		}
-// 	);
-// 	console.log(value);
-// }
 
 export async function signin(email, password, val) {
 	console.log("entered");
