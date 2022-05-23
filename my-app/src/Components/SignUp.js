@@ -91,6 +91,7 @@ function SignUp(props) {
 	const [name, setName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [phoneNumber, setPhoneNumber] = useState("");
+	const [dateOfBirth, setDateOfBirth] = useState("");
 	const [taxCode, setTaxCode] = useState("");
 	const [roll, setRoll] = useState("Client");
 	const [enabled, setEnabled] = useState(false);
@@ -214,6 +215,17 @@ function SignUp(props) {
 						onChange={(e) => setPhoneNumber(e.target.value)}
 						id='phoneNumberId'
 						label='Phone number'
+						variant='outlined'
+					/>
+				</div>
+				<div className={classes.signUp}>
+					<TextField
+						className={classes.fields}
+						type={"date"}
+						InputLabelProps={{ shrink: true }}
+						onChange={(e) => setDateOfBirth(e.target.value)}
+						id='dateOfBirthId'
+						label='Date of birth'
 						variant='outlined'
 					/>
 				</div>
