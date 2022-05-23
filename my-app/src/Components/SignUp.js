@@ -109,10 +109,6 @@ function SignUp(props) {
 		showPassword: false,
 	});
 
-	const handleChange = (prop) => (event) => {
-		setValues({ ...values, [prop]: event.target.value });
-	};
-
 	const handleClickShowPassword = () => {
 		setValues({
 			...values,
@@ -186,8 +182,8 @@ function SignUp(props) {
 						<OutlinedInput
 							id='passwordId'
 							type={values.showPassword ? "text" : "password"}
-							value={values.password}
-							onChange={handleChange("password")}
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
 							endAdornment={
 								<InputAdornment position='end'>
 									<IconButton
