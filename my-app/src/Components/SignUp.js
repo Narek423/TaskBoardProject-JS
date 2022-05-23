@@ -88,6 +88,7 @@ const useStyles = createUseStyles({
 function SignUp(props) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [repeatedPassword, setRepeatedPassword] = useState("");
 	const [name, setName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [phoneNumber, setPhoneNumber] = useState("");
@@ -116,6 +117,12 @@ function SignUp(props) {
 			...values,
 			showPassword: !values.showPassword,
 		});
+		var repeatedPasswordDiv = document.getElementById("repeatedPasswordDivId");
+		if (values.showPassword) {
+			repeatedPasswordDiv.style.display = "flex";
+		} else {
+			repeatedPasswordDiv.style.display = "none";
+		}
 	};
 
 	const handleMouseDownPassword = (event) => {
@@ -157,7 +164,7 @@ function SignUp(props) {
 						onChange={(e) => setEmail(e.target.value)}
 						type={"email"}
 						id='emailId'
-						label='eMail (Login)'
+						label='Email (Login)'
 						variant='outlined'
 					/>
 				</div>
@@ -190,6 +197,16 @@ function SignUp(props) {
 							label='Password'
 						/>
 					</FormControl>
+				</div>
+				<div id='repeatedPasswordDivId' className={classes.signUp}>
+					<TextField
+						className={classes.fields}
+						type='password'
+						onChange={(e) => setRepeatedPassword(e.target.value)}
+						id='repeatedPassword'
+						label='Repeat password'
+						variant='outlined'
+					/>
 				</div>
 				<div className={classes.signUp}>
 					<TextField
