@@ -95,6 +95,7 @@ function SignUp(props) {
 	const [enabled, setEnabled] = useState(false);
 	const [signInButtonHover, setSigInButtonHover] = useState(false);
 	const [signInButtonActive, setSignInButtonActive] = useState(false);
+
 	const classes = useStyles();
 	const [values, setValues] = useState({
 		amount: "",
