@@ -11,8 +11,6 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 // import { signin } from "../firebase";
 import { useState } from "react";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 
 const useStyles = createUseStyles({
 	header: {
@@ -92,7 +90,7 @@ function SignIn(props) {
 	const [signInButtonActive, setSignInButtonActive] = useState(false);
 
 	const classes = useStyles();
-	const [values, setValues] = React.useState({
+	const [values, setValues] = useState({
 		amount: "",
 		password: "",
 		weight: "",
