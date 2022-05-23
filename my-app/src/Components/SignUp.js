@@ -96,6 +96,7 @@ function SignUp(props) {
 	const [taxCode, setTaxCode] = useState("");
 	const [roll, setRoll] = useState("Client");
 	const [enabled, setEnabled] = useState(false);
+
 	const [signInButtonHover, setSigInButtonHover] = useState(false);
 	const [signInButtonActive, setSignInButtonActive] = useState(false);
 
