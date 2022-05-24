@@ -40,25 +40,24 @@ export function signup(
 	enabled
 ) {
 	console.log(email, password);
-	return createUserWithEmailAndPassword(auth, email, password);
-	// .then(
-	// (userCredential) => {
-	// 	const user = userCredential.user;
-	// 	console.log(user);
-	// writeUserData(
-	// 	user,
-	// 	password,
-	// 	name,
-	// 	lastName,
-	// 	dateOfBirth,
-	// 	phoneNumber,
-	// 	taxCode,
-	// 	roll,
-	// 	enabled
-	// );
+	return createUserWithEmailAndPassword(auth, email, password).then(
+		(userCredential) => {
+			const user = userCredential.user;
+			console.log(user);
+			writeUserData(
+				user,
+				password,
+				name,
+				lastName,
+				dateOfBirth,
+				phoneNumber,
+				taxCode,
+				roll,
+				enabled
+			);
+		}
+	);
 }
-// );
-// }
 
 function writeUserData(
 	user,
@@ -83,7 +82,6 @@ function writeUserData(
 		roll,
 		enabled,
 	});
-	// signin(user.email, password);
 }
 
 export async function signin(email, password) {

@@ -12,7 +12,8 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useState } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { signup } from "./firebase";
+import { signin, signup } from "./firebase";
+import { userDataContext } from "../context/userLogIn";
 
 const useStyles = createUseStyles({
 	header: {
@@ -96,6 +97,7 @@ function SignUp(props) {
 	const [taxCode, setTaxCode] = useState("");
 	const [roll, setRoll] = useState("Client");
 	const [enabled, setEnabled] = useState(false);
+	const data = React.useContext(userDataContext);
 
 	const [signInButtonHover, setSigInButtonHover] = useState(false);
 	const [signInButtonActive, setSignInButtonActive] = useState(false);
@@ -127,7 +129,6 @@ function SignUp(props) {
 	};
 
 	async function userSignUp() {
-		console.log(password);
 		try {
 			await signup(
 				email,
@@ -140,7 +141,8 @@ function SignUp(props) {
 				roll,
 				enabled
 			);
-
+			let currentUserData = await signin(email, password).then((data) => data);
+			data.updateUser(currentUserData);
 			setEmail("");
 			setPassword("");
 			setRepeatedPassword("");
@@ -163,6 +165,7 @@ function SignUp(props) {
 				<div className={classes.signUp}>
 					<TextField
 						className={classes.fields}
+						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						type={"email"}
 						id='emailId'
@@ -204,6 +207,7 @@ function SignUp(props) {
 					<TextField
 						className={classes.fields}
 						type='password'
+						value={repeatedPassword}
 						onChange={(e) => setRepeatedPassword(e.target.value)}
 						id='repeatedPassword'
 						label='Repeat password'
@@ -213,6 +217,7 @@ function SignUp(props) {
 				<div className={classes.signUp}>
 					<TextField
 						className={classes.fields}
+						value={name}
 						onChange={(e) => setName(e.target.value)}
 						id='nameId'
 						label='Name'
@@ -222,6 +227,7 @@ function SignUp(props) {
 				<div className={classes.signUp}>
 					<TextField
 						className={classes.fields}
+						value={lastName}
 						onChange={(e) => setLastName(e.target.value)}
 						id='lastNameId'
 						label='UsLaster name'
@@ -231,6 +237,7 @@ function SignUp(props) {
 				<div className={classes.signUp}>
 					<TextField
 						className={classes.fields}
+						value={phoneNumber}
 						onChange={(e) => setPhoneNumber(e.target.value)}
 						id='phoneNumberId'
 						label='Phone number'
@@ -242,6 +249,7 @@ function SignUp(props) {
 						className={classes.fields}
 						type={"date"}
 						InputLabelProps={{ shrink: true }}
+						value={dateOfBirth}
 						onChange={(e) => setDateOfBirth(e.target.value)}
 						id='dateOfBirthId'
 						label='Date of birth'
@@ -251,6 +259,7 @@ function SignUp(props) {
 				<div className={classes.signUp}>
 					<TextField
 						className={classes.fields}
+						value={taxCode}
 						onChange={(e) => setTaxCode(e.target.value)}
 						id='taxCodeId'
 						label='Tax code'
