@@ -1,83 +1,171 @@
-import * as React from "react";
-import { alpha, styled } from "@mui/material/styles";
-import { DataGrid, gridClasses } from "@mui/x-data-grid";
-import { useDemoData } from "@mui/x-data-grid-generator";
-import { createUseStyles } from "react-jss";
+"use strict";
 
-const useStyles = createUseStyles({
-  backgroundDiv: {
-    backgroundColor: "#e2ebfc",
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  gridStile: {
-    width: "80%",
-    height: 400,
-    margin: 10,
-    padding: 5,
-    backgroundColor: "white",
-  },
-});
+import React, { useCallback, useMemo, useState, useEffect } from "react";
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-enterprise";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
-const ODD_OPACITY = 0.2;
+const getWidth = () =>
+  window.innerWidth ||
+  document.documentElement.clientWidth ||
+  document.body.clientWidth;
 
-const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
-  [`& .${gridClasses.row}.even`]: {
-    backgroundColor: theme.palette.grey[200],
-    "&:hover, &.Mui-hovered": {
-      backgroundColor: alpha(theme.palette.primary.main, ODD_OPACITY),
-      "@media (hover: none)": {
-        backgroundColor: "transparent",
-      },
-    },
-    "&.Mui-selected": {
-      backgroundColor: alpha(
-        theme.palette.primary.main,
-        ODD_OPACITY + theme.palette.action.selectedOpacity
-      ),
-      "&:hover, &.Mui-hovered": {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          ODD_OPACITY +
-            theme.palette.action.selectedOpacity +
-            theme.palette.action.hoverOpacity
-        ),
-        // Reset on touch devices, it doesn't add specificity
-        "@media (hover: none)": {
-          backgroundColor: alpha(
-            theme.palette.primary.main,
-            ODD_OPACITY + theme.palette.action.selectedOpacity
-          ),
-        },
-      },
-    },
-  },
-}));
+function useCurrentWidth() {
+  let [width, setWidth] = useState(getWidth());
+  useEffect(() => {
+    let timeoutId = null;
+    const resizeListener = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => setWidth(getWidth()), 150);
+    };
+    window.addEventListener("resize", resizeListener);
+    return () => {
+      window.removeEventListener("resize", resizeListener);
+    };
+  }, []);
+
+  return width;
+}
 
 function FillPandingEvaluation(props) {
-  const classes = useStyles();
-  const { data, loading } = useDemoData({
-    dataSet: "Employee",
-    rowLength: 200,
-  });
+  let width = useCurrentWidth();
+  width = width + 1;
+  console.log(width + "px");
+  const containerStyle = useMemo(
+    () => ({ width: width + "px", height: "100vh" }),
+    []
+  );
+  const gridStyle = useMemo(
+    () => ({ height: "100vh", width: width + "px" }),
+    []
+  );
+  const [rowData, setRowData] = useState();
+  const [columnDefs, setColumnDefs] = useState([
+    {
+      field: "avatar",
+      headerName: "Avatar",
+      columnGroupShow: "closed",
+      width: (width - 35) * 0.1,
+      flex: 0,
+    },
+    {
+      field: "user",
+      headerName: "User",
+      columnGroupShow: "closed",
+      filter: "agTextColumnFilter",
+      width: (width - 35) * 0.15,
+      flex: 0,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      columnGroupShow: "closed",
+      filter: "agTextColumnFilter",
+      width: (width - 35) * 0.15,
+      flex: 0,
+    },
+    {
+      field: "phone",
+      headerName: "Phone",
+      columnGroupShow: "closed",
+      filter: "agTextColumnFilter",
+      width: (width - 35) * 0.15,
+      flex: 0,
+    },
+    {
+      field: "task",
+      headerName: "Task title",
+      columnGroupShow: "closed",
+      filter: "agTextColumnFilter",
+      width: (width - 35) * 0.35,
+      flex: 0,
+    },
+    {
+      field: "dataCreated",
+      headerName: "Created on",
+      columnGroupShow: "closed",
+      filter: "agDateColumnFilter",
+      width: (width - 35) * 0.1,
+      flex: 0,
+    },
+  ]);
+  const defaultColDef = useMemo(() => {
+    return {
+      editable: true,
+      sortable: true,
+      minWidth: 100,
+      filter: true,
+      resizable: true,
+      floatingFilter: true,
+      flex: 1,
+    };
+  }, []);
+
+  const sideBar = useMemo(() => {
+    return {
+      toolPanels: ["columns", "filters"],
+      defaultToolPanel: "",
+    };
+  }, []);
+
+  const onGridReady = useCallback((params) => {
+    setRowData([
+      {
+        id: 1,
+        avatar: "#03a9f4",
+        user: "Aram",
+        email: "aram@gmail.com",
+        phone: "077777777",
+      },
+      {
+        id: 2,
+        avatar: "#03a9f4",
+        user: "Vigen",
+        email: "vigen@gmail.com",
+        phone: "088888888",
+      },
+
+      {
+        id: 3,
+        avatar: "#f44336",
+        user: "Anna",
+        email: "anna@gmail.com",
+        phone: "055555555",
+      },
+
+      {
+        id: 4,
+        avatar: "#03a9f4",
+        user: "Sona",
+        email: "sona@gmail.com",
+        phone: "098545454",
+      },
+    ]);
+    // fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
+    //   .then((resp) => resp.json())
+    //   .then((data) => setRowData(data));
+  }, []);
 
   return (
-    <div className={classes.backgroundDiv}>
-      <div className={classes.gridStile}>
-        <StripedDataGrid
-          loading={loading}
-          {...data}
-          getRowClassName={(params) =>
-            params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-          }
-        />
+    <>
+      <div style={containerStyle}>
+        <div style={gridStyle} className="ag-theme-alpine">
+          <AgGridReact
+            rowData={rowData}
+            columnDefs={columnDefs}
+            rowSelection={"multiple"}
+            suppressRowClickSelection={true}
+            defaultColDef={defaultColDef}
+            sideBar={sideBar}
+            onGridReady={onGridReady}
+          ></AgGridReact>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
 export default FillPandingEvaluation;
+
+//render(<GridExample></GridExample>, document.querySelector("#root"));
