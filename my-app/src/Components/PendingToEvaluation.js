@@ -16,21 +16,34 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
+import Avatar from "@mui/material/Avatar";
+import Stack from "@mui/material/Stack";
+import { View, StyleSheet, Text } from "react-native";
 
 const useStyles = createUseStyles({
   page: {
-    marginTop: 50,
     backgroundColor: "#e2ebfc",
+    justifyContent: "center",
   },
   container: {
-    margin: {
-      top: "10px",
-      right: "20px",
-      left: "20px",
-      bottom: "10px",
-    },
-    height: "40vh",
-    width: "70vw",
+    backgroundColor: "#f9fbff",
+    width: "95vw",
+    height: "60vh",
+    borderColor: "#FF3D00",
+    borderWidth: 2,
+    borderRadius: 9,
+    justifyContent: "center",
+  },
+  avatar: {
+    marginLeft: 20,
+    marginTop: 5,
+    flex: 1,
+  },
+  nameText: {
+    marginLeft: 0,
+    marginTop: 8,
+    fontSize: 25,
+    flex: 5,
   },
   header: {
     fontFamily: "Palatino",
@@ -39,6 +52,47 @@ const useStyles = createUseStyles({
   defaultColDef: {
     fontFamily: "Palatino",
     fontSize: 15,
+  },
+  grouping: {
+    display: "flex",
+    marginTop: 10,
+    backgroundColor: "#e3f6f8",
+    width: "90%",
+    height: 40,
+    borderColor: "#FF3D00",
+    borderWidth: 2,
+    borderRadius: 9,
+    justifyContent: "center",
+  },
+  groupingName: {
+    display: "flex",
+    marginTop: 10,
+    width: "90%",
+    height: 40,
+    justifyContent: "center",
+  },
+  groupingInputs: {
+    display: "flex",
+    marginTop: 10,
+    width: "90%",
+    height: 40,
+    justifyContent: "left",
+  },
+  headerText: {
+    marginLeft: 20,
+    marginTop: 7,
+    flex: 1,
+  },
+  headerValue: {
+    marginTop: 7,
+    flex: 3,
+  },
+  TextFieldLeft: {
+    marginRight: 10,
+    marginTop: 7,
+  },
+  TextFieldRight: {
+    marginTop: 7,
   },
 });
 
@@ -171,18 +225,17 @@ function FillPandingEvaluation(props) {
   }, []);
 
   const onGridReady = useCallback((params) => {
-    setApi(params.api);
     setRowData([
       {
         id: 1,
-        avatar: "#03a9f4",
+        avatar: <Avatar alt="Remy Sharp" src="../Avatars/avatar1.jpeg" />,
         user: "Aram",
         email: "aram@gmail.com",
         phoneNumber: "077777777",
       },
       {
         id: 2,
-        avatar: "#03a9f4",
+        avatar: <Avatar alt="Remy Sharp" src="../Avatars/avatar2.jpeg" />,
         user: "Vigen",
         email: "vigen@gmail.com",
         phoneNumber: "088888888",
@@ -190,7 +243,7 @@ function FillPandingEvaluation(props) {
 
       {
         id: 3,
-        avatar: "#f44336",
+        avatar: <Avatar alt="Remy Sharp" src="../Avatars/avatar3.jpeg" />,
         user: "Anna",
         email: "anna@gmail.com",
         phoneNumber: "055555555",
@@ -198,19 +251,16 @@ function FillPandingEvaluation(props) {
 
       {
         id: 4,
-        avatar: "#03a9f4",
+        avatar: <Avatar alt="Remy Sharp" src="../Avatars/avatar1.jpeg" />,
         user: "Sona",
         email: "sona@gmail.com",
         phoneNumber: "098545454",
       },
     ]);
-    // fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
-    //   .then((resp) => resp.json())
-    //   .then((data) => setRowData(data));
   }, []);
 
-  const onSelectionChanged = useCallback(() => {
-    const selectedRows = api.getSelectedRows();
+  const onSelectionChanged = useCallback((param) => {
+    const selectedRows = param.api.getSelectedRows();
     setsetAvatar(selectedRows.length === 1 ? selectedRows[0].avatar : "");
     setUser(selectedRows.length === 1 ? selectedRows[0].user : "");
     setEmail(selectedRows.length === 1 ? selectedRows[0].email : "");
@@ -234,39 +284,56 @@ function FillPandingEvaluation(props) {
       <div className={classes.container}>
         <React.Fragment>
           <CssBaseline />
-          <Container maxWidth="sm">
-            <Box sx={{ bgcolor: "#f9fbff", height: "100vh" }}>
-              <div className={classes.signUp}>{avatar}</div>
-              <div className={classes.signUp}>User {user}</div>
-              <div className={classes.signUp}>Email {email}</div>
-              <div className={classes.signUp}>Phone number {phoneNumber}</div>
-              <div className={classes.signUp}>Task title {title}</div>
-              <div className={classes.signUp}>
-                Task description {description}
+          <Container>
+            <Box>
+              <div className={classes.groupingName}>
+                <div className={classes.avatar}>{avatar}</div>
+                <div className={classes.nameText}>{user}</div>
               </div>
-              <div className={classes.signUp}>
-                <TextField
-                  className={classes.fields}
-                  type={"number"}
-                  // onChange={(e) => setPhoneNumber(e.target.value)}
-                  id="taskCostId"
-                  label="Taks cost"
-                  variant="outlined"
-                />
+              <div className={classes.grouping}>
+                <div className={classes.headerText}>Email </div>
+                <div className={classes.headerValue}>{email}</div>
               </div>
-              <div className={classes.signUp}>
-                <TextField
-                  className={classes.fields}
-                  type={"date"}
-                  InputLabelProps={{ shrink: true }}
-                  //   onChange={(e) => setDateOfBirth(e.target.value)}
-                  id="dueDateId"
-                  label="Due date"
-                  variant="outlined"
-                />
+              <div className={classes.grouping}>
+                <div className={classes.headerText}>Phone number </div>
+                <div className={classes.headerValue}>{phoneNumber}</div>
+              </div>
+              <div className={classes.grouping}>
+                <div className={classes.headerText}>Tax code </div>
+                <div className={classes.headerValue}>{taxCode}</div>
+              </div>
+              <div className={classes.grouping}>
+                <div className={classes.headerText}>Task title </div>
+                <div className={classes.headerValue}>{title}</div>
+              </div>
+              <div className={classes.grouping}>
+                <div className={classes.headerText}>Task description </div>
+                <div className={classes.headerValue}>{description}</div>
+              </div>
+              <div className={classes.groupingInputs}>
+                <div className={classes.TextFieldLeft}>
+                  <TextField
+                    className={classes.fields}
+                    type={"number"}
+                    // onChange={(e) => setPhoneNumber(e.target.value)}
+                    id="taskCostId"
+                    label="Taks cost"
+                    variant="outlined"
+                  />
+                </div>
+                <div className={classes.TextFieldRight}>
+                  <TextField
+                    className={classes.fields}
+                    type={"date"}
+                    InputLabelProps={{ shrink: true }}
+                    //   onChange={(e) => setDateOfBirth(e.target.value)}
+                    id="dueDateId"
+                    label="Due date"
+                    variant="outlined"
+                  />
+                </div>
               </div>
             </Box>
-            />
           </Container>
         </React.Fragment>
       </div>
