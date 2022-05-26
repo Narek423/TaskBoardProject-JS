@@ -25,101 +25,118 @@ const useStyles = createUseStyles({
     backgroundColor: "#e2ebfc",
     justifyContent: "center",
   },
-  container: {
-    backgroundColor: "#f9fbff",
-    width: "95vw",
-    height: "60vh",
-    borderColor: "#FF3D00",
-    borderWidth: 2,
-    borderRadius: 9,
-    justifyContent: "center",
+  buttonDiv: {
+    margin: 10,
   },
-  avatar: {
-    marginLeft: 20,
-    marginTop: 5,
-    flex: 1,
-  },
-  nameText: {
-    marginLeft: 0,
-    marginTop: 8,
-    fontSize: 25,
-    flex: 5,
-  },
-  header: {
-    fontFamily: "Palatino",
-    fontSize: 15,
-  },
-  defaultColDef: {
-    fontFamily: "Palatino",
-    fontSize: 15,
-  },
-  grouping: {
-    display: "flex",
-    marginTop: 10,
-    backgroundColor: "#e3f6f8",
-    width: "90%",
-    height: 40,
-    borderColor: "#FF3D00",
-    borderWidth: 2,
-    borderRadius: 9,
-    justifyContent: "center",
-  },
-  groupingName: {
-    display: "flex",
-    marginTop: 10,
-    width: "90%",
-    height: 40,
-    justifyContent: "center",
-  },
-  groupingInputs: {
-    display: "flex",
-    marginTop: 10,
-    width: "90%",
-    height: 40,
-    justifyContent: "left",
-  },
-  headerText: {
-    marginLeft: 20,
-    marginTop: 7,
-    flex: 1,
-  },
-  headerValue: {
-    marginTop: 7,
-    flex: 3,
-  },
-  TextFieldLeft: {
-    marginRight: 10,
-    marginTop: 7,
-  },
-  TextFieldRight: {
-    marginTop: 7,
-  },
-  saveButton: {
-    margin: "10px",
-    padding: "15px 30px",
-    textAlign: "center",
-    textTransform: "uppercase",
-    transition: "0.5s",
-    backgroundSize: "200% auto",
-    color: "white",
-    borderRadius: "10px",
-    display: "block",
-    border: "0px",
-    fontWeight: 700,
-    boxShadow: "0px 0px 14px -7px #f09819",
-    backgroundImage:
-      "linear-gradient(45deg, #FF512F 0%, #F09819  51%, #FF512F  100%)",
+  addButton: {
+    background: "#FF4742",
+    border: "1px solid #FF4742",
+    borderRadius: "6px",
+    boxShadow: "rgba(0, 0, 0, 0.1) 1px 2px 4px",
+    boxSizing: "border-box",
+    color: "#FFFFFF",
     cursor: "pointer",
+    display: "inline-block",
+    fontFamily: "nunito,roboto,proxima-nova,'proxima nova',sans-serif",
+    fontSize: "16px",
+    fontWeight: 800,
+    lineHeight: "16px",
+    minHeight: "40px",
+    outline: 0,
+    padding: "12px 14px",
+    textAlign: "center",
+    textRendering: "geometricprecision",
+    textTransform: "none",
     userSelect: "none",
     webkitUserSelect: "none",
     touchAction: "manipulation",
+    verticalAlign: "middle",
     "&:hover": {
-      backgroundPosition: "right center",
-      color: "#fff",
-      textDecoration: "none",
+      backgroundColor: "initial",
+      backgroundPosition: "0 0",
+      color: "#FF4742",
     },
     "&:active": {
-      transform: "scale(0.95)",
+      backgroundColor: "initial",
+      backgroundPosition: "0 0",
+      color: "#FF4742",
+      opacity: ".5",
+    },
+  },
+  acceptButton: {
+    appearance: "button",
+    backgroundColor: "transparent",
+    backgroundImage: "linear-gradient(to bottom, #5b8402, #93e202)",
+    border: "0 solid #e5e7eb",
+    borderRadius: ".5rem",
+    boxSizing: "border-box",
+    color: "#482307",
+    columnGap: "1rem",
+    cursor: "pointer",
+    display: "flex",
+    fontFamily:
+      "ui-sans-serif,system-ui,-apple-system,system-ui,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji'",
+    fontSize: "100%",
+    fontWeight: "700",
+    lineHeight: "3px",
+    margin: 0,
+    outline: "2px solid transparent",
+    padding: "1rem 1.5rem",
+    textAlign: "center",
+    textTransform: "none",
+    transition: "all .1s cubic-bezier(.4, 0, .2, 1)",
+    userSelect: "none",
+    webkitUserSelect: "none",
+    touchAction: "manipulation",
+    boxShadow:
+      "-6px 8px 10px rgba(81, 41, 10, 0.1), 0px 2px 2px rgba(81, 41, 10, 0.2)",
+    "&:active": {
+      backgroundColor: "#f3f4f6",
+      boxShadow:
+        "-1px 2px 5px rgba(81,41,10,0.15),0px 1px 1px rgba(81,41,10,0.15)",
+      transform: "translateY(0.125rem)",
+    },
+    "&:focus": {
+      boxShadow:
+        "rgba(72, 35, 7, .46) 0 0 0 4px, -6px 8px 10px rgba(81,41,10,0.1), 0px 2px 2px rgba(81,41,10,0.2)",
+    },
+  },
+  rejectButton: {
+    appearance: "button",
+    backgroundColor: "transparent",
+    backgroundImage: "linear-gradient(to bottom, #ae0405, #fa0000)",
+    border: "0 solid #e5e7eb",
+    borderRadius: ".5rem",
+    boxSizing: "border-box",
+    color: "#482307",
+    columnGap: "1rem",
+    cursor: "pointer",
+    display: "flex",
+    fontFamily:
+      "ui-sans-serif,system-ui,-apple-system,system-ui,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji'",
+    fontSize: "100%",
+    fontWeight: "700",
+    lineHeight: "3px",
+    margin: 0,
+    outline: "2px solid transparent",
+    padding: "1rem 1.5rem",
+    textAlign: "center",
+    textTransform: "none",
+    transition: "all .1s cubic-bezier(.4, 0, .2, 1)",
+    userSelect: "none",
+    webkitUserSelect: "none",
+    touchAction: "manipulation",
+    boxShadow:
+      "-6px 8px 10px rgba(81, 41, 10, 0.1), 0px 2px 2px rgba(81, 41, 10, 0.2)",
+    "&:active": {
+      backgroundColor: "#f3f4f6",
+      boxShadow:
+        "-1px 2px 5px rgba(81,41,10,0.15),0px 1px 1px rgba(81,41,10,0.15)",
+      transform: "translateY(0.125rem)",
+    },
+    "&:focus": {
+      boxShadow:
+        "rgba(72, 35, 7, .46) 0 0 0 4px, -6px 8px 10px rgba(81,41,10,0.1), 0px 2px 2px rgba(81,41,10,0.2)",
     },
   },
 });
@@ -152,7 +169,8 @@ function FillPandingEvaluation(props) {
       field: "avatar",
       headerName: "Avatar",
       columnGroupShow: "closed",
-      flex: 1,
+      hide: true,
+      suppressColumnsToolPanel: true,
     },
     {
       headerClass: classes.header,
@@ -160,7 +178,8 @@ function FillPandingEvaluation(props) {
       headerName: "User",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
-      flex: 1.5,
+      hide: true,
+      suppressColumnsToolPanel: true,
     },
     {
       headerClass: classes.header,
@@ -168,7 +187,8 @@ function FillPandingEvaluation(props) {
       headerName: "Email",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
-      flex: 1.5,
+      hide: true,
+      suppressColumnsToolPanel: true,
     },
     {
       headerClass: classes.header,
@@ -176,7 +196,8 @@ function FillPandingEvaluation(props) {
       headerName: "Phone number",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
-      flex: 1.5,
+      hide: true,
+      suppressColumnsToolPanel: true,
     },
     {
       headerClass: classes.header,
@@ -184,7 +205,15 @@ function FillPandingEvaluation(props) {
       headerName: "Task title",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
-      flex: 3.5,
+      flex: 2,
+    },
+    {
+      headerClass: classes.header,
+      field: "taskDescription",
+      headerName: "Task description",
+      columnGroupShow: "closed",
+      filter: "agTextColumnFilter",
+      flex: 3,
     },
     {
       headerClass: classes.header,
@@ -196,21 +225,11 @@ function FillPandingEvaluation(props) {
     },
     {
       headerClass: classes.header,
-      field: "taskDescription",
-      headerName: "Task description",
-      columnGroupShow: "closed",
-      filter: "agTextColumnFilter",
-      hide: true,
-      suppressColumnsToolPanel: true,
-    },
-    {
-      headerClass: classes.header,
       field: "dueDate",
       headerName: "Due date",
       columnGroupShow: "closed",
       filter: "agDateColumnFilter",
-      hide: true,
-      suppressColumnsToolPanel: true,
+      flex: 1,
     },
     {
       headerClass: classes.header,
@@ -218,8 +237,7 @@ function FillPandingEvaluation(props) {
       headerName: "Task price",
       columnGroupShow: "closed",
       filter: "gsNumberColumnFilter",
-      hide: true,
-      suppressColumnsToolPanel: true,
+      flex: 1,
     },
     {
       headerClass: classes.header,
@@ -229,6 +247,28 @@ function FillPandingEvaluation(props) {
       filter: "agTextColumnFilter",
       hide: true,
       suppressColumnsToolPanel: true,
+    },
+    {
+      header: "column",
+      cellRenderer: function (params) {
+        return (
+          <button className={classes.acceptButton} type="button">
+            {" "}
+            Accept{" "}
+          </button>
+        );
+      },
+    },
+    {
+      header: "column",
+      cellRenderer: function (params) {
+        return (
+          <button className={classes.rejectButton} type="button">
+            {" "}
+            Reject{" "}
+          </button>
+        );
+      },
     },
   ]);
   const defaultColDef = useMemo(() => {
@@ -309,66 +349,10 @@ function FillPandingEvaluation(props) {
 
   return (
     <div className={classes.page}>
-      <div className={classes.container}>
-        <React.Fragment>
-          <CssBaseline />
-          <Container>
-            <Box>
-              <div className={classes.groupingName}>
-                <div className={classes.avatar}>{avatar}</div>
-                <div className={classes.nameText}>{user}</div>
-              </div>
-              <div className={classes.grouping}>
-                <div className={classes.headerText}>Email </div>
-                <div className={classes.headerValue}>{email}</div>
-              </div>
-              <div className={classes.grouping}>
-                <div className={classes.headerText}>Phone number </div>
-                <div className={classes.headerValue}>{phoneNumber}</div>
-              </div>
-              <div className={classes.grouping}>
-                <div className={classes.headerText}>Tax code </div>
-                <div className={classes.headerValue}>{taxCode}</div>
-              </div>
-              <div className={classes.grouping}>
-                <div className={classes.headerText}>Task title </div>
-                <div className={classes.headerValue}>{title}</div>
-              </div>
-              <div className={classes.grouping}>
-                <div className={classes.headerText}>Task description </div>
-                <div className={classes.headerValue}>{description}</div>
-              </div>
-              <div className={classes.groupingInputs}>
-                <div className={classes.TextFieldLeft}>
-                  <TextField
-                    className={classes.fields}
-                    type={"number"}
-                    // onChange={(e) => setPhoneNumber(e.target.value)}
-                    id="taskCostId"
-                    label="Taks cost"
-                    variant="outlined"
-                  />
-                </div>
-                <div className={classes.TextFieldRight}>
-                  <TextField
-                    className={classes.fields}
-                    type={"date"}
-                    InputLabelProps={{ shrink: true }}
-                    //   onChange={(e) => setDateOfBirth(e.target.value)}
-                    id="dueDateId"
-                    label="Due date"
-                    variant="outlined"
-                  />
-                </div>
-                <div className={classes.TextFieldRight}>
-                  <button className={classes.saveButton} role="button">
-                    Save
-                  </button>
-                </div>
-              </div>
-            </Box>
-          </Container>
-        </React.Fragment>
+      <div className={classes.buttonDiv}>
+        <button className={classes.addButton} role="button">
+          New task
+        </button>
       </div>
       <div style={containerStyle()}>
         <div style={gridStyle()} className="ag-theme-alpine">
@@ -389,3 +373,5 @@ function FillPandingEvaluation(props) {
 }
 
 export default FillPandingEvaluation;
+
+//render(<GridExample></GridExample>, document.querySelector("#root"));
