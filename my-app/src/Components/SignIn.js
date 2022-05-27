@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
@@ -11,6 +11,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 // import { signin } from "../firebase";
 import { useState } from "react";
+import { useUserAuth } from "../context/UserAuthContext";
 
 const useStyles = createUseStyles({
 	header: {
@@ -86,8 +87,10 @@ const useStyles = createUseStyles({
 function SignIn(props) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [signInButtonHover, setSigInButtonHover] = useState(false);
-	const [signInButtonActive, setSignInButtonActive] = useState(false);
+	const [signInButtonHover] = useState(false);
+	const [signInButtonActive] = useState(false);
+	const [error, setError] = useState("");
+	const navigate = useNavigate();
 
 	const classes = useStyles();
 	const [values, setValues] = useState({
@@ -97,10 +100,6 @@ function SignIn(props) {
 		weightRange: "",
 		showPassword: false,
 	});
-
-	const handleChange = (prop) => (event) => {
-		setValues({ ...values, [prop]: event.target.value });
-	};
 
 	const handleClickShowPassword = () => {
 		setValues({
@@ -113,6 +112,17 @@ function SignIn(props) {
 		event.preventDefault();
 	};
 
+	const { signIn } = useUserAuth();
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		setError("");
+		try {
+			await signIn(email, password);
+			navigate("/");
+		} catch (err) {
+			setError(err.message);
+		}
+	};
 	// async function usersignIn() {
 	// 	try {
 	// 		await signin(email, password);
@@ -127,6 +137,9 @@ function SignIn(props) {
 		<>
 			<div className={classes.useSpace}>
 				<h1 className={classes.signIn}>Sign in</h1>
+				{error && (
+					<div style={{ color: "red", textAlign: "center" }}> {error} </div>
+				)}
 				<div className={classes.signIn}>
 					<TextField
 						className={classes.fields}
@@ -149,8 +162,8 @@ function SignIn(props) {
 						<OutlinedInput
 							id='passwordId'
 							type={values.showPassword ? "text" : "password"}
-							value={values.password}
-							onChange={handleChange("password")}
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
 							endAdornment={
 								<InputAdornment position='end'>
 									<IconButton
@@ -177,15 +190,7 @@ function SignIn(props) {
 								? classes.signInButtonActive
 								: classes.signInButton
 						}
-						// onClick={usersignIn}
-						onHover={() => {
-							setSigInButtonHover(true);
-							setSignInButtonActive(false);
-						}}
-						onActivate={() => {
-							setSigInButtonHover(false);
-							setSignInButtonActive(true);
-						}}
+						onClick={handleSubmit}
 						id='buttonsignIn'
 						variant='contained'
 						color='secondary'

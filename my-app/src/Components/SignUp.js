@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
@@ -9,10 +9,10 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-// import { signup } from "../firebase";
 import { useState } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { useUserAuth } from "../context/UserAuthContext";
 
 const useStyles = createUseStyles({
 	header: {
@@ -96,10 +96,11 @@ function SignUp(props) {
 	const [taxCode, setTaxCode] = useState("");
 	const [roll, setRoll] = useState("Client");
 	const [enabled, setEnabled] = useState(false);
+	const [error, setError] = useState("");
 
 	const [signInButtonHover, setSigInButtonHover] = useState(false);
 	const [signInButtonActive, setSignInButtonActive] = useState(false);
-
+	const navigate = useNavigate();
 	const classes = useStyles();
 	const [values, setValues] = useState({
 		amount: "",
@@ -108,10 +109,6 @@ function SignUp(props) {
 		weightRange: "",
 		showPassword: false,
 	});
-
-	const handleChange = (prop) => (event) => {
-		setValues({ ...values, [prop]: event.target.value });
-	};
 
 	const handleClickShowPassword = () => {
 		setValues({
@@ -130,26 +127,43 @@ function SignUp(props) {
 		event.preventDefault();
 	};
 
-	// async function userSignUp() {
+	const { signUp } = useUserAuth();
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		setError("");
+		try {
+			await signUp(email, password);
+			navigate("/");
+		} catch (err) {
+			setError(err.message);
+		}
+	};
+	// async function () {
 	// 	try {
-	// await signup(
-	//   email,
-	// password,
-	// name,
-	// lastName,
-	// dateOfBirth,
-	// phoneNumber,
-	// taxCode,
-	// roll,
-	// enabled
-	// );
-	// setEmail("");
-	// setPassword("");
-	// setUserName("");
-	// setPhoneNumber("");
-	// setTaxCode("");
-	// setRoll("");
-	// setEnabled("");
+	// 		await signup(
+	// 			email,
+	// 			password,
+	// 			name,
+	// 			lastName,
+	// 			dateOfBirth,
+	// 			phoneNumber,
+	// 			taxCode,
+	// 			roll,
+	// 			enabled
+	// 		);
+	// 		console.log(signin(email, password));
+	// 		let currentUserData = await signin(email, password).then((data) => data);
+	// 		props.updateUser(currentUserData);
+	// 		setEmail("");
+	// 		setPassword("");
+	// 		setRepeatedPassword("");
+	// 		setName("");
+	// 		setLastName("");
+	// 		setPhoneNumber("");
+	// 		setDateOfBirth("");
+	// 		setTaxCode("");
+	// 		setRoll("");
+	// 		setEnabled("");
 	// 	} catch (e) {
 	// 		console.log("Error");
 	// 	}
@@ -159,9 +173,13 @@ function SignUp(props) {
 		<>
 			<div className={classes.useSpace}>
 				<h1 className={classes.signUp}>Sign up</h1>
+				{error && (
+					<div style={{ color: "red", textAlign: "center" }}> {error} </div>
+				)}
 				<div className={classes.signUp}>
 					<TextField
 						className={classes.fields}
+						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						type={"email"}
 						id='emailId'
@@ -181,8 +199,8 @@ function SignUp(props) {
 						<OutlinedInput
 							id='passwordId'
 							type={values.showPassword ? "text" : "password"}
-							value={values.password}
-							onChange={handleChange("password")}
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
 							endAdornment={
 								<InputAdornment position='end'>
 									<IconButton
@@ -203,6 +221,7 @@ function SignUp(props) {
 					<TextField
 						className={classes.fields}
 						type='password'
+						value={repeatedPassword}
 						onChange={(e) => setRepeatedPassword(e.target.value)}
 						id='repeatedPassword'
 						label='Repeat password'
@@ -212,6 +231,7 @@ function SignUp(props) {
 				<div className={classes.signUp}>
 					<TextField
 						className={classes.fields}
+						value={name}
 						onChange={(e) => setName(e.target.value)}
 						id='nameId'
 						label='Name'
@@ -221,6 +241,7 @@ function SignUp(props) {
 				<div className={classes.signUp}>
 					<TextField
 						className={classes.fields}
+						value={lastName}
 						onChange={(e) => setLastName(e.target.value)}
 						id='lastNameId'
 						label='UsLaster name'
@@ -230,6 +251,7 @@ function SignUp(props) {
 				<div className={classes.signUp}>
 					<TextField
 						className={classes.fields}
+						value={phoneNumber}
 						onChange={(e) => setPhoneNumber(e.target.value)}
 						id='phoneNumberId'
 						label='Phone number'
@@ -241,6 +263,7 @@ function SignUp(props) {
 						className={classes.fields}
 						type={"date"}
 						InputLabelProps={{ shrink: true }}
+						value={dateOfBirth}
 						onChange={(e) => setDateOfBirth(e.target.value)}
 						id='dateOfBirthId'
 						label='Date of birth'
@@ -250,6 +273,7 @@ function SignUp(props) {
 				<div className={classes.signUp}>
 					<TextField
 						className={classes.fields}
+						value={taxCode}
 						onChange={(e) => setTaxCode(e.target.value)}
 						id='taxCodeId'
 						label='Tax code'
@@ -263,7 +287,7 @@ function SignUp(props) {
 							labelId='inputRollId'
 							id='RollId'
 							value={roll}
-							label='Age'
+							label='Roll'
 							onChange={(e) => {
 								setRoll(e.target.value);
 								setEnabled(e.target.value === "Admin" ? false : true);
@@ -283,15 +307,7 @@ function SignUp(props) {
 								? classes.signInButtonActive
 								: classes.signInButton
 						}
-						// onClick={userSignUp}
-						onHover={() => {
-							setSigInButtonHover(true);
-							setSignInButtonActive(false);
-						}}
-						onActivate={() => {
-							setSigInButtonHover(false);
-							setSignInButtonActive(true);
-						}}
+						onClick={handleSubmit}
 						id='buttonSignUp'
 						variant='contained'
 						color='secondary'
