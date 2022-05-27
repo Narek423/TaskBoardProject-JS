@@ -13,6 +13,7 @@ import { useState } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { useUserAuth } from "../context/UserAuthContext";
+import NavMainBar from "./Nav-Bar/NavMainBar";
 
 const useStyles = createUseStyles({
 	header: {
@@ -171,6 +172,7 @@ function SignUp(props) {
 
 	return (
 		<>
+			<NavMainBar />
 			<div className={classes.useSpace}>
 				<h1 className={classes.signUp}>Sign up</h1>
 				{error && (
