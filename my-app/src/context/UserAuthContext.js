@@ -4,6 +4,8 @@ import {
 	signInWithEmailAndPassword,
 	signOut,
 	onAuthStateChanged,
+	setPersistence,
+	browserSessionPersistence,
 } from "firebase/auth";
 import { auth } from "../Components/firebase";
 
@@ -11,23 +13,43 @@ const UserAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
 	const [user, setUser] = useState("");
+
 	function signUp(email, password) {
 		return createUserWithEmailAndPassword(auth, email, password);
 	}
+
 	function signIn(email, password) {
-		return signInWithEmailAndPassword(auth, email, password);
+		return setPersistence(auth, browserSessionPersistence)
+			.then(() => {
+				return signInWithEmailAndPassword(auth, email, password).then(
+					(currentUser) => {
+						setUser(currentUser);
+					}
+				);
+			})
+			.catch((error) => {
+				// Handle Errors here.
+				const errorCode = error.code;
+				const errorMessage = error.message;
+			});
+	}
+
+	function logOut() {
+		return signOut(auth);
 	}
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
 			setUser(currentUser);
 		});
+
 		return () => {
 			unsubscribe();
 		};
 	}, []);
+
 	return (
-		<UserAuthContext.Provider value={{ user, signUp, signIn }}>
+		<UserAuthContext.Provider value={{ user, signUp, signIn, logOut }}>
 			{children}
 		</UserAuthContext.Provider>
 	);

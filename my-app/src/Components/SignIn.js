@@ -12,6 +12,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 // import { signin } from "../firebase";
 import { useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
+import NavMainBar from "./Nav-Bar/NavMainBar";
 
 const useStyles = createUseStyles({
 	header: {
@@ -118,23 +119,15 @@ function SignIn(props) {
 		setError("");
 		try {
 			await signIn(email, password);
-			navigate("/");
+			navigate("/profile");
 		} catch (err) {
 			setError(err.message);
 		}
 	};
-	// async function usersignIn() {
-	// 	try {
-	// 		await signin(email, password);
-	// 		setEmail("");
-	// 		setPassword("");
-	// 	} catch (e) {
-	// 		console.log("Error");
-	// 	}
-	// }
 
 	return (
 		<>
+			<NavMainBar />
 			<div className={classes.useSpace}>
 				<h1 className={classes.signIn}>Sign in</h1>
 				{error && (
