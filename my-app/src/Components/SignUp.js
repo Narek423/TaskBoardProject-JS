@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
@@ -12,8 +12,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useState } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { signin, signup } from "./firebase";
-import { userDataContext } from "../context/userLogIn";
+import { useUserAuth } from "../context/UserAuthContext";
 
 const useStyles = createUseStyles({
 	header: {
@@ -97,11 +96,11 @@ function SignUp(props) {
 	const [taxCode, setTaxCode] = useState("");
 	const [roll, setRoll] = useState("Client");
 	const [enabled, setEnabled] = useState(false);
-	const data = React.useContext(userDataContext);
+	const [error, setError] = useState("");
 
 	const [signInButtonHover, setSigInButtonHover] = useState(false);
 	const [signInButtonActive, setSignInButtonActive] = useState(false);
-
+	const navigate = useNavigate();
 	const classes = useStyles();
 	const [values, setValues] = useState({
 		amount: "",
@@ -128,40 +127,55 @@ function SignUp(props) {
 		event.preventDefault();
 	};
 
-	async function userSignUp() {
+	const { signUp } = useUserAuth();
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		setError("");
 		try {
-			await signup(
-				email,
-				password,
-				name,
-				lastName,
-				dateOfBirth,
-				phoneNumber,
-				taxCode,
-				roll,
-				enabled
-			);
-			let currentUserData = await signin(email, password).then((data) => data);
-			data.updateUser(currentUserData);
-			setEmail("");
-			setPassword("");
-			setRepeatedPassword("");
-			setName("");
-			setLastName("");
-			setPhoneNumber("");
-			setDateOfBirth("");
-			setTaxCode("");
-			setRoll("");
-			setEnabled("");
-		} catch (e) {
-			console.log("Error");
+			await signUp(email, password);
+			navigate("/");
+		} catch (err) {
+			setError(err.message);
 		}
-	}
+	};
+	// async function () {
+	// 	try {
+	// 		await signup(
+	// 			email,
+	// 			password,
+	// 			name,
+	// 			lastName,
+	// 			dateOfBirth,
+	// 			phoneNumber,
+	// 			taxCode,
+	// 			roll,
+	// 			enabled
+	// 		);
+	// 		console.log(signin(email, password));
+	// 		let currentUserData = await signin(email, password).then((data) => data);
+	// 		props.updateUser(currentUserData);
+	// 		setEmail("");
+	// 		setPassword("");
+	// 		setRepeatedPassword("");
+	// 		setName("");
+	// 		setLastName("");
+	// 		setPhoneNumber("");
+	// 		setDateOfBirth("");
+	// 		setTaxCode("");
+	// 		setRoll("");
+	// 		setEnabled("");
+	// 	} catch (e) {
+	// 		console.log("Error");
+	// 	}
+	// }
 
 	return (
 		<>
 			<div className={classes.useSpace}>
 				<h1 className={classes.signUp}>Sign up</h1>
+				{error && (
+					<div style={{ color: "red", textAlign: "center" }}> {error} </div>
+				)}
 				<div className={classes.signUp}>
 					<TextField
 						className={classes.fields}
@@ -273,7 +287,7 @@ function SignUp(props) {
 							labelId='inputRollId'
 							id='RollId'
 							value={roll}
-							label='Age'
+							label='Roll'
 							onChange={(e) => {
 								setRoll(e.target.value);
 								setEnabled(e.target.value === "Admin" ? false : true);
@@ -293,15 +307,7 @@ function SignUp(props) {
 								? classes.signInButtonActive
 								: classes.signInButton
 						}
-						onClick={userSignUp}
-						onHover={() => {
-							setSigInButtonHover(true);
-							setSignInButtonActive(false);
-						}}
-						onActivate={() => {
-							setSigInButtonHover(false);
-							setSignInButtonActive(true);
-						}}
+						onClick={handleSubmit}
 						id='buttonSignUp'
 						variant='contained'
 						color='secondary'
