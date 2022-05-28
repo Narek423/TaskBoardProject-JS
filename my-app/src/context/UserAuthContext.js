@@ -4,34 +4,25 @@ import {
 	signInWithEmailAndPassword,
 	signOut,
 	onAuthStateChanged,
-	setPersistence,
-	browserSessionPersistence,
 } from "firebase/auth";
 import { auth } from "../Components/firebase";
 
-const UserAuthContext = createContext();
+export const UserAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
-	const [user, setUser] = useState("");
+	const [user, setUser] = useState(null);
+	const [loading, setLoading] = useState(true);
 
 	function signUp(email, password) {
 		return createUserWithEmailAndPassword(auth, email, password);
 	}
 
 	function signIn(email, password) {
-		return setPersistence(auth, browserSessionPersistence)
-			.then(() => {
-				return signInWithEmailAndPassword(auth, email, password).then(
-					(currentUser) => {
-						setUser(currentUser);
-					}
-				);
-			})
-			.catch((error) => {
-				// Handle Errors here.
-				const errorCode = error.code;
-				const errorMessage = error.message;
-			});
+		return signInWithEmailAndPassword(auth, email, password).then(
+			(currentUser) => {
+				setUser(currentUser);
+			}
+		);
 	}
 
 	function logOut() {
@@ -39,8 +30,11 @@ export function UserAuthContextProvider({ children }) {
 	}
 
 	useEffect(() => {
+		// durs hanel  onAuthStateChanged
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+			console.log(`useEffect`, currentUser);
 			setUser(currentUser);
+			setLoading(false);
 		});
 
 		return () => {
@@ -48,9 +42,11 @@ export function UserAuthContextProvider({ children }) {
 		};
 	}, []);
 
+	const value = { user, signUp, signIn, logOut };
+
 	return (
-		<UserAuthContext.Provider value={{ user, signUp, signIn, logOut }}>
-			{children}
+		<UserAuthContext.Provider value={value}>
+			{!loading && children}
 		</UserAuthContext.Provider>
 	);
 }
