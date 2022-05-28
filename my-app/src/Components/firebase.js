@@ -19,9 +19,45 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+<<<<<<< HEAD
 export const auth = getAuth(app);
 
 export default app;
+=======
+const auth = getAuth();
+const database = getDatabase(app);
+export const storage = getStorage(app);
+export function signup(
+	email,
+	password,
+	name,
+	lastName,
+	dateOfBirth,
+	phoneNumber,
+	taxCode,
+	roll,
+	enabled
+) {
+	console.log(email, password);
+	return createUserWithEmailAndPassword(auth, email, password).then(
+		(userCredential) => {
+			const user = userCredential.user;
+			console.log(user);
+			writeUserData(
+				user,
+				password,
+				name,
+				lastName,
+				dateOfBirth,
+				phoneNumber,
+				taxCode,
+				roll,
+				enabled
+			);
+		}
+	);
+}
+>>>>>>> user_profile
 
 // import { getDatabase, ref, set, get, child } from "firebase/database";
 // // Initialize Firebase
@@ -59,6 +95,7 @@ export default app;
 // 	);
 // }
 
+<<<<<<< HEAD
 // function writeUserData(
 // 	user,
 // 	password,
@@ -95,3 +132,5 @@ export default app;
 // 		}
 // 	);
 // }
+=======
+>>>>>>> user_profile

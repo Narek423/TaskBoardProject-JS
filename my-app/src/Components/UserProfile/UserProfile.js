@@ -4,12 +4,12 @@ import UserTools from "./UserToolsBar/UserTools";
 import UserWorkingTable from "./UserWorkingTable/UserWorkingTable";
 
 const useStyle = createUseStyles(() => {
-	return {
-		UserProfile: {
-			display: "flex",
-			height: 827,
-		},
-	};
+  return {
+    UserProfile: {
+      display: "flex",
+      height: "100vh"
+    },
+  };
 });
 
 function UserProfile() {

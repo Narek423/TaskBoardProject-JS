@@ -30,6 +30,21 @@ const useStyle = createUseStyles(() => {
         top: "5%",
       },
     },
+    div: {
+      width: "80%",
+      fontSize: "100%",
+      display: "flex",
+      justifyContent: "center",
+      "&:hover": { 
+        backgroundColor: "#019CAD", 
+        boxShadow: "#1264F3 0 -6px 8px inset", 
+        transform: "scale(1.125)", 
+        cursor: 'pointer'
+       }, 
+       "&:active": { 
+        transform: "scale(1.125)", 
+       }, 
+    }
   };
 });
 function UserToolsList(props) {
@@ -98,12 +113,7 @@ function UserToolsList(props) {
       {arrTools.map((e) => {
         return (
           <div
-            style={{
-              width: "80%",
-              fontSize: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
+            className={classes.div}
             onClick={() => alert(e.text)}
             // onMouseOver={() => onMouseOver(e.text)}
             key={uuidv4()}
