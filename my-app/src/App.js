@@ -2,27 +2,49 @@ import "./App.css";
 import SignUp from "./Components/SignUp";
 import SignIn from "./Components/SignIn";
 import NavMainBar from "./Components/Nav-Bar/NavMainBar";
-import { useContext, useMemo } from "react";
-import { userData } from "./context/UserData";
-import UserProfile from "./Components/UserProfile/UserProfile";
-
-
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { userDataContext } from "./context/userLogIn";
+import { useEffect, useState } from "react";
+import Profile from "./Components/Profile";
 
 function App() {
-	const data = useContext(userData);
-	const userMainData = useMemo(() => {
-		return data
-	  });
+	const [currentUserData, setcurrentUserData] = useState({
+		isUserLogdIn: false,
+	});
+	const navigate = useNavigate();
+	useEffect(() => {
+		if (currentUserData.isUserLogdIn) {
+			navigate("/");
+		} else {
+			navigate("/signup");
+		}
+	}, [currentUserData.isUserLogdIn]);
+
+	const updateUser = (data) => {
+		setcurrentUserData({
+			...data,
+			isUserLogdIn: true,
+			updateUser,
+		});
+	};
+
+	useEffect(() => {
+		setcurrentUserData({
+			...currentUserData,
+			updateUser,
+		});
+	}, []);
 	return (
-		// <>
-		// 	<NavMainBar></NavMainBar>
-		// 	<SignUp></SignUp>;
-		// </>
-			<>
-			<userData.Provider value={userMainData}>
-			<UserProfile />
-			</userData.Provider>
-			</>
+		<>
+			<userDataContext.Provider value={currentUserData}>
+				<NavMainBar />
+				<Routes>
+					<Route path='/' element={<Profile />} />
+					<Route path='/login' element={<SignIn />} />
+					<Route path='/signup' element={<SignUp />} />
+				</Routes>
+			</userDataContext.Provider>
+		</>
 	);
 }
 
