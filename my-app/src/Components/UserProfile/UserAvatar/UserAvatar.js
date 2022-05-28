@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { createUseStyles } from "react-jss";
-import { userData } from "../../context/UserData";
+import { userData } from "../../../context/UserData";
 import avatar from "../../avatar/avatar.jpg";
+import { avatarUrl } from "../CreateNewTask/FireBaseFileUpload";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -28,9 +29,12 @@ const useStyle = createUseStyles(() => {
 });
 
 function UserAvatar() {
+
   const { email } = useContext(userData);
   const classes = useStyle();
 
+ 
+  
   return (
     <div className={classes.avatar}>
       <img 

@@ -1,6 +1,8 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import * as firebase from "./firebase"
+import { getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth"
 import { getAnalytics } from "firebase/analytics";
+import { getStorage } from "firebase/storage"
 import {
 	getDatabase,
 	ref,
@@ -10,11 +12,6 @@ import {
 	get,
 	child,
 } from "firebase/database";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
 	apiKey: "AIzaSyAeMdajQ5RYUmEj6bxOcsVUYZYlFz55sKA",
 	authDomain: "taskboardproject-3dd1f.firebaseapp.com",
@@ -28,9 +25,10 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app)
 const analytics = getAnalytics(app);
 const database = getDatabase(app);
-
+export const storage = getStorage(app);
 export function signup(
 	email,
 	password,
@@ -81,4 +79,3 @@ export async function signin(email, password, val) {
 	);
 }
 
-// ("https://www.youtube.com/watch?v=jCY6DH8F4oc");

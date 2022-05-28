@@ -7,7 +7,7 @@ const useStyle = createUseStyles(() => {
   return {
     UserProfile: {
       display: "flex",
-      height: 827
+      height: "100vh"
     },
   };
 });
