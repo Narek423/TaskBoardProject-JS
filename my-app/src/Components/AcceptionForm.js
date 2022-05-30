@@ -141,10 +141,10 @@ const useStyles = createUseStyles({
   },
 });
 
-function FillPandingEvaluation(props) {
+function PendingToAcception(props) {
   const gridRef = useRef();
   const classes = useStyles();
-  const [avatar, setsetAvatar] = useState("");
+  const [avatar, setAvatar] = useState("");
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -272,6 +272,7 @@ function FillPandingEvaluation(props) {
     },
   ]);
   const defaultColDef = useMemo(() => {
+    //aranc useMemo
     return {
       className: classes.defaultColDef,
       editable: true,
@@ -329,22 +330,18 @@ function FillPandingEvaluation(props) {
 
   const onSelectionChanged = useCallback((param) => {
     const selectedRows = param.api.getSelectedRows();
-    setsetAvatar(selectedRows.length === 1 ? selectedRows[0].avatar : "");
-    setUser(selectedRows.length === 1 ? selectedRows[0].user : "");
-    setEmail(selectedRows.length === 1 ? selectedRows[0].email : "");
-    setPhoneNumber(
-      selectedRows.length === 1 ? selectedRows[0].phoneNumber : ""
-    );
-    setTitle(selectedRows.length === 1 ? selectedRows[0].title : "");
-    setDataCreated(
-      selectedRows.length === 1 ? selectedRows[0].dataCreated : ""
-    );
-    setDescription(
-      selectedRows.length === 1 ? selectedRows[0].description : ""
-    );
-    setDueDate(selectedRows.length === 1 ? selectedRows[0].dueDate : "");
-    setPrice(selectedRows.length === 1 ? selectedRows[0].price : "");
-    setTaxCode(selectedRows.length === 1 ? selectedRows[0].taxCode : "");
+    if (selectedRows.length === 1) {
+      setAvatar(selectedRows[0].avatar);
+      setUser(selectedRows[0].user);
+      setEmail(selectedRows[0].email);
+      setPhoneNumber(selectedRows[0].phoneNumber);
+      setTitle(selectedRows[0].title);
+      setDataCreated(selectedRows[0].dataCreated);
+      setDescription(selectedRows[0].description);
+      setDueDate(selectedRows[0].dueDate);
+      setPrice(selectedRows[0].price);
+      setTaxCode(selectedRows[0].taxCode);
+    }
   }, []);
 
   return (
@@ -372,6 +369,6 @@ function FillPandingEvaluation(props) {
   );
 }
 
-export default FillPandingEvaluation;
+export default PendingToAcception;
 
 //render(<GridExample></GridExample>, document.querySelector("#root"));

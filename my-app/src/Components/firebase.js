@@ -1,24 +1,26 @@
 import { initializeApp } from "firebase/app";
 import {
-	browserSessionPersistence,
-	getAuth,
-	setPersistence,
-	signInWithEmailAndPassword,
+  browserSessionPersistence,
+  getAuth,
+  setPersistence,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
+import { getDatabase } from "firebase/database";
 import { useUserAuth } from "../context/UserAuthContext";
 
 const firebaseConfig = {
-	apiKey: "AIzaSyAeMdajQ5RYUmEj6bxOcsVUYZYlFz55sKA",
-	authDomain: "taskboardproject-3dd1f.firebaseapp.com",
-	databaseURL: "https://taskboardproject-3dd1f-default-rtdb.firebaseio.com",
-	projectId: "taskboardproject-3dd1f",
-	storageBucket: "taskboardproject-3dd1f.appspot.com",
-	messagingSenderId: "1021091163244",
-	appId: "1:1021091163244:web:5eeeb99edf48dec361fc49",
-	measurementId: "G-7SS21PZV79",
+  apiKey: "AIzaSyAeMdajQ5RYUmEj6bxOcsVUYZYlFz55sKA",
+  authDomain: "taskboardproject-3dd1f.firebaseapp.com",
+  databaseURL: "https://taskboardproject-3dd1f-default-rtdb.firebaseio.com",
+  projectId: "taskboardproject-3dd1f",
+  storageBucket: "taskboardproject-3dd1f.appspot.com",
+  messagingSenderId: "1021091163244",
+  appId: "1:1021091163244:web:5eeeb99edf48dec361fc49",
+  measurementId: "G-7SS21PZV79",
 };
 
 const app = initializeApp(firebaseConfig);
+export const database = getDatabase(app);
 export const auth = getAuth(app);
 
 export default app;

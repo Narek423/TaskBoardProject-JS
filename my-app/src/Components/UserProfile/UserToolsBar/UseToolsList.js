@@ -10,6 +10,7 @@ import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import EditIcon from "@mui/icons-material/Edit";
 import PaymentIcon from "@mui/icons-material/Payment";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -34,58 +35,66 @@ const useStyle = createUseStyles(() => {
 });
 function UserToolsList(props) {
   const classes = useStyle();
+  const navigate = useNavigate();
 
   const arrTools = [
     {
       icon: <AssignmentIndIcon className={classes.icon} />,
       text: "Profile",
+      link: "/",
       id: uuidv4(),
     },
     {
       icon: <AssignmentIcon className={classes.icon} />,
       text: "All Tasks",
+      link: "/",
       id: uuidv4(),
     },
     {
       icon: <PublishedWithChangesIcon className={classes.icon} />,
       text: "Inprocess Tasks",
+      link: "/profile/inproccestasks/",
       id: uuidv4(),
     },
     {
       icon: <AddTaskIcon className={classes.icon} />,
       text: "Active Tasks",
+      link: "/profile/acceptiontasks/",
       id: uuidv4(),
     },
     {
       icon: <TaskIcon className={classes.icon} />,
       text: "Done Tasks",
+      link: "/",
       id: uuidv4(),
     },
     {
       icon: <EditIcon className={classes.icon} />,
       text: "Create Task",
+      link: "/",
       id: uuidv4(),
     },
     {
       icon: <AssignmentLateIcon className={classes.icon} />,
       text: "Rejected Tasks",
+      link: "/",
       id: uuidv4(),
     },
     {
       icon: <EqualizerIcon className={classes.icon} />,
       text: "Statics",
+      link: "/",
       id: uuidv4(),
     },
     {
       icon: <PaymentIcon className={classes.icon} />,
       text: "Payment History",
+      link: "/",
       id: uuidv4(),
     },
   ];
 
   // const [arrTools, setToolsData] = useState(arr);
-
-  
 
   return (
     <div
@@ -104,7 +113,7 @@ function UserToolsList(props) {
               display: "flex",
               justifyContent: "center",
             }}
-            onClick={() => alert(e.text)}
+            onClick={() => navigate(e.link)}
             // onMouseOver={() => onMouseOver(e.text)}
             key={uuidv4()}
           >

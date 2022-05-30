@@ -124,7 +124,7 @@ const useStyles = createUseStyles({
   },
 });
 
-function FillPandingEvaluation(props) {
+function PendingToEvaluation(props) {
   const gridRef = useRef();
   const classes = useStyles();
   const [avatar, setsetAvatar] = useState("");
@@ -388,4 +388,4 @@ function FillPandingEvaluation(props) {
   );
 }
 
-export default FillPandingEvaluation;
+export default PendingToEvaluation;
