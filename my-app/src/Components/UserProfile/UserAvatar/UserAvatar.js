@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { createUseStyles } from "react-jss";
 import { useUserAuth } from "../../../context/UserAuthContext";
 // import { userData } from "../../context/UserData";
@@ -29,6 +29,7 @@ const useStyle = createUseStyles(() => {
 
 function UserAvatar() {
 	const { user } = useUserAuth();
+	console.log("avatr", user);
 	const classes = useStyle();
 
 	return (
@@ -40,7 +41,7 @@ function UserAvatar() {
 					"https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745"
 				}
 			></img>
-			<p className={classes.useremail}>{user && user.email}</p>
+			<p className={classes.useremail}>{user.user?.email || user?.email}</p>
 		</div>
 	);
 }
