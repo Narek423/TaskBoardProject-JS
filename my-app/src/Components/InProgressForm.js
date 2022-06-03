@@ -19,6 +19,15 @@ import TextField from "@mui/material/TextField";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import { View, StyleSheet, Text } from "react-native";
+import {
+  getDatabase,
+  ref,
+  set,
+  get,
+  update,
+  push,
+  child,
+} from "firebase/database";
 
 const useStyles = createUseStyles({
   page: {
@@ -28,40 +37,9 @@ const useStyles = createUseStyles({
   buttonDiv: {
     margin: 10,
   },
-  addButton: {
-    background: "#FF4742",
-    border: "1px solid #FF4742",
-    borderRadius: "6px",
-    boxShadow: "rgba(0, 0, 0, 0.1) 1px 2px 4px",
-    boxSizing: "border-box",
-    color: "#FFFFFF",
-    cursor: "pointer",
-    display: "inline-block",
-    fontFamily: "nunito,roboto,proxima-nova,'proxima nova',sans-serif",
-    fontSize: "16px",
-    fontWeight: 800,
-    lineHeight: "16px",
-    minHeight: "40px",
-    outline: 0,
-    padding: "12px 14px",
-    textAlign: "center",
-    textRendering: "geometricprecision",
-    textTransform: "none",
-    userSelect: "none",
-    webkitUserSelect: "none",
-    touchAction: "manipulation",
-    verticalAlign: "middle",
-    "&:hover": {
-      backgroundColor: "initial",
-      backgroundPosition: "0 0",
-      color: "#FF4742",
-    },
-    "&:active": {
-      backgroundColor: "initial",
-      backgroundPosition: "0 0",
-      color: "#FF4742",
-      opacity: ".5",
-    },
+  buttonsClass: {
+    length: "3px",
+    height: "1px",
   },
   acceptButton: {
     appearance: "button",
@@ -142,19 +120,8 @@ const useStyles = createUseStyles({
 });
 
 function PendingToAcception(props) {
-  const gridRef = useRef();
+  const clientId = "1o0VLmdzrKVav1YaZDxHdoxY3453";
   const classes = useStyles();
-  const [avatar, setAvatar] = useState("");
-  const [user, setUser] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [title, setTitle] = useState("");
-  const [dataCreated, setDataCreated] = useState("");
-  const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const [price, setPrice] = useState("");
-  const [taxCode, setTaxCode] = useState("");
-  const [api, setApi] = useState("");
 
   const containerStyle = () => {
     return { width: "100vw", height: "100vh" };
@@ -162,6 +129,7 @@ function PendingToAcception(props) {
   const gridStyle = () => {
     return { height: "100vh", width: "100vw" };
   };
+
   const [rowData, setRowData] = useState();
   const [columnDefs, setColumnDefs] = useState([
     {
@@ -169,13 +137,12 @@ function PendingToAcception(props) {
       field: "avatar",
       headerName: "Avatar",
       columnGroupShow: "closed",
-      hide: true,
-      suppressColumnsToolPanel: true,
+      flex: 1,
     },
     {
       headerClass: classes.header,
-      field: "user",
-      headerName: "User",
+      field: "clientId",
+      headerName: "Client ID",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
       hide: true,
@@ -183,25 +150,7 @@ function PendingToAcception(props) {
     },
     {
       headerClass: classes.header,
-      field: "email",
-      headerName: "Email",
-      columnGroupShow: "closed",
-      filter: "agTextColumnFilter",
-      hide: true,
-      suppressColumnsToolPanel: true,
-    },
-    {
-      headerClass: classes.header,
-      field: "phoneNumber",
-      headerName: "Phone number",
-      columnGroupShow: "closed",
-      filter: "agTextColumnFilter",
-      hide: true,
-      suppressColumnsToolPanel: true,
-    },
-    {
-      headerClass: classes.header,
-      field: "taskTitle",
+      field: "title",
       headerName: "Task title",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
@@ -209,70 +158,80 @@ function PendingToAcception(props) {
     },
     {
       headerClass: classes.header,
-      field: "taskDescription",
+      field: "creationDate",
+      headerName: "Creation date",
+      columnGroupShow: "closed",
+      filter: "agDateColumnFilter",
+      flex: 1,
+    },
+    {
+      headerClass: classes.header,
+      field: "description",
       headerName: "Task description",
+      columnGroupShow: "closed",
+      filter: "agTextColumnFilter",
+      flex: 4,
+    },
+    {
+      headerClass: classes.header,
+      field: "notes",
+      headerName: "Notes",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
       flex: 3,
     },
     {
       headerClass: classes.header,
-      field: "dataCreated",
-      headerName: "Created on",
-      columnGroupShow: "closed",
-      filter: "agDateColumnFilter",
-      flex: 1,
-    },
-    {
-      headerClass: classes.header,
-      field: "dueDate",
+      field: "quantity",
       headerName: "Due date",
-      columnGroupShow: "closed",
-      filter: "agDateColumnFilter",
-      flex: 1,
-    },
-    {
-      headerClass: classes.header,
-      field: "price",
-      headerName: "Task price",
       columnGroupShow: "closed",
       filter: "gsNumberColumnFilter",
       flex: 1,
     },
     {
       headerClass: classes.header,
-      field: "taxCode",
-      headerName: "Tax code",
+      field: "unit",
+      headerName: "Unit",
+      columnGroupShow: "closed",
+      filter: "agTextColumnFilter",
+      flex: 1,
+    },
+    {
+      headerClass: classes.header,
+      field: "costForUnit",
+      headerName: "Unit cost",
+      columnGroupShow: "closed",
+      filter: "gsNumberColumnFilter",
+      flex: 1,
+    },
+    {
+      headerClass: classes.header,
+      field: "cost",
+      headerName: "Total cost",
+      columnGroupShow: "closed",
+      filter: "gsNumberColumnFilter",
+      flex: 2,
+    },
+    {
+      headerClass: classes.header,
+      field: "state",
+      headerName: "State",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
       hide: true,
       suppressColumnsToolPanel: true,
     },
     {
-      header: "column",
-      cellRenderer: function (params) {
-        return (
-          <button className={classes.acceptButton} type="button">
-            {" "}
-            Accept{" "}
-          </button>
-        );
-      },
-    },
-    {
-      header: "column",
-      cellRenderer: function (params) {
-        return (
-          <button className={classes.rejectButton} type="button">
-            {" "}
-            Reject{" "}
-          </button>
-        );
-      },
+      headerClass: classes.header,
+      field: "status",
+      headerName: "Status",
+      columnGroupShow: "closed",
+      filter: "agTextColumnFilter",
+      hide: true,
+      suppressColumnsToolPanel: true,
     },
   ]);
   const defaultColDef = useMemo(() => {
-    //aranc useMemo
     return {
       className: classes.defaultColDef,
       editable: true,
@@ -293,65 +252,82 @@ function PendingToAcception(props) {
     };
   }, []);
 
-  const onGridReady = useCallback((params) => {
-    setRowData([
-      {
-        id: 1,
-        avatar: <Avatar alt="Remy Sharp" src="../Avatars/avatar1.jpeg" />,
-        user: "Aram",
-        email: "aram@gmail.com",
-        phoneNumber: "077777777",
-      },
-      {
-        id: 2,
-        avatar: <Avatar alt="Remy Sharp" src="../Avatars/avatar2.jpeg" />,
-        user: "Vigen",
-        email: "vigen@gmail.com",
-        phoneNumber: "088888888",
-      },
-
-      {
-        id: 3,
-        avatar: <Avatar alt="Remy Sharp" src="../Avatars/avatar3.jpeg" />,
-        user: "Anna",
-        email: "anna@gmail.com",
-        phoneNumber: "055555555",
-      },
-
-      {
-        id: 4,
-        avatar: <Avatar alt="Remy Sharp" src="../Avatars/avatar1.jpeg" />,
-        user: "Sona",
-        email: "sona@gmail.com",
-        phoneNumber: "098545454",
-      },
-    ]);
-  }, []);
-
-  const onSelectionChanged = useCallback((param) => {
+  const onCellClicked = useCallback((param) => {
+    console.log(param);
     const selectedRows = param.api.getSelectedRows();
     if (selectedRows.length === 1) {
-      setAvatar(selectedRows[0].avatar);
-      setUser(selectedRows[0].user);
-      setEmail(selectedRows[0].email);
-      setPhoneNumber(selectedRows[0].phoneNumber);
-      setTitle(selectedRows[0].title);
-      setDataCreated(selectedRows[0].dataCreated);
-      setDescription(selectedRows[0].description);
-      setDueDate(selectedRows[0].dueDate);
-      setPrice(selectedRows[0].price);
-      setTaxCode(selectedRows[0].taxCode);
+      const db = getDatabase();
+      const postData = {
+        title: selectedRows[0].title,
+        description: selectedRows[0].description,
+        notes: selectedRows[0].notes,
+        quantity: selectedRows[0].quantity,
+        costForUnit: selectedRows[0].costForUnit,
+        unit: selectedRows[0].unit,
+        cost: selectedRows[0].cost,
+        status: "waiting",
+        state:
+          param.event.target.innerText === "Accept" ? "inProgress" : "rejected",
+        clientId: selectedRows[0].clientId,
+      };
+      const updates = {};
+      updates["/tasks/" + selectedRows[0].id] = postData;
+
+      update(ref(db), updates);
+      return onGridReady();
     }
+  }, []);
+
+  const onGridReady = useCallback((params) => {
+    const dbRef = getDatabase();
+    let data = {};
+    let dataGrid = [];
+    let clientData = {};
+    get(ref(dbRef, "users/" + clientId))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          clientData = snapshot.val();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    get(ref(dbRef, "tasks"))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          data = snapshot.val();
+          for (let key in data) {
+            if (
+              data[key].clientId === clientId &&
+              data[key].state === "acception"
+            ) {
+              data[key].id = key;
+              data[key] = { ...data[key], ...clientData };
+              dataGrid.push(data[key]);
+            }
+          }
+          setRowData(dataGrid);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   return (
     <div className={classes.page}>
-      <div className={classes.buttonDiv}>
-        <button className={classes.addButton} role="button">
-          New task
-        </button>
-      </div>
       <div style={containerStyle()}>
+        <div className={classes.buttonsClass}>
+          <button className={classes.acceptButton} type="button">
+            {" "}
+            Accept{" "}
+          </button>
+          <button className={classes.rejectButton} type="button">
+            {" "}
+            Reject{" "}
+          </button>
+        </div>
         <div style={gridStyle()} className="ag-theme-alpine">
           <AgGridReact
             rowData={rowData}
@@ -361,7 +337,7 @@ function PendingToAcception(props) {
             defaultColDef={defaultColDef}
             sideBar={sideBar}
             onGridReady={onGridReady}
-            onSelectionChanged={onSelectionChanged}
+            onCellClicked={onCellClicked}
           ></AgGridReact>
         </div>
       </div>

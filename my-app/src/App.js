@@ -6,8 +6,10 @@ import NavMainBar from "./Components/Nav-Bar/NavMainBar";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import UserProfile from "./Components/UserProfile/UserProfile";
 import ProtectedRoute from "./Components/ProtectedRoute";
-import EvaluationForm from "./Components/EvaluationForm";
-import AcceptionForm from "./Components/AcceptionForm";
+import EvaluationFormAdmin from "./Components/EvaluationFormAdmin";
+import EvaluationFormClient from "./Components/EvaluationFormClient";
+import AcceptionFormAdmin from "./Components/AcceptionFormAdmin";
+import AcceptionFormClient from "./Components/AcceptionFormClient";
 
 function App() {
   return (
@@ -26,8 +28,22 @@ function App() {
           />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/profile/inproccestasks/" element={<EvaluationForm />} />
-          <Route path="/profile/acceptiontasks/" element={<AcceptionForm />} />
+          <Route
+            path="/profile/admin/inproccestasks/"
+            element={<EvaluationFormAdmin />}
+          />
+          <Route
+            path="/profile/client/inproccestasks/"
+            element={<EvaluationFormClient />}
+          />
+          <Route
+            path="/profile/admin/acceptiontasks/"
+            element={<AcceptionFormAdmin />}
+          />
+          <Route
+            path="/profile/client/acceptiontasks/"
+            element={<AcceptionFormClient />}
+          />
         </Routes>
       </UserAuthContextProvider>
     </>

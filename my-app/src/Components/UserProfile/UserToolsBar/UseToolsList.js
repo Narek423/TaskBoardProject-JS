@@ -53,25 +53,25 @@ function UserToolsList(props) {
     {
       icon: <PublishedWithChangesIcon className={classes.icon} />,
       text: "Inprocess Tasks",
-      link: "/profile/inproccestasks/",
+      link: "/profile/admin/inproccestasks/",
       id: uuidv4(),
     },
     {
       icon: <AddTaskIcon className={classes.icon} />,
       text: "Active Tasks",
-      link: "/profile/acceptiontasks/",
+      link: "/profile/client/inproccestasks/",
       id: uuidv4(),
     },
     {
       icon: <TaskIcon className={classes.icon} />,
       text: "Done Tasks",
-      link: "/",
+      link: "/profile/admin/acceptiontasks/",
       id: uuidv4(),
     },
     {
       icon: <EditIcon className={classes.icon} />,
       text: "Create Task",
-      link: "/",
+      link: "/profile/client/acceptiontasks/",
       id: uuidv4(),
     },
     {

@@ -1,12 +1,6 @@
 "use strict";
 
-import React, {
-  useCallback,
-  useMemo,
-  useState,
-  useEffect,
-  useRef,
-} from "react";
+import React, { useCallback, useMemo, useState, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
@@ -17,8 +11,11 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Avatar from "@mui/material/Avatar";
-import Stack from "@mui/material/Stack";
-import { View, StyleSheet, Text } from "react-native";
+import { getDatabase, ref, get, update, push, child } from "firebase/database";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@mui/material/Select";
 
 const useStyles = createUseStyles({
   page: {
@@ -125,19 +122,29 @@ const useStyles = createUseStyles({
 });
 
 function PendingToEvaluation(props) {
+  const units = [
+    { unit: "hour", cost: 20000 },
+    { unit: "unit", cost: 0 },
+  ];
+  // const clientId = "1o0VLmdzrKVav1YaZDxHdoxY3453";
   const gridRef = useRef();
   const classes = useStyles();
-  const [avatar, setsetAvatar] = useState("");
+  const [avatar, setAvatar] = useState("");
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [title, setTitle] = useState("");
-  const [dataCreated, setDataCreated] = useState("");
+  const [creationDate, setCreationDate] = useState("");
+  const [id, setId] = useState("");
   const [description, setDescription] = useState("");
+  const [notes, setNotes] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [price, setPrice] = useState("");
+  const [costForUnit, setCostForUnit] = useState(20000);
+  const [unit, setUnit] = useState(units[0]);
+  const [quantity, setQuantity] = useState(0);
+  const [cost, setCost] = useState("");
   const [taxCode, setTaxCode] = useState("");
-  const [api, setApi] = useState("");
+  const [clientId, setClientId] = useState("");
 
   const containerStyle = () => {
     return { width: "100vw", height: "100vh" };
@@ -156,11 +163,22 @@ function PendingToEvaluation(props) {
     },
     {
       headerClass: classes.header,
+      field: "clientId",
+      headerName: "Client ID",
+      columnGroupShow: "closed",
+      filter: "agTextColumnFilter",
+      hide: true,
+      suppressColumnsToolPanel: true,
+    },
+    {
+      headerClass: classes.header,
       field: "user",
       headerName: "User",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
       flex: 1.5,
+      rowGroup: true,
+      hide: true,
     },
     {
       headerClass: classes.header,
@@ -180,7 +198,16 @@ function PendingToEvaluation(props) {
     },
     {
       headerClass: classes.header,
-      field: "taskTitle",
+      field: "taxCode",
+      headerName: "Tax code",
+      columnGroupShow: "closed",
+      filter: "agTextColumnFilter",
+      hide: true,
+      suppressColumnsToolPanel: true,
+    },
+    {
+      headerClass: classes.header,
+      field: "title",
       headerName: "Task title",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
@@ -188,15 +215,15 @@ function PendingToEvaluation(props) {
     },
     {
       headerClass: classes.header,
-      field: "dataCreated",
-      headerName: "Created on",
+      field: "creationDate",
+      headerName: "Creation date",
       columnGroupShow: "closed",
       filter: "agDateColumnFilter",
       flex: 1,
     },
     {
       headerClass: classes.header,
-      field: "taskDescription",
+      field: "description",
       headerName: "Task description",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
@@ -205,17 +232,17 @@ function PendingToEvaluation(props) {
     },
     {
       headerClass: classes.header,
-      field: "dueDate",
-      headerName: "Due date",
+      field: "notes",
+      headerName: "Notes",
       columnGroupShow: "closed",
-      filter: "agDateColumnFilter",
+      filter: "agTextColumnFilter",
       hide: true,
       suppressColumnsToolPanel: true,
     },
     {
       headerClass: classes.header,
-      field: "price",
-      headerName: "Task price",
+      field: "quantity",
+      headerName: "Due date",
       columnGroupShow: "closed",
       filter: "gsNumberColumnFilter",
       hide: true,
@@ -223,8 +250,44 @@ function PendingToEvaluation(props) {
     },
     {
       headerClass: classes.header,
-      field: "taxCode",
-      headerName: "Tax code",
+      field: "unit",
+      headerName: "Unit",
+      columnGroupShow: "closed",
+      filter: "agTextColumnFilter",
+      hide: true,
+      suppressColumnsToolPanel: true,
+    },
+    {
+      headerClass: classes.header,
+      field: "costForUnit",
+      headerName: "Unit cost",
+      columnGroupShow: "closed",
+      filter: "gsNumberColumnFilter",
+      hide: true,
+      suppressColumnsToolPanel: true,
+    },
+    {
+      headerClass: classes.header,
+      field: "cost",
+      headerName: "Total cost",
+      columnGroupShow: "closed",
+      filter: "gsNumberColumnFilter",
+      hide: true,
+      suppressColumnsToolPanel: true,
+    },
+    {
+      headerClass: classes.header,
+      field: "state",
+      headerName: "State",
+      columnGroupShow: "closed",
+      filter: "agTextColumnFilter",
+      hide: true,
+      suppressColumnsToolPanel: true,
+    },
+    {
+      headerClass: classes.header,
+      field: "status",
+      headerName: "Status",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
       hide: true,
@@ -253,58 +316,94 @@ function PendingToEvaluation(props) {
   }, []);
 
   const onGridReady = useCallback((params) => {
-    setRowData([
-      {
-        id: 1,
-        avatar: <Avatar alt="Remy Sharp" src="../Avatars/avatar1.jpeg" />,
-        user: "Aram",
-        email: "aram@gmail.com",
-        phoneNumber: "077777777",
-      },
-      {
-        id: 2,
-        avatar: <Avatar alt="Remy Sharp" src="../Avatars/avatar2.jpeg" />,
-        user: "Vigen",
-        email: "vigen@gmail.com",
-        phoneNumber: "088888888",
-      },
+    const dbRef = getDatabase();
+    let data = {};
+    let dataGrid = [];
+    let clientData = {};
+    get(ref(dbRef, "users"))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          clientData = snapshot.val();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-      {
-        id: 3,
-        avatar: <Avatar alt="Remy Sharp" src="../Avatars/avatar3.jpeg" />,
-        user: "Anna",
-        email: "anna@gmail.com",
-        phoneNumber: "055555555",
-      },
-
-      {
-        id: 4,
-        avatar: <Avatar alt="Remy Sharp" src="../Avatars/avatar1.jpeg" />,
-        user: "Sona",
-        email: "sona@gmail.com",
-        phoneNumber: "098545454",
-      },
-    ]);
+    get(ref(dbRef, "tasks"))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          data = snapshot.val();
+          for (let key in data) {
+            if (data[key].state === "evaluation") {
+              let clId = data[key].clientId;
+              data[key].id = key;
+              data[key] = { ...data[key], ...clientData[clId] };
+              dataGrid.push(data[key]);
+            }
+          }
+          setRowData(dataGrid);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
+  const onSaveBtnClick = async (e) => {
+    const db = getDatabase();
+    const postData = {
+      title: title,
+      description: description,
+      notes: notes,
+      quantity: quantity,
+      costForUnit: costForUnit,
+      unit: unit.unit,
+      cost: cost,
+      status: "waiting",
+      state: "acception",
+      clientId: clientId,
+    };
+
+    // Write the new post's data simultaneously in the posts list and the user's post list.
+    const updates = {};
+    updates["/tasks/" + id] = postData;
+
+    update(ref(db), updates);
+    return onGridReady();
+  };
 
   const onSelectionChanged = useCallback((param) => {
     const selectedRows = param.api.getSelectedRows();
-    setsetAvatar(selectedRows.length === 1 ? selectedRows[0].avatar : "");
-    setUser(selectedRows.length === 1 ? selectedRows[0].user : "");
-    setEmail(selectedRows.length === 1 ? selectedRows[0].email : "");
-    setPhoneNumber(
-      selectedRows.length === 1 ? selectedRows[0].phoneNumber : ""
-    );
-    setTitle(selectedRows.length === 1 ? selectedRows[0].title : "");
-    setDataCreated(
-      selectedRows.length === 1 ? selectedRows[0].dataCreated : ""
-    );
-    setDescription(
-      selectedRows.length === 1 ? selectedRows[0].description : ""
-    );
-    setDueDate(selectedRows.length === 1 ? selectedRows[0].dueDate : "");
-    setPrice(selectedRows.length === 1 ? selectedRows[0].price : "");
-    setTaxCode(selectedRows.length === 1 ? selectedRows[0].taxCode : "");
+    if (selectedRows.length === 1) {
+      setAvatar(selectedRows[0].avatar);
+      setUser(selectedRows[0].user);
+      setClientId(selectedRows[0].clientId);
+      setEmail(selectedRows[0].email);
+      setPhoneNumber(selectedRows[0].phoneNumber);
+      setTitle(selectedRows[0].title);
+      setCreationDate(selectedRows[0].creationDate);
+      setNotes(selectedRows[0].notes);
+      setId(selectedRows[0].id);
+      setDescription(selectedRows[0].description);
+      setDueDate(selectedRows[0].dueDate);
+      setCostForUnit(selectedRows[0].costForUnit);
+      setUnit(selectedRows[0].unit);
+      setQuantity(selectedRows[0].quantity);
+      setCost(selectedRows[0].cost);
+      setTaxCode(selectedRows[0].taxCode);
+    }
+  }, []);
+
+  const autoGroupColumnDef = useMemo(() => {
+    return {
+      headerName: "User",
+      field: "user",
+      minWidth: 250,
+      cellRenderer: "agGroupCellRenderer",
+      cellRendererParams: {
+        checkbox: false,
+      },
+    };
   }, []);
 
   return (
@@ -343,9 +442,72 @@ function PendingToEvaluation(props) {
                   <TextField
                     className={classes.fields}
                     type={"number"}
-                    // onChange={(e) => setPhoneNumber(e.target.value)}
+                    value={quantity}
+                    onChange={(e) => {
+                      setQuantity(e.target.value);
+                      setCost(e.target.value * costForUnit);
+                    }}
+                    id="quantityId"
+                    label="Quantity"
+                    variant="outlined"
+                  />
+                </div>
+                <div className={classes.TextFieldLeft}>
+                  <TextField
+                    className={classes.fields}
+                    type={"number"}
+                    value={costForUnit}
+                    onChange={(e) => {
+                      setCostForUnit(e.target.value);
+                      setCost(e.target.value * quantity);
+                    }}
+                    id="costForUnit"
+                    label="Cost for unit"
+                    variant="outlined"
+                  />
+                </div>
+                <div className={classes.TextFieldLeft}>
+                  <FormControl
+                    className={classes.fields}
+                    sx={{ m: 1, width: "25ch" }}
+                  >
+                    <InputLabel id="unitLabelId">Unit</InputLabel>
+                    <Select
+                      labelId="inputUnitId"
+                      id="UnitId"
+                      value={unit.unit || unit}
+                      label="Unit"
+                      onChange={(e) => {
+                        let val = units.find(
+                          (element) => element.unit === e.target.value
+                        );
+                        setUnit(val);
+                        setCostForUnit(val.cost);
+                        setCost(val.cost * quantity);
+                      }}
+                    >
+                      {units.map((element) => (
+                        <MenuItem value={element.unit}>{element.unit}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className={classes.TextFieldLeft}>
+                  <TextField
+                    className={classes.fields}
+                    type={"number"}
+                    value={cost}
+                    onChange={(e) => {
+                      setCost(e.target.value);
+                      setCostForUnit(
+                        !!quantity === undefined
+                          ? e.target.value
+                          : e.target.value / quantity
+                      );
+                      setQuantity(!!quantity === undefined ? 1 : quantity);
+                    }}
                     id="taskCostId"
-                    label="Taks cost"
+                    label="Total cost"
                     variant="outlined"
                   />
                 </div>
@@ -354,14 +516,18 @@ function PendingToEvaluation(props) {
                     className={classes.fields}
                     type={"date"}
                     InputLabelProps={{ shrink: true }}
-                    //   onChange={(e) => setDateOfBirth(e.target.value)}
+                    onChange={(e) => setDueDate(e.target.value)}
                     id="dueDateId"
                     label="Due date"
                     variant="outlined"
                   />
                 </div>
                 <div className={classes.TextFieldRight}>
-                  <button className={classes.saveButton} role="button">
+                  <button
+                    onClick={onSaveBtnClick}
+                    className={classes.saveButton}
+                    role="button"
+                  >
                     Save
                   </button>
                 </div>
@@ -375,12 +541,13 @@ function PendingToEvaluation(props) {
           <AgGridReact
             rowData={rowData}
             columnDefs={columnDefs}
-            rowSelection={"single"}
+            rowSelection={"multiple"}
             suppressRowClickSelection={false}
             defaultColDef={defaultColDef}
             sideBar={sideBar}
             onGridReady={onGridReady}
             onSelectionChanged={onSelectionChanged}
+            autoGroupColumnDef={autoGroupColumnDef}
           ></AgGridReact>
         </div>
       </div>
