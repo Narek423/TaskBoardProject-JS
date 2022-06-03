@@ -134,7 +134,7 @@ function SignUp(props) {
 		setError("");
 		try {
 			await signUp(email, password);
-			navigate("/");
+			navigate("/profile");
 		} catch (err) {
 			setError(err.message);
 		}

@@ -32,7 +32,6 @@ export function UserAuthContextProvider({ children }) {
 	useEffect(() => {
 		// durs hanel  onAuthStateChanged
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-			console.log(`useEffect`, currentUser);
 			setUser(currentUser);
 			setLoading(false);
 		});

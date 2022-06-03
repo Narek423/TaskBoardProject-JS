@@ -1,67 +1,103 @@
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import React, { useContext, useState } from "react";
-import { userData } from "../../../context/UserData";
-import { storage } from "../../firebase";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+  deleteObject,
+} from "firebase/storage";
+import React, { useContext, useEffect, useState } from "react";
+import { storage, writeUserTask } from "../../firebase";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { v4 as uuidv4 } from "uuid";
-import pictureModal from "./pictureModal";
-import { ClassNames } from "@emotion/react";
 import { createUseStyles } from "react-jss";
-import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
-import ArrowCircleRight from "@mui/icons-material/ArrowCircleRight";
-
+import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
+import ImgModal from "./ImgModal";
+import { Button, CircularProgress, Input } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import  defaultImg  from "../../img/img.jpg"
 export let avatarUrl = "";
+
+
+const theme = createTheme({
+  status: {
+    danger: "red",
+  },
+  palette: {
+    primary: {
+      main: "#ee0000",
+    },
+  },
+});
 const useStyle = createUseStyles(() => {
   return {
-    imgModal: {
-      width: "100vw",
-      height: "100vh",
-      position: "fixed",
-      backgroundColor: "rgb(0,0,0,0.6)",
-      top: 0,
-      bottom: 0,
-      right: 0,
-      left: 0,
-    },
     imgList: {
-      display: "flex",
       height: "100%",
+      flex: 5,
+      display: "flex",
+      marginLeft: "5%",
+      overflowX: "scroll",
+      "&::-webkit-scrollbar": {
+        height: 10,
+      },
+      "&::-webkit-scrollbar-track": {
+        background: "white",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        background: "#019CAD",
+      },
+      "&::-webkit-scrollbar-thumb:hover": {
+        background: "#019CAD",
+      },
     },
     imgBlock: {
-      width: "10%",
       height: "100%",
+      width: 140,
       textAlign: "center",
-      display: "flex",
-      flexDirection: 'column'
+      flexDirection: "column",
+      "&:hover": {
+        backgroundColor: "white",
+        // boxShadow: "blue 0 -6px 8px inset",
+        cursor: "pointer",
+        opacity: 0.8,
+      },
+      
     },
     img: {
       width: "100%",
       height: "100%",
-      cursor: "zoom-in"
+      // cursor: "zoom-in",
+      justifyContent: "center",
     },
   };
 });
 
-function FireBaseFileUpload() {
+function FireBaseFileUpload(props) {
+  const [file,setFile] = useState('');
+  const [fileSize,setFileSize] = useState(0);
   const [progress, setProgress] = useState(0);
-  const { avatarLink } = useContext(userData);
-  const [filaeData, setFileData] = useState([]);
   const [imgModalopen, setImgModalOpen] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
+  const { filaeData, setFileData } = props;
   const [modalImg, setModalImg] = useState(filaeData[imgIndex]);
   const classes = useStyle();
+  const { user } = useUserAuth(UserAuthContext);
+
 
   const handleChange = (e) => {
     e.preventDefault();
-    const file = e.target.files[0];
-    uploadFiles(file);
+    setFile(e.target.files[0]);
+    uploadFiles(e.target.files[0]);
     setProgress(0);
   };
 
+  // useEffect(() => {
+  //   if(file.type === "image/jpeg"){
+  //     setFileType("image")
+  //   }
+  // },[file])
   const uploadFiles = (file) => {
     //upload-a anum firebas-i storage
     if (!file) return;
-    const storageRef = ref(storage, `/avatars/${file.name}`);
+    const storageRef = ref(storage, `/${user.email}/${file.name}`);
     const uploadProcent = uploadBytesResumable(storageRef, file);
 
     uploadProcent.on(
@@ -75,122 +111,171 @@ function FireBaseFileUpload() {
       (err) => console.log(err),
       () =>
         getDownloadURL(uploadProcent.snapshot.ref).then((url) =>
-          setFileData([...filaeData.concat(url)])
+          setFileData([...filaeData.concat({url,name: file.name,type: file.type})])
         )
     );
   };
 
-  const delFile = (url) => {
-    //Firebas-i storage-ic chi jnjum fil@
-    setFileData([
-      ...filaeData.filter((e) => {
-        if (url === e) {
-          return;
-        } else {
-          return e;
-        }
-      }),
-    ]);
+  const delFile = (url,event) => {
+    //Firebas-i storage-ic u localic  jnjuma fil@
+    event.stopPropagation();
+    const imageRef = ref(storage, url);
+    deleteObject(imageRef)
+      .then(() => {
+        setFileData([
+          ...filaeData.filter((e) => {
+            if (e.url === e) {
+              return false;
+            } else {
+              return e;
+            }
+          }),
+        ]);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
     <div className={classes.imgList}>
-      {filaeData.map((url, index) => {
+      {filaeData.map((e,index,) => {
+              console.log(file)
+
         return (
-          <div
-            className={classes.imgBlock}
+          <div className={classes.imgBlock} key={uuidv4()}>
+            {e.type === "image/jpeg" ? 
+            <div style={{
+              backgroundImage: `url(${e.url})`,
+              backgroundSize: 'cover',
+             height: "100%",
+             width: 140,
+             position: 'relative'
+            }}
             onClick={() => {
               setImgModalOpen(!imgModalopen);
-              setModalImg(filaeData[index]);
+              setModalImg(filaeData[index].url);
+            }}>    
+            <div  style={{
+                  position: "absolute",
+                  right: 0,
+                  width: '20%',
+                  height: "20%",
+                  borderBottomLeftRadius: "100%",
+                  backgroundColor: 'red',
+                  color: "white"
+                }} 
+                onClick={(event) => delFile(e.url,event)}
+                >
+                  x
+            </div>
+
+            </div> :  <div style={{
+              backgroundImage: `url(${defaultImg})`,
+              backgroundSize: 'cover',
+             height: "100%",
+             width: 140,
+             position: 'relative'
             }}
-            key={uuidv4()}
-          >
-            <img className={classes.img} alt="pic" src={url}></img>
-            <DeleteIcon onClick={() => delFile(url)} />
+            onClick={() => {
+              setImgModalOpen(!imgModalopen);
+              setModalImg(filaeData[index].url);
+            }}>
+             
+            <div  style={{
+                  position: "absolute",
+                  right: 0,
+                  width: '20%',
+                  height: "20%",
+                  borderBottomLeftRadius: "100%",
+                  backgroundColor: 'red',
+                  color: "white"
+                }} 
+                onClick={(event) => delFile(e.url,event)}
+                >
+                  x
+            </div>
+            {e.name}
+            </div> }
           </div>
         );
       })}
-      {progress !== 100 && progress !== 0 ? `${progress}%` : null}
-      {/* <pictureModal /> */}
-      <label
+      {/* <div
         style={{
-          borderBlock: "1px solid black",
-          height: "20%",
-          width: "5%",
+          height: "100%",
+          width: "10%",
+          backgroundColor: "red",
         }}
-        className="custom-file-upload"
       >
-        <input
-          type="file"
-          onChange={handleChange}
+        {progress !== 100 && progress !== 0 ? (
+          <div
+            style={{
+              height: 140,
+            }}
+          >
+            {" "}
+            <CircularProgress variant="determinate" value={progress} />
+          </div>
+        ) : (
+          <div
+            style={{
+              position: "absolute",
+              width: "30%",
+              backgroundColor: "red",
+            }}
+          >
+            <label
+              style={{
+                cursor: "pointer",
+                backgroundColor: "blue",
+                justifyContent: "center",
+              }}
+              className="custom-file-upload"
+            >
+              <AddIcon></AddIcon>
+              <input
+                type="file"
+                onChange={handleChange}
+                style={{
+                  display: "none",
+                }}
+              />
+            </label>
+          </div>
+        )}
+      </div> */}
+      <label
+        htmlFor="contained-button-file"
+        style={{
+          display: "contents",
+          backgroundColor: "green",
+        }}
+      >
+        <Input
           style={{
             display: "none",
           }}
+          accept="image/*"
+          id="contained-button-file"
+          onChange={handleChange}
+          multiple
+          type="file"
         />
-        Upload
-      </label>
-      {imgModalopen ? (
-        <div
-          className={classes.imgModal}
-          onClick={(event) => {
-            setImgModalOpen(!imgModalopen);
+        <Button
+          variant="contained"
+          component="span"
+          style={{
+            fontSize: 40,
           }}
         >
-          <div
-            // onClick={(event) => {
-            //   setImgModalOpen(!imgModalopen);
-            // }}
-            style={{
-              height: "65%",
-              width: "55%",
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginTop: "10%",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <ArrowCircleLeftIcon
-              onClick={(event) => {
-                event.stopPropagation();
-                const index = filaeData.indexOf(modalImg);
-                if (index - 1 >= 0) {
-                    setModalImg(filaeData[index - 1]);
-                } else {
-                    return
-                }
-              }}
-              fontSize="large"
-              style={{
-                marginTop: "30%",
-              }}
-            />
-            <img
-              src={modalImg}
-              style={{
-                height: "100%",
-                width: "100%",
-                cursor: 'zoom-out'
-              }}
-            ></img>
-            <ArrowCircleRight
-             onClick={(event) => {
-                event.stopPropagation();
-                const index = filaeData.indexOf(modalImg);
-                if (index + 1 < filaeData.length) {
-                    setModalImg(filaeData[index + 1]);
-                } else {
-                    return
-                }
-              }}
-              fontSize="large"
-              style={{
-                marginTop: "30%",
-              }}
-            />
-          </div>
-        </div>
-      ) : null}
+          +
+        </Button>
+      </label>
+      <ImgModal
+        imgModalopen={imgModalopen}
+        setImgModalOpen={setImgModalOpen}
+        filaeData={filaeData}
+        modalImg={modalImg}
+        setModalImg={setModalImg}
+      />
     </div>
   );
 }

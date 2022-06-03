@@ -1,10 +1,10 @@
 import { signOut } from "firebase/auth";
 import { useContext } from "react";
-import { userDataContext } from "../context/UserAuthContext";
+import { UserAuthContext } from "../context/UserAuthContext";
 import { app } from "./firebase";
 
 function Profile(props) {
-	const data = useContext(userDataContext);
+	const data = useContext(UserAuthContext);
 	return (
 		!data || (
 			<>

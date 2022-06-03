@@ -1,8 +1,11 @@
-import { Button, TextField } from "@mui/material";
+import { Button, Input, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { createUseStyles } from "react-jss";
+import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
+import { writeUserTask } from "../../firebase";
 import FireBaseFileUpload from "./FireBaseFileUpload";
 import HelperModal from "./HelperModal";
+import img from "../../img/subtle.png"
 
 const useStyle = createUseStyles(() => {
   return {
@@ -19,6 +22,7 @@ const useStyle = createUseStyles(() => {
       borderBottomColor: "#019CAD",
       display: "flex",
       flexDirection: "column",
+      position: 'relative',
     },
     tittle: {
       flex: 1,
@@ -32,7 +36,7 @@ const useStyle = createUseStyles(() => {
     },
 
     conteiner: {
-      overflowY: "scroll",
+      overflowY: "scroll",  
       flex: 10,
       width: "100%",
       backgroundColor: "#e2ebfc",
@@ -71,7 +75,6 @@ const useStyle = createUseStyles(() => {
     descr: {
       margin: {
         top: "2%",
-        bottom: "2%",
         left: "5%",
       },
       display: "flex",
@@ -84,9 +87,28 @@ function CreateNewTask() {
   const [titleValue, setTittleValue] = useState("");
   const [nodesValue, setNodesValue] = useState("");
   const [descrpValue, setDescrpValue] = useState("");
-  const [createDate, setCreateDate] = useState();
-  const [errorValue, setErrorValue] = useState('');
-  // const []
+  const [createDate, setCreateDate] = useState(); //esi arats chi
+  const { user } = useUserAuth(UserAuthContext);
+  const [filaeData, setFileData] = useState([]);
+  const status = "waiting";
+
+  const  writeData = () => {
+    setCreateDate(new Date().toLocaleString());
+    writeUserTask(user.uid,"Grigor",user.email,filaeData,titleValue,nodesValue,descrpValue,createDate);
+    setFileData([]);
+    setNodesValue("");
+    setDescrpValue("");
+    setDescrpValue("");
+    setTittleValue("");
+  }
+  // export function writeUserTask(userId, name, email, imageUrls) {  //Task@ databes uxarkox funkcianna firebese.js uma
+  //   const db = getDatabase();
+  //   set(ref(db, 'users/' + userId), {
+  //     username: name,
+  //     email: email,
+  //     profile_picture : imageUrls
+  //   });
+  //   }
 
 
   return (
@@ -95,7 +117,7 @@ function CreateNewTask() {
       <div className={classes.conteiner}>
         <div className={classes.inputTittle}>
           <TextField
-            style={{ width: "70%", marginRight: "1%" }}
+            style={{ marginRight: "1%", flex: 5 }}
             id="outlined-basic"
             value={titleValue}
             onChange={(event) => setTittleValue(event.target.value)}
@@ -108,12 +130,13 @@ function CreateNewTask() {
               marginTop: "auto",
               marginBottom: "auto",
               marginLeft: "0.5%",
+              flex: 1,
             }}
           />
         </div>
         <div className={classes.Nodes}>
           <TextField
-            style={{ width: "70%", marginRight: "1%" }}
+            style={{ marginRight: "1%", flex: 5 }}
             id="outlined-basic"
             value={nodesValue}
             onChange={(event) => setNodesValue(event.target.value)}
@@ -128,53 +151,55 @@ function CreateNewTask() {
               marginTop: "auto",
               marginBottom: "auto",
               marginLeft: "0.5%",
+              flex: 1,
             }}
           />
         </div>
-        <TextField
-          error={(() => {
-           return errorValue.indexOf("@") !== -1
-          })()}
-          id="outlined-error"
-          label="email"
-          helperText={(() => {
-            return errorValue.indexOf("@") !== -1
-           })() && "Dont use @ character"}         
-          value={errorValue}
-          onChange={(event) => setErrorValue(event.target.value)}
-        />
+
         <div className={classes.descr}>
           <TextField
             value={descrpValue}
-            style={{ width: "70%", marginRight: "1%" }}
+            style={{ marginRight: "1%", flex: 5 }}
             onChange={(event) => setDescrpValue(event.target.value)}
             id="outlined-multiline-static"
             multiline
-            rows={4}
+            rows={6}
           />
           <HelperModal
             inputName={"Description"}
             text={
               "Please describe your new task.Its must include info about your task and have more then 200 character"
             }
-            style={{ marginTop: "1.8%", marginLeft: "0.5%" }}
+            style={{ marginTop: "1.8%", marginLeft: "0.5%", flex: 1 }}
           />
-        </div>
-        <div style={{
-          height: "15%",
-        }}>
-         <FireBaseFileUpload />
         </div>
         <div
           style={{
             display: "flex",
-            position: "fixed",
+            marginBottom: "1%",
+            marginTop: "2%",
+            height: '20%',
+          }}
+        >
+        
+          <FireBaseFileUpload filaeData={filaeData} setFileData={setFileData}/>
+         
+            <HelperModal   inputName={"Files"}
+            text={
+              "If you have files you can upload that"}
+            style={{ marginTop: "1.8%", marginLeft: "0.5%", flex: 1 }}/>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            position: "absolute",
             bottom: 20,
             right: 40,
             height: "6%",
           }}
         >
-          <Button variant="contained" size="medium">
+          <Button variant="contained" size="medium" onClick={writeData}>
             Create
           </Button>
           <Button

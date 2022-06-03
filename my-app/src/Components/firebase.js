@@ -4,7 +4,7 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 } from "firebase/auth";
-
+import { getStorage } from "firebase/storage";
 import { getDatabase, ref, set, get, child } from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -24,7 +24,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth();
+export const auth = getAuth();
 const database = getDatabase(app);
 export const storage = getStorage(app);
 export function signup(
@@ -58,7 +58,7 @@ export function signup(
 	);
 }
 
-function writeUserData(
+ function writeUserData(
 	user,
 	password,
 	name,
@@ -83,8 +83,20 @@ function writeUserData(
 	});
 }
 
+export function writeUserTask(userId, name, email, imageUrls,titleValue,nodesValue,descrpValue,date) {
+	const db = getDatabase();
+	set(ref(db, 'task/' + userId), {
+	  username: name,
+	  email: email,
+	  profile_picture : imageUrls,
+	  title: titleValue,
+	  nodes: nodesValue,
+	  descrp: descrpValue,
+	  date: date
+	});
+  }
+
 export async function signin(email, password) {
-	console.log("entered");
 	return signInWithEmailAndPassword(auth, email, password).then(
 		(userCredential) => {
 			const user = userCredential.user;

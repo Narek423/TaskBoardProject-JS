@@ -9,7 +9,9 @@ import EqualizerIcon from "@mui/icons-material/Equalizer";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import EditIcon from "@mui/icons-material/Edit";
 import PaymentIcon from "@mui/icons-material/Payment";
+import MailIcon from "@mui/icons-material/Mail";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -35,72 +37,86 @@ const useStyle = createUseStyles(() => {
       fontSize: "100%",
       display: "flex",
       justifyContent: "center",
-      "&:hover": { 
-        backgroundColor: "#019CAD", 
-        boxShadow: "#1264F3 0 -6px 8px inset", 
-        transform: "scale(1.125)", 
-        cursor: 'pointer'
-       }, 
-       "&:active": { 
-        transform: "scale(1.125)", 
-       }, 
-    }
+      "&:hover": {
+        backgroundColor: "#019CAD",
+        boxShadow: "#1264F3 0 -6px 8px inset",
+        transform: "scale(1.125)",
+        cursor: "pointer",
+      },
+      "&:active": {
+        transform: "scale(1.125)",
+      },
+    },
   };
 });
 function UserToolsList(props) {
+  const navigate = useNavigate();
   const classes = useStyle();
 
   const arrTools = [
     {
       icon: <AssignmentIndIcon className={classes.icon} />,
       text: "Profile",
-      id: uuidv4(),
+      path: "profile/Div",
+      id: 1,
     },
     {
       icon: <AssignmentIcon className={classes.icon} />,
       text: "All Tasks",
-      id: uuidv4(),
+      id: 2,
+      path: "AllTasks",
     },
     {
       icon: <PublishedWithChangesIcon className={classes.icon} />,
       text: "Inprocess Tasks",
-      id: uuidv4(),
+      id: 3,
+      path: "InprocessTasks",
     },
     {
       icon: <AddTaskIcon className={classes.icon} />,
       text: "Active Tasks",
-      id: uuidv4(),
+      id: 4,
+      path: "ActiveTasks",
     },
     {
       icon: <TaskIcon className={classes.icon} />,
       text: "Done Tasks",
-      id: uuidv4(),
+      path: "DoneTasks",
+      id: 5,
     },
     {
       icon: <EditIcon className={classes.icon} />,
       text: "Create Task",
-      id: uuidv4(),
+      path: "/userProfile",
+      id: 6,
     },
     {
       icon: <AssignmentLateIcon className={classes.icon} />,
       text: "Rejected Tasks",
-      id: uuidv4(),
+      path: "RejectedTasks",
+      id: 7,
     },
     {
       icon: <EqualizerIcon className={classes.icon} />,
       text: "Statics",
-      id: uuidv4(),
+      path: "Profile",
+      id: 8,
     },
     {
       icon: <PaymentIcon className={classes.icon} />,
       text: "Payment History",
-      id: uuidv4(),
+      path: "Profile",
+      id: 9,
+    },
+    {
+      icon: <MailIcon className={classes.icon} />,
+      text: "Inbox",
+      id: 10,
+      path: "Profile",
     },
   ];
 
   // const [arrTools, setToolsData] = useState(arr);
-
-  
 
   return (
     <div
@@ -114,7 +130,7 @@ function UserToolsList(props) {
         return (
           <div
             className={classes.div}
-            onClick={() => alert(e.text)}
+            onClick={(() => navigate(e.path))}
             // onMouseOver={() => onMouseOver(e.text)}
             key={uuidv4()}
           >
