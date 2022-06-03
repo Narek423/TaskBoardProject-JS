@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { createUseStyles } from "react-jss";
-import { useUserAuth } from "../../../context/UserAuthContext";
-// import { userData } from "../../context/UserData";
+import { userData } from "../../../context/UserData";
+import avatar from "../../avatar/avatar.jpg";
+import { avatarUrl } from "../CreateNewTask/FireBaseFileUpload";
 
 const useStyle = createUseStyles(() => {
 	return {
@@ -28,21 +29,21 @@ const useStyle = createUseStyles(() => {
 });
 
 function UserAvatar() {
-	const { user } = useUserAuth();
-	console.log("avatr", user);
-	const classes = useStyle();
 
-	return (
-		<div className={classes.avatar}>
-			<img
-				className={classes.img}
-				alt='avatar'
-				src={
-					"https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745"
-				}
-			></img>
-			<p className={classes.useremail}>{user.user?.email || user?.email}</p>
-		</div>
-	);
+  const { email } = useContext(userData);
+  const classes = useStyle();
+
+ 
+  
+  return (
+    <div className={classes.avatar}>
+      <img 
+         className={classes.img}
+         alt="avatar" 
+         src={avatar}>
+      </img>
+      <p className={classes.useremail}>{email}</p>
+    </div>
+  );
 }
 export default UserAvatar;
