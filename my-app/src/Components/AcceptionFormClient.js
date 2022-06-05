@@ -1,33 +1,12 @@
 "use strict";
 
-import React, {
-  useCallback,
-  useMemo,
-  useState,
-  useEffect,
-  useRef,
-} from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { createUseStyles } from "react-jss";
-import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
-import Avatar from "@mui/material/Avatar";
-import Stack from "@mui/material/Stack";
-import { View, StyleSheet, Text } from "react-native";
-import {
-  getDatabase,
-  ref,
-  set,
-  get,
-  update,
-  push,
-  child,
-} from "firebase/database";
+import { getDatabase, ref, get, update } from "firebase/database";
 
 const useStyles = createUseStyles({
   page: {
@@ -135,8 +114,6 @@ const useStyles = createUseStyles({
 function PendingToAcception(props) {
   const clientId = "1o0VLmdzrKVav1YaZDxHdoxY3453";
   const classes = useStyles();
-  const rowHeight = 50;
-  const gridRef = useRef();
 
   const containerStyle = () => {
     return { width: "100vw", height: "100vh" };
@@ -147,7 +124,7 @@ function PendingToAcception(props) {
 
   const [rowData, setRowData] = useState();
   const [gridApi, setGridApi] = useState("");
-  const [columnDefs, setColumnDefs] = useState([
+  const columnDefs = [
     {
       headerName: " ",
       headerCheckboxSelection: true,
@@ -255,7 +232,7 @@ function PendingToAcception(props) {
       hide: true,
       suppressColumnsToolPanel: true,
     },
-  ]);
+  ];
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
@@ -365,7 +342,6 @@ function PendingToAcception(props) {
         </div>
         <div style={gridStyle()} className="ag-theme-alpine">
           <AgGridReact
-            rowHeight={rowHeight}
             rowData={rowData}
             columnDefs={columnDefs}
             rowSelection={"multiple"}
@@ -381,5 +357,3 @@ function PendingToAcception(props) {
 }
 
 export default PendingToAcception;
-
-//render(<GridExample></GridExample>, document.querySelector("#root"));

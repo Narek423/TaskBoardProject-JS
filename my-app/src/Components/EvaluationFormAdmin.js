@@ -1,6 +1,4 @@
-"use strict";
-
-import React, { useCallback, useMemo, useState, useRef } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
@@ -11,30 +9,36 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Avatar from "@mui/material/Avatar";
-import { getDatabase, ref, get, update, push, child } from "firebase/database";
+import { getDatabase, ref, get, update } from "firebase/database";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@mui/material/Select";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import { CardActionArea } from "@mui/material";
 
 const useStyles = createUseStyles({
   page: {
+    margin: 0,
+    width: "100%",
     backgroundColor: "#e2ebfc",
     justifyContent: "center",
+    height: "52vh",
   },
   container: {
     backgroundColor: "#f9fbff",
-    width: "95vw",
-    height: "60vh",
+    width: "95%",
+    height: "50vh",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: 0,
+    marginBottom: 0,
     borderColor: "#FF3D00",
     borderWidth: 2,
     borderRadius: 9,
     justifyContent: "center",
-  },
-  avatar: {
-    marginLeft: 20,
-    marginTop: 5,
-    flex: 1,
   },
   nameText: {
     marginLeft: 0,
@@ -53,8 +57,9 @@ const useStyles = createUseStyles({
   grouping: {
     display: "flex",
     marginTop: 10,
+    marginBottom: 10,
     backgroundColor: "#e3f6f8",
-    width: "90%",
+    width: "100%",
     height: 40,
     borderColor: "#FF3D00",
     borderWidth: 2,
@@ -64,15 +69,31 @@ const useStyles = createUseStyles({
   groupingName: {
     display: "flex",
     marginTop: 10,
-    width: "90%",
+    marginBottom: 10,
+    width: "100%",
     height: 40,
     justifyContent: "center",
   },
   groupingInputs: {
     display: "flex",
-    marginTop: 10,
-    width: "90%",
+    marginTop: 0,
+    marginBottom: 10,
+    width: "100%",
     height: 40,
+    justifyContent: "left",
+  },
+  groupingInputsFields: {
+    display: "flex",
+    marginTop: 20,
+    marginBottom: 20,
+    width: "100%",
+    height: 40,
+    justifyContent: "left",
+  },
+  groupingInputsCard: {
+    display: "flex",
+    width: "100%",
+    height: "20vh",
     justifyContent: "left",
   },
   headerText: {
@@ -81,15 +102,29 @@ const useStyles = createUseStyles({
     flex: 1,
   },
   headerValue: {
+    marginLeft: 20,
     marginTop: 7,
-    flex: 3,
+    flex: 1,
   },
   TextFieldLeft: {
     marginRight: 10,
     marginTop: 7,
+    flex: 1,
   },
   TextFieldRight: {
     marginTop: 7,
+    marginRight: 10,
+    flex: 1,
+  },
+  TextFieldLeftAvatar: {
+    marginRight: 10,
+    marginTop: 7,
+    flex: 1,
+  },
+  TextFieldRightTitle: {
+    marginRight: 10,
+    marginTop: 7,
+    flex: 2,
   },
   saveButton: {
     margin: "10px",
@@ -126,8 +161,6 @@ function PendingToEvaluation(props) {
     { unit: "hour", cost: 20000 },
     { unit: "unit", cost: 0 },
   ];
-  // const clientId = "1o0VLmdzrKVav1YaZDxHdoxY3453";
-  const gridRef = useRef();
   const classes = useStyles();
   const [avatar, setAvatar] = useState("");
   const [user, setUser] = useState("");
@@ -135,10 +168,10 @@ function PendingToEvaluation(props) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [title, setTitle] = useState("");
   const [creationDate, setCreationDate] = useState("");
+  const [dueDate, setDueDate] = useState("");
   const [id, setId] = useState("");
   const [description, setDescription] = useState("");
   const [notes, setNotes] = useState("");
-  const [dueDate, setDueDate] = useState("");
   const [costForUnit, setCostForUnit] = useState(20000);
   const [unit, setUnit] = useState(units[0]);
   const [quantity, setQuantity] = useState(0);
@@ -153,7 +186,7 @@ function PendingToEvaluation(props) {
     return { height: "100vh", width: "100vw" };
   };
   const [rowData, setRowData] = useState();
-  const [columnDefs, setColumnDefs] = useState([
+  const columnDefs = [
     {
       headerClass: classes.header,
       field: "avatar",
@@ -220,6 +253,15 @@ function PendingToEvaluation(props) {
       columnGroupShow: "closed",
       filter: "agDateColumnFilter",
       flex: 1,
+    },
+    {
+      headerClass: classes.header,
+      field: "dueDate",
+      headerName: "Due date",
+      columnGroupShow: "closed",
+      filter: "agDateColumnFilter",
+      hide: true,
+      suppressColumnsToolPanel: true,
     },
     {
       headerClass: classes.header,
@@ -293,7 +335,7 @@ function PendingToEvaluation(props) {
       hide: true,
       suppressColumnsToolPanel: true,
     },
-  ]);
+  ];
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
@@ -350,47 +392,54 @@ function PendingToEvaluation(props) {
       });
   }, []);
   const onSaveBtnClick = async (e) => {
-    const db = getDatabase();
-    const postData = {
-      title: title,
-      description: description,
-      notes: notes,
-      quantity: quantity,
-      costForUnit: costForUnit,
-      unit: unit.unit,
-      cost: cost,
-      status: "waiting",
-      state: "acception",
-      clientId: clientId,
-    };
+    if (title !== "" && clientId !== "") {
+      const db = getDatabase();
+      const postData = {
+        title: title,
+        description: description,
+        notes: notes,
+        dueDate: dueDate,
+        creationDate: creationDate,
+        quantity: quantity,
+        costForUnit: costForUnit,
+        unit: unit.unit || unit,
+        cost: cost,
+        status: "waiting",
+        state: "acception",
+        clientId: clientId,
+      };
 
-    // Write the new post's data simultaneously in the posts list and the user's post list.
-    const updates = {};
-    updates["/tasks/" + id] = postData;
+      const updates = {};
+      updates["/tasks/" + id] = postData;
 
-    update(ref(db), updates);
-    return onGridReady();
+      update(ref(db), updates);
+      return onGridReady();
+    }
   };
 
   const onSelectionChanged = useCallback((param) => {
     const selectedRows = param.api.getSelectedRows();
     if (selectedRows.length === 1) {
-      setAvatar(selectedRows[0].avatar);
+      setAvatar(selectedRows[0].avatar || "");
       setUser(selectedRows[0].user);
       setClientId(selectedRows[0].clientId);
       setEmail(selectedRows[0].email);
-      setPhoneNumber(selectedRows[0].phoneNumber);
-      setTitle(selectedRows[0].title);
-      setCreationDate(selectedRows[0].creationDate);
-      setNotes(selectedRows[0].notes);
+      setPhoneNumber(selectedRows[0].phoneNumber || "");
+      setTitle(selectedRows[0].title || "");
+      setCreationDate(selectedRows[0].creationDate || "");
+      setNotes(selectedRows[0].notes || "");
       setId(selectedRows[0].id);
-      setDescription(selectedRows[0].description);
-      setDueDate(selectedRows[0].dueDate);
-      setCostForUnit(selectedRows[0].costForUnit);
-      setUnit(selectedRows[0].unit);
+      setDescription(selectedRows[0].description || "");
+      setDueDate(selectedRows[0].dueDate || "");
+      if (selectedRows[0].costForUnit) {
+        setCostForUnit(selectedRows[0].costForUnit);
+      }
+      if (selectedRows[0].unit) {
+        setUnit(selectedRows[0].unit || "");
+      }
       setQuantity(selectedRows[0].quantity);
-      setCost(selectedRows[0].cost);
-      setTaxCode(selectedRows[0].taxCode);
+      setCost(selectedRows[0].cost || "");
+      setTaxCode(selectedRows[0].taxCode || "");
     }
   }, []);
 
@@ -407,134 +456,170 @@ function PendingToEvaluation(props) {
   }, []);
 
   return (
-    <div className={classes.page}>
-      <div className={classes.container}>
-        <React.Fragment>
-          <CssBaseline />
-          <Container>
-            <Box>
-              <div className={classes.groupingName}>
-                <div className={classes.avatar}>{avatar}</div>
-                <div className={classes.nameText}>{user}</div>
-              </div>
-              <div className={classes.grouping}>
-                <div className={classes.headerText}>Email </div>
-                <div className={classes.headerValue}>{email}</div>
-              </div>
-              <div className={classes.grouping}>
-                <div className={classes.headerText}>Phone number </div>
-                <div className={classes.headerValue}>{phoneNumber}</div>
-              </div>
-              <div className={classes.grouping}>
-                <div className={classes.headerText}>Tax code </div>
-                <div className={classes.headerValue}>{taxCode}</div>
-              </div>
-              <div className={classes.grouping}>
-                <div className={classes.headerText}>Task title </div>
-                <div className={classes.headerValue}>{title}</div>
-              </div>
-              <div className={classes.grouping}>
-                <div className={classes.headerText}>Task description </div>
-                <div className={classes.headerValue}>{description}</div>
-              </div>
-              <div className={classes.groupingInputs}>
-                <div className={classes.TextFieldLeft}>
-                  <TextField
-                    className={classes.fields}
-                    type={"number"}
-                    value={quantity}
-                    onChange={(e) => {
-                      setQuantity(e.target.value);
-                      setCost(e.target.value * costForUnit);
-                    }}
-                    id="quantityId"
-                    label="Quantity"
-                    variant="outlined"
-                  />
+    <div>
+      <div className={classes.page}>
+        <div className={classes.container}>
+          <React.Fragment>
+            <CssBaseline />
+            <Container>
+              <Box>
+                <div className={classes.groupingInputs}>
+                  <div className={classes.TextFieldLeftAvatar}>
+                    <div className={classes.groupingName}>
+                      <div className={classes.avatar}>{avatar}</div>
+                      <div className={classes.nameText}>{user}</div>
+                    </div>
+                  </div>
+                  <div className={classes.TextFieldRightTitle}>
+                    <div className={classes.grouping}>
+                      <div className={classes.headerValue}>
+                        Task title {title}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className={classes.TextFieldLeft}>
-                  <TextField
-                    className={classes.fields}
-                    type={"number"}
-                    value={costForUnit}
-                    onChange={(e) => {
-                      setCostForUnit(e.target.value);
-                      setCost(e.target.value * quantity);
-                    }}
-                    id="costForUnit"
-                    label="Cost for unit"
-                    variant="outlined"
-                  />
+                <div className={classes.groupingInputs}>
+                  <div className={classes.TextFieldLeft}>
+                    <div className={classes.grouping}>
+                      <div className={classes.headerValue}>Email {email}</div>
+                    </div>
+                  </div>
+                  <div className={classes.TextFieldLeft}>
+                    <div className={classes.grouping}>
+                      <div className={classes.headerValue}>
+                        Phone number {phoneNumber}
+                      </div>
+                    </div>
+                  </div>
+                  <div className={classes.TextFieldRight}>
+                    <div className={classes.grouping}>
+                      <div className={classes.headerValue}>
+                        Tax code {taxCode}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className={classes.TextFieldLeft}>
-                  <FormControl
-                    className={classes.fields}
-                    sx={{ m: 1, width: "25ch" }}
-                  >
-                    <InputLabel id="unitLabelId">Unit</InputLabel>
-                    <Select
-                      labelId="inputUnitId"
-                      id="UnitId"
-                      value={unit.unit || unit}
-                      label="Unit"
+                <div className={classes.groupingInputsCard}>
+                  <div className={classes.TextFieldLeft}>
+                    <div className={classes.grouping}>
+                      <Card
+                        sx={{
+                          width: "100%",
+                          height: "20vh",
+                          overflowY: "scroll",
+                        }}
+                      >
+                        <CardContent>
+                          <Typography gutterBottom variant="h5" component="div">
+                            Task description
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {description}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                </div>
+                <div className={classes.groupingInputsFields}>
+                  <div className={classes.TextFieldLeft}>
+                    <TextField
+                      className={classes.fields}
+                      type={"number"}
+                      value={quantity}
                       onChange={(e) => {
-                        let val = units.find(
-                          (element) => element.unit === e.target.value
-                        );
-                        setUnit(val);
-                        setCostForUnit(val.cost);
-                        setCost(val.cost * quantity);
+                        setQuantity(e.target.value);
+                        setCost(e.target.value * costForUnit);
                       }}
+                      id="quantityId"
+                      label="Quantity"
+                      variant="outlined"
+                    />
+                  </div>
+                  <div className={classes.TextFieldLeft}>
+                    <TextField
+                      className={classes.fields}
+                      type={"number"}
+                      value={costForUnit}
+                      onChange={(e) => {
+                        setCostForUnit(e.target.value);
+                        setCost(e.target.value * quantity);
+                      }}
+                      id="costForUnit"
+                      label="Cost for unit"
+                      variant="outlined"
+                    />
+                  </div>
+                  <div className={classes.TextFieldLeft}>
+                    <Box sx={{ minWidth: 120 }}>
+                      <FormControl fullWidth>
+                        <InputLabel id="unitLabelId">Unit</InputLabel>
+                        <Select
+                          labelId="inputUnitId"
+                          id="UnitId"
+                          value={unit.unit || unit}
+                          label="Unit"
+                          onChange={(e) => {
+                            let val = units.find(
+                              (element) => element.unit === e.target.value
+                            );
+                            setUnit(val);
+                            setCostForUnit(val.cost);
+                            setCost(val.cost * quantity);
+                          }}
+                        >
+                          {units.map((element) => (
+                            <MenuItem value={element.unit}>
+                              {element.unit}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </div>
+                  <div className={classes.TextFieldLeft}>
+                    <TextField
+                      className={classes.fields}
+                      type={"number"}
+                      value={cost}
+                      onChange={(e) => {
+                        setCost(e.target.value);
+                        setCostForUnit(
+                          !!quantity === undefined
+                            ? e.target.value
+                            : e.target.value / quantity
+                        );
+                        setQuantity(!!quantity === undefined ? 1 : quantity);
+                      }}
+                      id="taskCostId"
+                      label="Total cost"
+                      variant="outlined"
+                    />
+                  </div>
+                  <div className={classes.TextFieldLeft}>
+                    <TextField
+                      className={classes.fields}
+                      type={"date"}
+                      InputLabelProps={{ shrink: true }}
+                      onChange={(e) => setDueDate(e.target.value)}
+                      id="dueDateId"
+                      label="Due date"
+                      variant="outlined"
+                    />
+                  </div>
+                  <div className={classes.TextFieldRight}>
+                    <button
+                      className={classes.saveButton}
+                      onClick={onSaveBtnClick}
                     >
-                      {units.map((element) => (
-                        <MenuItem value={element.unit}>{element.unit}</MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                      Save
+                    </button>
+                  </div>
                 </div>
-                <div className={classes.TextFieldLeft}>
-                  <TextField
-                    className={classes.fields}
-                    type={"number"}
-                    value={cost}
-                    onChange={(e) => {
-                      setCost(e.target.value);
-                      setCostForUnit(
-                        !!quantity === undefined
-                          ? e.target.value
-                          : e.target.value / quantity
-                      );
-                      setQuantity(!!quantity === undefined ? 1 : quantity);
-                    }}
-                    id="taskCostId"
-                    label="Total cost"
-                    variant="outlined"
-                  />
-                </div>
-                <div className={classes.TextFieldRight}>
-                  <TextField
-                    className={classes.fields}
-                    type={"date"}
-                    InputLabelProps={{ shrink: true }}
-                    onChange={(e) => setDueDate(e.target.value)}
-                    id="dueDateId"
-                    label="Due date"
-                    variant="outlined"
-                  />
-                </div>
-                <div className={classes.TextFieldRight}>
-                  <button
-                    onClick={onSaveBtnClick}
-                    className={classes.saveButton}
-                    role="button"
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
-            </Box>
-          </Container>
-        </React.Fragment>
+              </Box>
+            </Container>
+          </React.Fragment>
+        </div>
       </div>
       <div style={containerStyle()}>
         <div style={gridStyle()} className="ag-theme-alpine">

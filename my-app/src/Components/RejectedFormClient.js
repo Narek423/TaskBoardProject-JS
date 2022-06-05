@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useRef } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
@@ -11,54 +11,43 @@ const useStyles = createUseStyles({
     backgroundColor: "#e2ebfc",
     justifyContent: "center",
   },
-  container: {
-    backgroundColor: "#f9fbff",
-    width: "95vw",
-    height: "60vh",
-    borderColor: "#FF3D00",
-    borderWidth: 2,
-    borderRadius: 9,
-    justifyContent: "center",
-  },
-  header: {
-    fontFamily: "Palatino",
-    fontSize: 15,
-  },
-  defaultColDef: {
-    fontFamily: "Palatino",
-    fontSize: 15,
-  },
-  grouping: {
+  groupingInputs: {
     display: "flex",
-    marginTop: 10,
-    backgroundColor: "#e3f6f8",
-    width: "90%",
-    height: 40,
-    borderColor: "#FF3D00",
-    borderWidth: 2,
-    borderRadius: 9,
-    justifyContent: "center",
+    marginTop: 0,
+    width: "100%",
+    height: 10,
+    justifyContent: "left",
   },
 });
 
-function PendingToEvaluation(props) {
-  const clientId = "1o0VLmdzrKVav1YaZDxHdoxY3453";
+function RejectedTasks(props) {
   const classes = useStyles();
+  const clientId = "1o0VLmdzrKVav1YaZDxHdoxY3453";
 
   const containerStyle = () => {
     return { width: "100vw", height: "100vh" };
   };
   const gridStyle = () => {
-    return { height: "100vh", width: "100vw" };
+    return { marginTop: "40px", height: "94vh", width: "100vw" };
   };
+
   const [rowData, setRowData] = useState();
   const columnDefs = [
     {
-      headerClass: classes.header,
-      field: "avatar",
-      headerName: "Avatar",
-      columnGroupShow: "closed",
-      flex: 1,
+      headerName: " ",
+      headerCheckboxSelection: false,
+      checkboxSelection: false,
+      floatingFilter: false,
+      suppressMenu: true,
+      minWidth: 55,
+      maxWidth: 55,
+      width: 55,
+      flex: 0,
+      resizable: false,
+      sortable: false,
+      editable: false,
+      filter: false,
+      suppressColumnsToolPanel: true,
     },
     {
       headerClass: classes.header,
@@ -66,39 +55,7 @@ function PendingToEvaluation(props) {
       headerName: "Client ID",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
-      hide: true,
-      suppressColumnsToolPanel: true,
-    },
-    {
-      headerClass: classes.header,
-      field: "user",
-      headerName: "User",
-      columnGroupShow: "closed",
-      filter: "agTextColumnFilter",
-      flex: 1.5,
-    },
-    {
-      headerClass: classes.header,
-      field: "email",
-      headerName: "Email",
-      columnGroupShow: "closed",
-      filter: "agTextColumnFilter",
-      flex: 1.5,
-    },
-    {
-      headerClass: classes.header,
-      field: "phoneNumber",
-      headerName: "Phone number",
-      columnGroupShow: "closed",
-      filter: "agTextColumnFilter",
-      flex: 1.5,
-    },
-    {
-      headerClass: classes.header,
-      field: "taxCode",
-      headerName: "Tax code",
-      columnGroupShow: "closed",
-      filter: "agTextColumnFilter",
+      editable: false,
       hide: true,
       suppressColumnsToolPanel: true,
     },
@@ -108,7 +65,8 @@ function PendingToEvaluation(props) {
       headerName: "Task title",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
-      flex: 3.5,
+      editable: false,
+      flex: 2,
     },
     {
       headerClass: classes.header,
@@ -116,14 +74,36 @@ function PendingToEvaluation(props) {
       headerName: "Creation date",
       columnGroupShow: "closed",
       filter: "agDateColumnFilter",
+      editable: false,
       flex: 1,
     },
     {
       headerClass: classes.header,
-      field: "description",
-      headerName: "Task description",
+      field: "lastChangedDate",
+      headerName: "Last updated date",
       columnGroupShow: "closed",
-      filter: "agTextColumnFilter",
+      filter: "agDateColumnFilter",
+      editable: false,
+      hide: true,
+      suppressColumnsToolPanel: true,
+    },
+    {
+      headerClass: classes.header,
+      field: "dueDate",
+      headerName: "Due date",
+      columnGroupShow: "closed",
+      filter: "agDateColumnFilter",
+      editable: false,
+      hide: true,
+      suppressColumnsToolPanel: true,
+    },
+    {
+      headerClass: classes.header,
+      field: "closedDate",
+      headerName: "Closed date",
+      columnGroupShow: "closed",
+      filter: "agDateColumnFilter",
+      editable: false,
       hide: true,
       suppressColumnsToolPanel: true,
     },
@@ -133,8 +113,8 @@ function PendingToEvaluation(props) {
       headerName: "Notes",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
-      hide: true,
-      suppressColumnsToolPanel: true,
+      editable: false,
+      flex: 3,
     },
     {
       headerClass: classes.header,
@@ -142,8 +122,8 @@ function PendingToEvaluation(props) {
       headerName: "Due date",
       columnGroupShow: "closed",
       filter: "gsNumberColumnFilter",
-      hide: true,
-      suppressColumnsToolPanel: true,
+      editable: false,
+      flex: 1,
     },
     {
       headerClass: classes.header,
@@ -151,8 +131,8 @@ function PendingToEvaluation(props) {
       headerName: "Unit",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
-      hide: true,
-      suppressColumnsToolPanel: true,
+      editable: false,
+      flex: 1,
     },
     {
       headerClass: classes.header,
@@ -160,8 +140,8 @@ function PendingToEvaluation(props) {
       headerName: "Unit cost",
       columnGroupShow: "closed",
       filter: "gsNumberColumnFilter",
-      hide: true,
-      suppressColumnsToolPanel: true,
+      editable: false,
+      flex: 1,
     },
     {
       headerClass: classes.header,
@@ -169,8 +149,8 @@ function PendingToEvaluation(props) {
       headerName: "Total cost",
       columnGroupShow: "closed",
       filter: "gsNumberColumnFilter",
-      hide: true,
-      suppressColumnsToolPanel: true,
+      editable: false,
+      flex: 1,
     },
     {
       headerClass: classes.header,
@@ -178,6 +158,7 @@ function PendingToEvaluation(props) {
       headerName: "State",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
+      editable: false,
       hide: true,
       suppressColumnsToolPanel: true,
     },
@@ -187,8 +168,8 @@ function PendingToEvaluation(props) {
       headerName: "Status",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
-      hide: true,
-      suppressColumnsToolPanel: true,
+      flex: 1,
+      editable: true,
     },
   ];
   const defaultColDef = useMemo(() => {
@@ -234,7 +215,7 @@ function PendingToEvaluation(props) {
           for (let key in data) {
             if (
               data[key].clientId === clientId &&
-              data[key].state === "evaluation"
+              data[key].state === "rejected"
             ) {
               data[key].id = key;
               data[key] = { ...data[key], ...clientData };
@@ -256,7 +237,6 @@ function PendingToEvaluation(props) {
           <AgGridReact
             rowData={rowData}
             columnDefs={columnDefs}
-            rowSelection={"single"}
             suppressRowClickSelection={false}
             defaultColDef={defaultColDef}
             sideBar={sideBar}
@@ -268,4 +248,4 @@ function PendingToEvaluation(props) {
   );
 }
 
-export default PendingToEvaluation;
+export default RejectedTasks;

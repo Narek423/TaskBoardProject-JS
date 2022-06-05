@@ -1,5 +1,3 @@
-"use strict";
-
 import React, { useCallback, useMemo, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
@@ -25,7 +23,6 @@ const useStyles = createUseStyles({
 
 function PendingToAcception(props) {
   const classes = useStyles();
-  const rowHeight = 50;
 
   const containerStyle = () => {
     return { width: "100vw", height: "100vh" };
@@ -227,7 +224,6 @@ function PendingToAcception(props) {
       <div style={containerStyle()}>
         <div style={gridStyle()} className="ag-theme-alpine">
           <AgGridReact
-            rowHeight={rowHeight}
             rowData={rowData}
             columnDefs={columnDefs}
             suppressRowClickSelection={false}
@@ -243,5 +239,3 @@ function PendingToAcception(props) {
 }
 
 export default PendingToAcception;
-
-//render(<GridExample></GridExample>, document.querySelector("#root"));
