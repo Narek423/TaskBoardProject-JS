@@ -57,18 +57,18 @@ function UserToolsList(props) {
   const { user } = useUserAuth(UserAuthContext);
   const clientId = user.uid;
   const dbRef = getDatabase();
+  const [rull, setRull] = useState();
 
   let clientData = {};
   get(ref(dbRef, "users/" + clientId))
     .then((snapshot) => {
-      if (snapshot.exists()) {
-        clientData = snapshot.val();
-      }
+      clientData = snapshot.val();
+      setRull(clientData.roll);
+      console.log("our console", clientData);
     })
     .catch((error) => {
       console.error(error);
     });
-  const rull = clientData.rull;
 
   const arrTools = [
     {
@@ -82,7 +82,7 @@ function UserToolsList(props) {
       text: "All Tasks",
       id: 2,
       path:
-        rull === "admin"
+        rull === "Admin"
           ? "/profile/admin/alltasks/"
           : "/profile/client/alltasks/",
     },
@@ -91,7 +91,7 @@ function UserToolsList(props) {
       text: "Evaluation Tasks",
       id: 3,
       path:
-        rull === "admin"
+        rull === "Admin"
           ? "/profile/admin/evaluationtasks/"
           : "/profile/client/evaluationtasks/",
     },
@@ -100,7 +100,7 @@ function UserToolsList(props) {
       text: "Acception Tasks",
       id: 4,
       path:
-        rull === "admin"
+        rull === "Admin"
           ? "/profile/admin/acceptiontasks/"
           : "/profile/client/acceptiontasks/",
     },
@@ -109,7 +109,7 @@ function UserToolsList(props) {
       text: "In Progress Tasks Tasks",
       id: 5,
       path:
-        rull === "admin"
+        rull === "Admin"
           ? "/profile/admin/inprogresstasks/"
           : "/profile/client/inprogresstasks/",
     },
@@ -118,7 +118,7 @@ function UserToolsList(props) {
       text: "Done Tasks Admin",
       id: 6,
       path:
-        rull === "admin"
+        rull === "Admin"
           ? "/profile/admin/donetasks/"
           : "/profile/client/donetasks/",
     },
@@ -127,7 +127,7 @@ function UserToolsList(props) {
       text: "Rejected tasks Admin",
       id: 7,
       path:
-        rull === "admin"
+        rull === "Admin"
           ? "/profile/admin/rejectedtasks/"
           : "/profile/client/rejectedtasks/",
     },

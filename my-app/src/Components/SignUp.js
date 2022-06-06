@@ -14,6 +14,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { useUserAuth } from "../context/UserAuthContext";
 import NavMainBar from "./Nav-Bar/NavMainBar";
+import { writeUserData } from "../Components/firebase";
 
 const useStyles = createUseStyles({
   header: {
@@ -127,7 +128,21 @@ function SignUp(props) {
     e.preventDefault();
     setError("");
     try {
-      await signUp(email, password, roll);
+      let user = await signUp(email, password, roll);
+      console.log(user);
+      await writeUserData(
+        user.user,
+        password,
+        name,
+        lastName,
+        dateOfBirth,
+        phoneNumber,
+        taxCode,
+        roll,
+        email,
+        enabled,
+        phoneNumber
+      );
       navigate("/");
     } catch (err) {
       setError(err.message);

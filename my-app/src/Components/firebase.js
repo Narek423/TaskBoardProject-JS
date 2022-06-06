@@ -61,7 +61,7 @@ export function signup(
   );
 }
 
-function writeUserData(
+export function writeUserData(
   user,
   password,
   name,
@@ -74,7 +74,6 @@ function writeUserData(
   avatar = "https://st2.depositphotos.com/1104517/11965/v/950/depositphotos_119659092-stock-illustration-male-avatar-profile-picture-vector.jpg"
 ) {
   set(ref(database, "users/" + user.uid), {
-    email: user.email,
     avatar,
     name,
     lastName,
