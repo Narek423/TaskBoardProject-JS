@@ -11,9 +11,15 @@ const useStyle = createUseStyles(() => {
 
 function ProfilePage() {
     
-    return <div>
+    return <div style={{
+        textAlign: "center",
+    }}>
 
-Profile
+<span style={{
+        
+        fontFamily: "cursive",
+        fontSize: 50,
+    }}>Profile</span>
 
     </div>
 }
