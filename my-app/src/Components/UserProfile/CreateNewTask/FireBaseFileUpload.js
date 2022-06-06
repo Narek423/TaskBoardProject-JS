@@ -6,7 +6,6 @@ import {
 } from "firebase/storage";
 import React, { useContext, useEffect, useState } from "react";
 import { storage, writeUserTask } from "../../firebase";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { v4 as uuidv4 } from "uuid";
 import { createUseStyles } from "react-jss";
 import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
@@ -76,8 +75,8 @@ function FireBaseFileUpload(props) {
   const [progress, setProgress] = useState(0);
   const [imgModalopen, setImgModalOpen] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
-  const { filaeData, setFileData } = props;
-  const [modalImg, setModalImg] = useState(filaeData[imgIndex]);
+  const { fileData, setFileData } = props;
+  const [modalImg, setModalImg] = useState(fileData[imgIndex]);
   const classes = useStyle();
   const { user } = useUserAuth(UserAuthContext);
 
@@ -111,7 +110,7 @@ function FireBaseFileUpload(props) {
       (err) => console.log(err),
       () =>
         getDownloadURL(uploadProcent.snapshot.ref).then((url) =>
-          setFileData([...filaeData.concat({url,name: file.name,type: file.type})])
+          setFileData([...fileData.concat({url,name: file.name,type: file.type})])
         )
     );
   };
@@ -123,7 +122,7 @@ function FireBaseFileUpload(props) {
     deleteObject(imageRef)
       .then(() => {
         setFileData([
-          ...filaeData.filter((e) => {
+          ...fileData.filter((e) => {
             if (e.url === e) {
               return false;
             } else {
@@ -137,7 +136,7 @@ function FireBaseFileUpload(props) {
 
   return (
     <div className={classes.imgList}>
-      {filaeData.map((e,index,) => {
+      {fileData.map((e,index,) => {
               console.log(file)
 
         return (
@@ -152,7 +151,7 @@ function FireBaseFileUpload(props) {
             }}
             onClick={() => {
               setImgModalOpen(!imgModalopen);
-              setModalImg(filaeData[index].url);
+              setModalImg(fileData[index].url);
             }}>    
             <div  style={{
                   position: "absolute",
@@ -177,7 +176,7 @@ function FireBaseFileUpload(props) {
             }}
             onClick={() => {
               setImgModalOpen(!imgModalopen);
-              setModalImg(filaeData[index].url);
+              setModalImg(fileData[index].url);
             }}>
              
             <div  style={{
@@ -272,7 +271,7 @@ function FireBaseFileUpload(props) {
       <ImgModal
         imgModalopen={imgModalopen}
         setImgModalOpen={setImgModalOpen}
-        filaeData={filaeData}
+        fileData={fileData}
         modalImg={modalImg}
         setModalImg={setModalImg}
       />

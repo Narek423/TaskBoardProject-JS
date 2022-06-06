@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Outlet, Route, Routes } from "react-router-dom";
-import Profile from "../../../Profile";
 import ProfileChange from "../../Profile";
 import CreateNewTask from "../CreateNewTask/CreateNewTask";
 
@@ -23,7 +22,7 @@ function UserWorkingTable(props) {
     <div className={classes.UserWorkingTable} style={{
       flex: props.open ? 4 : 25,
     }}>{props.open}
-      <CreateNewTask />
+      {props.component}
     </div>
   );
 }

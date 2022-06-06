@@ -1,7 +1,10 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
-import { useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
+import CreateNewTask from "./CreateNewTask/CreateNewTask";
+import Inbox from "./Inbox/Inbox";
+import ProfilePage from "./ProfilePage/ProfilePage";
 import UserTools from "./UserToolsBar/UserTools";
 import UserWorkingTable from "./UserWorkingTable/UserWorkingTable";
 
@@ -28,11 +31,16 @@ function UserProfile({children}) {
 	// 	navigate(path)
 	// }
 
+
 	
 	return (
 		<div className={classes.UserProfile}>
 			<UserTools open={toolsBarOpen} userToolsClose={userToolsClose} />
-			<UserWorkingTable open={toolsBarOpen}>{children}</UserWorkingTable>
+			<Routes>
+				<Route  path="/" element={<UserWorkingTable open={toolsBarOpen} component={<ProfilePage />}></UserWorkingTable>} />
+				<Route path="inbox/*" element={<UserWorkingTable open={toolsBarOpen} component={<Inbox />}></UserWorkingTable>} />
+				<Route path="createTask" element={<UserWorkingTable open={toolsBarOpen} component={<CreateNewTask />}></UserWorkingTable>} />
+			</Routes>
 		</div>
 	);
 }

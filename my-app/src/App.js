@@ -20,68 +20,68 @@ import AllTasksAdmin from "./Components/AllTasksAdmin";
 import AllTasksClient from "./Components/AllTasksClient";
 
 function App() {
-  return (
-    <>
-      <UserAuthContextProvider>
-        <Routes>
-          <Route path="/" element={<h1>HOME PAGE</h1>} />
+	return (
+		<>
+			<UserAuthContextProvider>
+				<Routes>
+					<Route path='/' element={<h1>HOME PAGE</h1>} />
 
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <UserProfile />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route
-            path="/profile/admin/evaluationtasks/"
-            element={<EvaluationFormAdmin />}
-          />
-          <Route
-            path="/profile/client/evaluationtasks/"
-            element={<EvaluationFormClient />}
-          />
-          <Route
-            path="/profile/admin/acceptiontasks/"
-            element={<AcceptionFormAdmin />}
-          />
-          <Route
-            path="/profile/client/acceptiontasks/"
-            element={<AcceptionFormClient />}
-          />
-          <Route
-            path="/profile/admin/inprogresstasks/"
-            element={<InProgressFormAdmin />}
-          />
-          <Route
-            path="/profile/client/inprogresstasks/"
-            element={<InProgressFormClient />}
-          />
-          <Route path="/profile/admin/donetasks/" element={<DoneFormAdmin />} />
-          <Route
-            path="/profile/client/donetasks/"
-            element={<DoneFormClient />}
-          />
-          <Route
-            path="/profile/admin/rejectedtasks/"
-            element={<RejectedFormAdmin />}
-          />
-          <Route
-            path="/profile/client/rejectedtasks/"
-            element={<RejectedFormClient />}
-          />
-          <Route path="/profile/admin/alltasks/" element={<AllTasksAdmin />} />
-          <Route
-            path="/profile/client/alltasks/"
-            element={<AllTasksClient />}
-          />
-        </Routes>
-      </UserAuthContextProvider>
-    </>
-  );
+					<Route
+						path='/profile'
+						element={
+							<ProtectedRoute>
+								<UserProfile />
+							</ProtectedRoute>
+						}
+					/>
+					<Route path='/signup' element={<SignUp />} />
+					<Route path='/signin' element={<SignIn />} />
+					<Route
+						path='/profile/admin/evaluationtasks/'
+						element={<EvaluationFormAdmin />}
+					/>
+					<Route
+						path='/profile/client/evaluationtasks/'
+						element={<EvaluationFormClient />}
+					/>
+					<Route
+						path='/profile/admin/acceptiontasks/'
+						element={<AcceptionFormAdmin />}
+					/>
+					<Route
+						path='/profile/client/acceptiontasks/'
+						element={<AcceptionFormClient />}
+					/>
+					<Route
+						path='/profile/admin/inprogresstasks/'
+						element={<InProgressFormAdmin />}
+					/>
+					<Route
+						path='/profile/client/inprogresstasks/'
+						element={<InProgressFormClient />}
+					/>
+					<Route path='/profile/admin/donetasks/' element={<DoneFormAdmin />} />
+					<Route
+						path='/profile/client/donetasks/'
+						element={<DoneFormClient />}
+					/>
+					<Route
+						path='/profile/admin/rejectedtasks/'
+						element={<RejectedFormAdmin />}
+					/>
+					<Route
+						path='/profile/client/rejectedtasks/'
+						element={<RejectedFormClient />}
+					/>
+					<Route path='/profile/admin/alltasks/' element={<AllTasksAdmin />} />
+					<Route
+						path='/profile/client/alltasks/'
+						element={<AllTasksClient />}
+					/>
+				</Routes>
+			</UserAuthContextProvider>
+		</>
+	);
 }
 
 export default App;
