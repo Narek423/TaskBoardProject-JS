@@ -15,15 +15,15 @@ function App() {
 					<Route path='/' element={<h1>HOME PAGE</h1>} />
 
 					<Route
-						path='/profile'
+						path='profile/*'
 						element={
 							<ProtectedRoute>
 								<UserProfile />
 							</ProtectedRoute>
 						}
 					/>
-					<Route path='/signup' element={<SignUp />} />
-					<Route path='/signin' element={<SignIn />} />
+					<Route path='signup' element={<SignUp />} />
+					<Route path='signin' element={<SignIn />} />
 				</Routes>
 			</UserAuthContextProvider>
 		</>

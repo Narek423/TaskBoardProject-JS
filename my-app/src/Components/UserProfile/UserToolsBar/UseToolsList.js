@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 const useStyle = createUseStyles(() => {
   return {
-    usetoolslist: {
+    usertoolslist: {
       flex: 2,
       display: "flex",
       flexDirection: "column",
@@ -52,12 +52,13 @@ const useStyle = createUseStyles(() => {
 function UserToolsList(props) {
   const navigate = useNavigate();
   const classes = useStyle();
+  console.log(true)
 
   const arrTools = [
     {
       icon: <AssignmentIndIcon className={classes.icon} />,
       text: "Profile",
-      path: "profile/Div",
+      path: "",
       id: 1,
     },
     {
@@ -87,7 +88,7 @@ function UserToolsList(props) {
     {
       icon: <EditIcon className={classes.icon} />,
       text: "Create Task",
-      path: "/userProfile",
+      path: "createTask",
       id: 6,
     },
     {
@@ -112,7 +113,7 @@ function UserToolsList(props) {
       icon: <MailIcon className={classes.icon} />,
       text: "Inbox",
       id: 10,
-      path: "Profile",
+      path: "inbox",
     },
   ];
 
@@ -120,7 +121,7 @@ function UserToolsList(props) {
 
   return (
     <div
-      className={classes.usetoolslist}
+      className={classes.usertoolslist}
       style={{
         marginLeft: props.open ? 30 : 15,
         marginTop: props.open ? null : 40,

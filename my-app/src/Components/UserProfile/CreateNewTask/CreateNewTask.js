@@ -31,7 +31,7 @@ const useStyle = createUseStyles(() => {
         top: 0,
       },
       textAlign: "center",
-      fontFamily: "curive",
+      fontFamily: "cursive",
       backgroundColor: "rgb(0,0,0,0.15)",
     },
 
@@ -87,29 +87,19 @@ function CreateNewTask() {
   const [titleValue, setTittleValue] = useState("");
   const [nodesValue, setNodesValue] = useState("");
   const [descrpValue, setDescrpValue] = useState("");
-  const [createDate, setCreateDate] = useState(); //esi arats chi
+  const [createDate, setCreateDate] = useState(); 
   const { user } = useUserAuth(UserAuthContext);
-  const [filaeData, setFileData] = useState([]);
+  const [fileData, setFileData] = useState([]);
   const status = "waiting";
-
   const  writeData = () => {
     setCreateDate(new Date().toLocaleString());
-    writeUserTask(user.uid,"Grigor",user.email,filaeData,titleValue,nodesValue,descrpValue,createDate);
+    writeUserTask(user.uid,fileData,titleValue,nodesValue,descrpValue,createDate);
     setFileData([]);
     setNodesValue("");
     setDescrpValue("");
     setDescrpValue("");
     setTittleValue("");
   }
-  // export function writeUserTask(userId, name, email, imageUrls) {  //Task@ databes uxarkox funkcianna firebese.js uma
-  //   const db = getDatabase();
-  //   set(ref(db, 'users/' + userId), {
-  //     username: name,
-  //     email: email,
-  //     profile_picture : imageUrls
-  //   });
-  //   }
-
 
   return (
     <div className={classes.main}>
@@ -182,7 +172,7 @@ function CreateNewTask() {
           }}
         >
         
-          <FireBaseFileUpload filaeData={filaeData} setFileData={setFileData}/>
+          <FireBaseFileUpload fileData={fileData} setFileData={setFileData}/>
          
             <HelperModal   inputName={"Files"}
             text={

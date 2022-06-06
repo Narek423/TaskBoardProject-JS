@@ -6,6 +6,8 @@ import {
 } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getDatabase, ref, set, get, child } from "firebase/database";
+import { v4 as uuidv4 } from "uuid";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -38,11 +40,10 @@ export function signup(
 	roll,
 	enabled
 ) {
-	console.log(email, password);
 	return createUserWithEmailAndPassword(auth, email, password).then(
 		(userCredential) => {
 			const user = userCredential.user;
-			console.log(user);
+			console.log("111ashxatuma")
 			writeUserData(
 				user,
 				password,
@@ -58,7 +59,7 @@ export function signup(
 	);
 }
 
- function writeUserData(
+ export function writeUserData(
 	user,
 	password,
 	name,
@@ -70,6 +71,7 @@ export function signup(
 	enabled,
 	avatar = "https://st2.depositphotos.com/1104517/11965/v/950/depositphotos_119659092-stock-illustration-male-avatar-profile-picture-vector.jpg"
 ) {
+	console.log("ashxatuma")
 	set(ref(database, "users/" + user.uid), {
 		email: user.email,
 		avatar,
@@ -83,18 +85,41 @@ export function signup(
 	});
 }
 
-export function writeUserTask(userId, name, email, imageUrls,titleValue,nodesValue,descrpValue,date) {
+export function writeUserTask(userId,imageUrls,titleValue,nodesValue,descrpValue,date) {
 	const db = getDatabase();
-	set(ref(db, 'task/' + userId), {
-	  username: name,
-	  email: email,
-	  profile_picture : imageUrls,
-	  title: titleValue,
-	  nodes: nodesValue,
-	  descrp: descrpValue,
-	  date: date
+	set(ref(db, 'tasks/' + uuidv4()), {
+		title: titleValue,
+		notes: nodesValue,
+		description: descrpValue,
+		clientId: userId,
+		state: 'evaluation',
+		quantity: 0,
+	    task_files : imageUrls,
+	    creationDate: date,
+		status: 'waiting'
 	});
   }
+  export function writeUserEmailTask(userId,emailTittle,emailText,date) {
+	const db = getDatabase();
+	set(ref(db, `inbox/${userId}/` + uuidv4()), {
+		emailTittle: emailTittle,
+		emailText: emailText,
+		state: "unread",
+	    date: date
+	});
+  }
+export  function getInbox(user,func){
+  const dbRef = ref(getDatabase());
+ get(child(dbRef, `inbox/${user}`)).then((snapshot) => {
+  if (snapshot.exists()) {
+	 func(snapshot.val());
+} else {
+    console.log("No data available");
+  }
+}).catch((error) => {
+  console.error(error);
+});
+}
 
 export async function signin(email, password) {
 	return signInWithEmailAndPassword(auth, email, password).then(
