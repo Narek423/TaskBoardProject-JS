@@ -633,7 +633,6 @@ function PendingToEvaluation(props) {
             onGridReady={onGridReady}
             onSelectionChanged={onSelectionChanged}
             autoGroupColumnDef={autoGroupColumnDef}
-            onRowDoubleClicked:doSomething
           ></AgGridReact>
         </div>
       </div>
