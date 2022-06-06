@@ -5,6 +5,7 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get } from "firebase/database";
+import { UserAuthContext, useUserAuth } from "../context/UserAuthContext";
 
 const useStyles = createUseStyles({
   page: {
@@ -42,8 +43,9 @@ const useStyles = createUseStyles({
 });
 
 function PendingToEvaluation(props) {
-  const clientId = "1o0VLmdzrKVav1YaZDxHdoxY3453";
   const classes = useStyles();
+  const { user } = useUserAuth(UserAuthContext);
+  const clientId = user.uid;
 
   const containerStyle = () => {
     return { width: "100vw", height: "100vh" };

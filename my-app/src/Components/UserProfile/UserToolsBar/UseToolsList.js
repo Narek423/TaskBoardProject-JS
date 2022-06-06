@@ -12,6 +12,8 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import MailIcon from "@mui/icons-material/Mail";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
+import { getDatabase, ref, get } from "firebase/database";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -52,102 +54,105 @@ const useStyle = createUseStyles(() => {
 function UserToolsList(props) {
   const navigate = useNavigate();
   const classes = useStyle();
+  const { user } = useUserAuth(UserAuthContext);
+  const clientId = user.uid;
+  const dbRef = getDatabase();
+
+  let clientData = {};
+  get(ref(dbRef, "users/" + clientId))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        clientData = snapshot.val();
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  const rull = clientData.rull;
 
   const arrTools = [
     {
       icon: <AssignmentIndIcon className={classes.icon} />,
       text: "Profile",
-      link: "/",
       path: "profile/Div",
       id: 1,
     },
     {
       icon: <AssignmentIcon className={classes.icon} />,
-      text: "All Tasks Admin",
-      link: "/",
+      text: "All Tasks",
       id: 2,
-      path: "/profile/admin/alltasks/",
+      path:
+        rull === "admin"
+          ? "/profile/admin/alltasks/"
+          : "/profile/client/alltasks/",
     },
     {
-      icon: <AssignmentIcon className={classes.icon} />,
-      text: "All Tasks client",
-      id: 2,
-      path: "/profile/client/alltasks/",
+      icon: <PublishedWithChangesIcon className={classes.icon} />,
+      text: "Evaluation Tasks",
+      id: 3,
+      path:
+        rull === "admin"
+          ? "/profile/admin/evaluationtasks/"
+          : "/profile/client/evaluationtasks/",
+    },
+    {
+      icon: <TaskIcon className={classes.icon} />,
+      text: "Acception Tasks",
+      id: 4,
+      path:
+        rull === "admin"
+          ? "/profile/admin/acceptiontasks/"
+          : "/profile/client/acceptiontasks/",
+    },
+    {
+      icon: <AssignmentLateIcon className={classes.icon} />,
+      text: "In Progress Tasks Tasks",
+      id: 5,
+      path:
+        rull === "admin"
+          ? "/profile/admin/inprogresstasks/"
+          : "/profile/client/inprogresstasks/",
     },
     {
       icon: <AssignmentIcon className={classes.icon} />,
       text: "Done Tasks Admin",
-      link: "/",
-      id: 2,
-      path: "/profile/admin/donetasks/",
-    },
-    {
-      icon: <AssignmentIcon className={classes.icon} />,
-      text: "Done Tasks client",
-      id: 2,
-      path: "/profile/client/donetasks/",
+      id: 6,
+      path:
+        rull === "admin"
+          ? "/profile/admin/donetasks/"
+          : "/profile/client/donetasks/",
     },
     {
       icon: <AssignmentIcon className={classes.icon} />,
       text: "Rejected tasks Admin",
-      link: "/",
-      id: 2,
-      path: "/profile/admin/rejectedtasks/",
-    },
-    {
-      icon: <AssignmentIcon className={classes.icon} />,
-      text: "Rejected tasks client",
-      id: 2,
-      path: "/profile/client/rejectedtasks/",
-    },
-    {
-      icon: <PublishedWithChangesIcon className={classes.icon} />,
-      text: "Inprocess Tasks",
-      id: 3,
-      path: "/profile/admin/evaluationtasks/",
-    },
-    {
-      icon: <AddTaskIcon className={classes.icon} />,
-      text: "Active Tasks",
-      id: 4,
-      path: "/profile/client/evaluationtasks/",
-    },
-    {
-      icon: <TaskIcon className={classes.icon} />,
-      text: "Done Tasks",
-      path: "/profile/admin/acceptiontasks/",
-      id: 5,
+      id: 7,
+      path:
+        rull === "admin"
+          ? "/profile/admin/rejectedtasks/"
+          : "/profile/client/rejectedtasks/",
     },
     {
       icon: <EditIcon className={classes.icon} />,
       text: "Create Task",
-      path: "/profile/client/acceptiontasks/",
-      id: 6,
-    },
-    {
-      icon: <AssignmentLateIcon className={classes.icon} />,
-      text: "Rejected Tasks",
-      path: "/profile/admin/inprogresstasks/",
-      id: 7,
+      path: "/",
+      id: 8,
     },
     {
       icon: <EqualizerIcon className={classes.icon} />,
       text: "Statics",
-      link: "/",
-      path: "/profile/client/inprogresstasks/",
-      id: 8,
+      path: "/",
+      id: 9,
     },
     {
       icon: <PaymentIcon className={classes.icon} />,
       text: "Payment History",
-      link: "/",
       path: "Profile",
-      id: 9,
+      id: 10,
     },
     {
       icon: <MailIcon className={classes.icon} />,
       text: "Inbox",
-      id: 10,
+      id: 11,
       path: "Profile",
     },
   ];

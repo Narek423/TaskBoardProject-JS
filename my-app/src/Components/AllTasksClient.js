@@ -6,6 +6,7 @@ import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { createUseStyles } from "react-jss";
 import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get } from "firebase/database";
+import { UserAuthContext, useUserAuth } from "../context/UserAuthContext";
 
 const useStyles = createUseStyles({
   page: {
@@ -24,7 +25,8 @@ const useStyles = createUseStyles({
 function AllTasks(props) {
   console.log(props);
   const classes = useStyles();
-  const clientId = "1o0VLmdzrKVav1YaZDxHdoxY3453";
+  const { user } = useUserAuth(UserAuthContext);
+  const clientId = user.uid;
 
   const containerStyle = () => {
     return { width: "100vw", height: "100vh" };
