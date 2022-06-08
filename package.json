@@ -4,6 +4,7 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.8.0",
     "@mui/material": "^5.8.0",
+    "ag-grid-enterprise": "^27.3.0",
     "react-router-dom": "6"
   }
 }

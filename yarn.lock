@@ -288,6 +288,11 @@
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.2.tgz#1a62f89525723dde24ba1b01b092bf5df8ad4d39"
   integrity sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==
 
+ag-grid-enterprise@^27.3.0:
+  version "27.3.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-27.3.0.tgz#f2a34599e3b496aab1ae9d4b4a125f05f3ca3da1"
+  integrity sha512-l95eH5cT1D/iOf0ROEpQ8G7RINg2UQ4E1rve4OGveN33Cg0/FFAyja0sraJ4DKgwLBPbPXtFksKq4nSlw0CEeA==
+
 ansi-styles@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-3.2.1.tgz#41fbb20243e50b12be0f04b8dedbf07520ce841d"
