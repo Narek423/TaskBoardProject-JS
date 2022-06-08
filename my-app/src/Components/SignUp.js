@@ -12,8 +12,9 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useState } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { useUserAuth } from "../context/UserAuthContext";
+import { useUserAuth,UserAuthContext} from "../context/UserAuthContext";
 import NavMainBar from "./Nav-Bar/NavMainBar";
+import { writeUserData } from "./firebase";
 
 const useStyles = createUseStyles({
   header: {
@@ -98,11 +99,13 @@ function SignUp(props) {
   const [roll, setRoll] = useState("Client");
   const [enabled, setEnabled] = useState(false);
   const [error, setError] = useState("");
+  
 
   const [signInButtonHover, setSigInButtonHover] = useState(false);
   const [signInButtonActive, setSignInButtonActive] = useState(false);
   const navigate = useNavigate();
   const classes = useStyles();
+
   const [values, setValues] = useState({
     amount: "",
     password: "",
@@ -123,16 +126,32 @@ function SignUp(props) {
   };
 
   const { signUp } = useUserAuth();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
-      await signUp(email, password, roll);
+      let user = await signUp(email, password, roll);
+      console.log(user);
+      await writeUserData(
+        user.user,
+        password,
+        name,
+        lastName,
+        dateOfBirth,
+        phoneNumber,
+        taxCode,
+        roll,
+        email,
+        enabled,
+        phoneNumber
+      );
       navigate("/");
     } catch (err) {
       setError(err.message);
     }
   };
+
   // async function () {
   // 	try {
   // 		await signup(

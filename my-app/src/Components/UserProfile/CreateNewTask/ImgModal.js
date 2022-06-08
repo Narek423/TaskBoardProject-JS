@@ -58,24 +58,24 @@ const useStyle = createUseStyles(() => {
   };
 });
 function ImgModal(props) {
-  const { imgModalopen, filaeData, modalImg, setModalImg, setImgModalOpen } =
+  const { imgModalopen, fileData, modalImg, setModalImg, setImgModalOpen } =
     props;
   const classes = useStyle();
 
   const arrowRightClick = (event) => {
     event.stopPropagation();
-    const index = filaeData.indexOf(modalImg);
-    if (index + 1 < filaeData.length) {
-      setModalImg(filaeData[index + 1]);
+    const index = fileData.indexOf(modalImg);
+    if (index + 1 < fileData.length) {
+      setModalImg(fileData[index + 1]);
     } else {
       return;
     }
   };
   const arrowLeftClick = (event) => {
     event.stopPropagation();
-    const index = filaeData.indexOf(modalImg);
+    const index = fileData.indexOf(modalImg);
     if (index - 1 >= 0) {
-      setModalImg(filaeData[index - 1]);
+      setModalImg(fileData[index - 1]);
     } else {
       return;
     }

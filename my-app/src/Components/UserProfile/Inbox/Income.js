@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { getInbox } from "../../firebase";
+// import { getInbox } from "../../firebase";
 import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
 import { ClassNames } from "@emotion/react";
 import { createUseStyles } from "react-jss";
@@ -31,9 +31,9 @@ function Income() {
   const [start, end] = listCountCheck;
   const classes = useStyle();
 
-  useEffect(() => {
-    getInbox(user.uid, setInboxData);
-  }, []);
+  // useEffect(() => {
+  //   getInbox(user.uid, setInboxData);
+  // }, []);
   for (let key in inboxData) {
     data.push([key, inboxData[key]]);
   }

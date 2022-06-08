@@ -18,8 +18,10 @@ import RejectedFormAdmin from "./Components/RejectedFormAdmin";
 import RejectedFormClient from "./Components/RejectedFormClient";
 import AllTasksAdmin from "./Components/AllTasksAdmin";
 import AllTasksClient from "./Components/AllTasksClient";
+import paths from "./Components/constants/Paths";
 
 function App() {
+	const  { USER_PROFILE_PATH,SIGN_IN_PATH,SIGN_UP_PATH } = paths;
 	return (
 		<>
 			<UserAuthContextProvider>
@@ -27,57 +29,16 @@ function App() {
 					<Route path='/' element={<h1>HOME PAGE</h1>} />
 
 					<Route
-						path='/profile'
+						path={USER_PROFILE_PATH}
 						element={
 							<ProtectedRoute>
 								<UserProfile />
 							</ProtectedRoute>
 						}
 					/>
-					<Route path='/signup' element={<SignUp />} />
-					<Route path='/signin' element={<SignIn />} />
-					<Route
-						path='/profile/admin/evaluationtasks/'
-						element={<EvaluationFormAdmin />}
-					/>
-					<Route
-						path='/profile/client/evaluationtasks/'
-						element={<EvaluationFormClient />}
-					/>
-					<Route
-						path='/profile/admin/acceptiontasks/'
-						element={<AcceptionFormAdmin />}
-					/>
-					<Route
-						path='/profile/client/acceptiontasks/'
-						element={<AcceptionFormClient />}
-					/>
-					<Route
-						path='/profile/admin/inprogresstasks/'
-						element={<InProgressFormAdmin />}
-					/>
-					<Route
-						path='/profile/client/inprogresstasks/'
-						element={<InProgressFormClient />}
-					/>
-					<Route path='/profile/admin/donetasks/' element={<DoneFormAdmin />} />
-					<Route
-						path='/profile/client/donetasks/'
-						element={<DoneFormClient />}
-					/>
-					<Route
-						path='/profile/admin/rejectedtasks/'
-						element={<RejectedFormAdmin />}
-					/>
-					<Route
-						path='/profile/client/rejectedtasks/'
-						element={<RejectedFormClient />}
-					/>
-					<Route path='/profile/admin/alltasks/' element={<AllTasksAdmin />} />
-					<Route
-						path='/profile/client/alltasks/'
-						element={<AllTasksClient />}
-					/>
+					<Route path={SIGN_IN_PATH} element={<SignUp />} />
+					<Route path={SIGN_UP_PATH} element={<SignIn />} />
+					
 				</Routes>
 			</UserAuthContextProvider>
 		</>

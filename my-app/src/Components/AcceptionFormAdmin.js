@@ -21,14 +21,14 @@ const useStyles = createUseStyles({
   },
 });
 
-function PendingToAcception(props) {
+function PendingToAcceptionAdmin(props) {
   const classes = useStyles();
 
   const containerStyle = () => {
-    return { width: "100vw", height: "100vh" };
+    return { width: "100%", height: "100%" };
   };
   const gridStyle = () => {
-    return { marginTop: "40px", height: "94vh", width: "100vw" };
+    return {height: "100%", width: "100%" };
   };
 
   const [rowData, setRowData] = useState();
@@ -220,7 +220,6 @@ function PendingToAcception(props) {
   }, []);
 
   return (
-    <div className={classes.page}>
       <div style={containerStyle()}>
         <div style={gridStyle()} className="ag-theme-alpine">
           <AgGridReact
@@ -234,8 +233,7 @@ function PendingToAcception(props) {
           ></AgGridReact>
         </div>
       </div>
-    </div>
   );
 }
 
-export default PendingToAcception;
+export default PendingToAcceptionAdmin;

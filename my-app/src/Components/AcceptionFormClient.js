@@ -14,9 +14,9 @@ const useStyles = createUseStyles({
   },
   groupingInputs: {
     display: "flex",
-    marginTop: 0,
+    // marginTop: 0,
     width: "100%",
-    height: 10,
+    // height: 10,
     justifyContent: "left",
   },
   buttonDiv: {
@@ -116,10 +116,10 @@ function PendingToAcception(props) {
   const clientId = user.uid;
 
   const containerStyle = () => {
-    return { width: "100vw", height: "100vh" };
+    return { width: "100%", height: "100%" , display: 'flex', flexDirection: 'column'};
   };
   const gridStyle = () => {
-    return { marginTop: "40px", height: "94vh", width: "100vw" };
+    return {  height: "100%", width: "100%" };
   };
 
   const [rowData, setRowData] = useState();
@@ -320,7 +320,7 @@ function PendingToAcception(props) {
   }, []);
 
   return (
-    <div className={classes.page}>
+    // <div className={classes.page}>
       <div style={containerStyle()}>
         <div className={classes.groupingInputs}>
           <button
@@ -352,7 +352,7 @@ function PendingToAcception(props) {
           ></AgGridReact>
         </div>
       </div>
-    </div>
+    // </div>
   );
 }
 

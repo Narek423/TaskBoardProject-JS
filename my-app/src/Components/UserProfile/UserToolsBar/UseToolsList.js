@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import AssignmentLateIcon from "@mui/icons-material/AssignmentLate";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
 import { getDatabase, ref, get } from "firebase/database";
+import paths from "../../constants/Paths";
 
 const useStyle = createUseStyles(() => {
 	return {
@@ -57,18 +58,30 @@ function UserToolsList(props) {
 	const { user } = useUserAuth(UserAuthContext);
 	const clientId = user.uid;
 	const dbRef = getDatabase();
+	const [rull, setRull] = useState(); // ste pti chlni
 
-	let clientData = {};
-	get(ref(dbRef, "users/" + clientId))
+	const {
+		PROFILE_PATH,
+		INBOX_PATH,
+		ACCEPTION_TASKS_PATH,
+		ALL_TASKS_PATH,
+		CREATE_TASK_PATH,
+		EVALUATION_TASKS_PATH,
+		REJECTED_TASKS_PATH,
+		IN_PROCCESS_TASKS_PATH,
+		DONE_TASKS_PATH,
+	  } = paths;
+
+	  useEffect(() => {   //ste pti chlni
+		get(ref(dbRef, "users/" + user.uid))
 		.then((snapshot) => {
-			if (snapshot.exists()) {
-				clientData = snapshot.val();
-			}
+		  setRull(snapshot.val().roll);
+		  console.log("our console", rull);
 		})
 		.catch((error) => {
-			console.error(error);
+		  console.error(error);
 		});
-	const rull = clientData.rull;
+	  })
 
 	const arrTools = [
 		{
@@ -76,66 +89,51 @@ function UserToolsList(props) {
 			text: "Profile",
 			path: "",
 			id: 1,
+			
 		},
 		{
 			icon: <AssignmentIcon className={classes.icon} />,
 			text: "All Tasks",
 			id: 2,
-			path:
-				rull === "admin"
-					? "/profile/admin/alltasks/"
-					: "/profile/client/alltasks/",
+			path: ALL_TASKS_PATH
 		},
 		{
 			icon: <PublishedWithChangesIcon className={classes.icon} />,
 			text: "Evaluation Tasks",
 			id: 3,
-			path:
-				rull === "admin"
-					? "/profile/admin/evaluationtasks/"
-					: "/profile/client/evaluationtasks/",
+			path: EVALUATION_TASKS_PATH
 		},
 		{
 			icon: <TaskIcon className={classes.icon} />,
 			text: "Acception Tasks",
 			id: 4,
-			path:
-				rull === "admin"
-					? "/profile/admin/acceptiontasks/"
-					: "/profile/client/acceptiontasks/",
+			path: ACCEPTION_TASKS_PATH
+				
 		},
 		{
 			icon: <AssignmentLateIcon className={classes.icon} />,
 			text: "In Progress Tasks Tasks",
 			id: 5,
-			path:
-				rull === "admin"
-					? "/profile/admin/inprogresstasks/"
-					: "/profile/client/inprogresstasks/",
+			path: IN_PROCCESS_TASKS_PATH
 		},
 		{
 			icon: <AssignmentIcon className={classes.icon} />,
 			text: "Done Tasks Admin",
 			id: 6,
-			path:
-				rull === "admin"
-					? "/profile/admin/donetasks/"
-					: "/profile/client/donetasks/",
+			path: DONE_TASKS_PATH
 		},
 		{
 			icon: <AssignmentIcon className={classes.icon} />,
 			text: "Rejected tasks Admin",
 			id: 7,
-			path:
-				rull === "admin"
-					? "/profile/admin/rejectedtasks/"
-					: "/profile/client/rejectedtasks/",
+			path: REJECTED_TASKS_PATH
 		},
 		{
 			icon: <EditIcon className={classes.icon} />,
 			text: "Create Task",
-			path: "/",
+			path: CREATE_TASK_PATH,
 			id: 8,
+			rull // stugum enq admina te che
 		},
 		{
 			icon: <EqualizerIcon className={classes.icon} />,
@@ -153,7 +151,7 @@ function UserToolsList(props) {
 			icon: <MailIcon className={classes.icon} />,
 			text: "Inbox",
 			id: 11,
-			path: "Profile",
+			path: INBOX_PATH,
 		},
 	];
 
@@ -168,27 +166,29 @@ function UserToolsList(props) {
 			}}
 		>
 			{arrTools.map((e) => {
-				return (
-					<div
-						className={classes.div}
-						onClick={() => navigate(e.path)}
-						// onMouseOver={() => onMouseOver(e.text)}
-						key={uuidv4()}
-					>
-						{e.icon}
-						{props.open ? (
-							<span
-								style={{
-									flex: 5,
-									marginTop: "5%",
-								}}
-								className={classes.toolsspan}
-							>
-								{e.text}
-							</span>
-						) : null}
-					</div>
-				);
+				if(e.rull !== "Admin") {
+					return (
+						<div
+							className={classes.div}
+							onClick={() => navigate(e.path)}
+							// onMouseOver={() => onMouseOver(e.text)}
+							key={uuidv4()}
+						>
+							{e.icon}
+							{props.open ? (
+								<span
+									style={{
+										flex: 5,
+										marginTop: "5%",
+									}}
+									className={classes.toolsspan}
+								>
+									{e.text}
+								</span>
+							) : null}
+						</div>
+					);
+				}
 			})}
 		</div>
 	);

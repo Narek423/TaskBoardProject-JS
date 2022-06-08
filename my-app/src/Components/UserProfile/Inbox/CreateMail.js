@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { createUseStyles } from "react-jss";
-import {writeUserEmailTask} from "../../firebase";
+// import {writeUserEmailTask} from "../../firebase";
 import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
 
 
@@ -25,7 +25,7 @@ function CreateMail() {
 
   const mailSent = () => {
       const date = new Date().toLocaleString();
-    writeUserEmailTask(user.uid,mailValue,mailContentValue,date);
+    // writeUserEmailTask(user.uid,mailValue,mailContentValue,date);
     setMailContentValue('');
     setMailValue('');
   }

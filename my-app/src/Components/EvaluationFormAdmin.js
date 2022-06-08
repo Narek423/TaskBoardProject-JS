@@ -25,12 +25,13 @@ const useStyles = createUseStyles({
     width: "100%",
     backgroundColor: "#e2ebfc",
     justifyContent: "center",
-    height: "52vh",
+    height: "55vh",
+    flex: 3
   },
   container: {
     backgroundColor: "#f9fbff",
     width: "95%",
-    height: "50vh",
+    height: "80%",
     marginLeft: "auto",
     marginRight: "auto",
     marginTop: 0,
@@ -53,6 +54,7 @@ const useStyles = createUseStyles({
   defaultColDef: {
     fontFamily: "Palatino",
     fontSize: 15,
+    backgroundColor: 'red'
   },
   grouping: {
     display: "flex",
@@ -180,10 +182,10 @@ function PendingToEvaluation(props) {
   const [clientId, setClientId] = useState("");
 
   const containerStyle = () => {
-    return { width: "100vw", height: "100vh" };
+    return { width: "100%", flex: 1 };
   };
   const gridStyle = () => {
-    return { height: "100vh", width: "100vw" };
+    return { height: "100%", width: "100%" };
   };
   const [rowData, setRowData] = useState();
   const columnDefs = [
@@ -348,6 +350,18 @@ function PendingToEvaluation(props) {
       flex: 1,
     };
   }, []);
+  const defaultColDef1 = useMemo(() => {
+    return {
+      className: classes.defaultColDef1,
+      editable: true,
+      sortable: true,
+      minWidth: 100,
+      filter: true,
+      resizable: true,
+      floatingFilter: true,
+      flex: 1,
+    };
+  }, []);
 
   const sideBar = useMemo(() => {
     return {
@@ -456,8 +470,17 @@ function PendingToEvaluation(props) {
   }, []);
 
   return (
-    <div>
+    <div style={{
+      textAlign: 'center',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      
       <div className={classes.page}>
+      <span style={{
+        fontFamily: 'cursive',
+        fontSize: 50
+      }}>Evaluation</span>
         <div className={classes.container}>
           <React.Fragment>
             <CssBaseline />

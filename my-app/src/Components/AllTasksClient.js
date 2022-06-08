@@ -12,6 +12,9 @@ const useStyles = createUseStyles({
   page: {
     backgroundColor: "#e2ebfc",
     justifyContent: "center",
+    height: "99vh",
+    width: "100%",
+    background: 'red'
   },
   groupingInputs: {
     display: "flex",
@@ -29,10 +32,10 @@ function AllTasks(props) {
   const clientId = user.uid;
 
   const containerStyle = () => {
-    return { width: "100vw", height: "100vh" };
+    return { width: "100%", height: "100%" };
   };
   const gridStyle = () => {
-    return { marginTop: "40px", height: "94vh", width: "100vw" };
+    return { height: "100%", width: "100%" };
   };
 
   const [rowData, setRowData] = useState();
@@ -198,6 +201,7 @@ function AllTasks(props) {
       flex: 1,
     };
   }, []);
+  
 
   const sideBar = useMemo(() => {
     return {

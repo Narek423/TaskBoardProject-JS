@@ -43,7 +43,6 @@ export function signup(
 	roll,
 	enabled
 ) {
-	console.log(email, password);
 	return createUserWithEmailAndPassword(auth, email, password).then(
 		(userCredential) => {
 			const user = userCredential.user;
@@ -63,7 +62,7 @@ export function signup(
 	);
 }
 
-function writeUserData(
+export function writeUserData(
 	user,
 	password,
 	name,
@@ -90,8 +89,6 @@ function writeUserData(
 
 export function writeUserTask(
 	userId,
-	name,
-	email,
 	imageUrls,
 	titleValue,
 	nodesValue,
@@ -99,9 +96,8 @@ export function writeUserTask(
 	date
 ) {
 	const db = getDatabase();
-	set(ref(db, "task/" + userId), {
-		username: name,
-		email: email,
+	set(ref(db, "tasks/" + uuidv4()), {
+		userId: userId,
 		profile_picture: imageUrls,
 		title: titleValue,
 		nodes: nodesValue,

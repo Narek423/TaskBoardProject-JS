@@ -48,10 +48,16 @@ function PendingToEvaluation(props) {
   const clientId = user.uid;
 
   const containerStyle = () => {
-    return { width: "100vw", height: "100vh" };
+    return { width: "100%", height: "100%",
+    backgroundColor: "#e2ebfc",
+    justifyContent: "center",
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'column'
+  };
   };
   const gridStyle = () => {
-    return { height: "100vh", width: "100vw" };
+    return { width: "100%",margin: 'auto',flex: 10};
   };
   const [rowData, setRowData] = useState();
   const columnDefs = [
@@ -252,8 +258,12 @@ function PendingToEvaluation(props) {
   }, []);
 
   return (
-    <div className={classes.page}>
       <div style={containerStyle()}>
+        <span style={{
+          fontFamily: 'cursive',
+          fontSize: 40,
+          flex: 1
+        }}>EvaluationFormClient</span>
         <div style={gridStyle()} className="ag-theme-alpine">
           <AgGridReact
             rowData={rowData}
@@ -266,7 +276,6 @@ function PendingToEvaluation(props) {
           ></AgGridReact>
         </div>
       </div>
-    </div>
   );
 }
 
