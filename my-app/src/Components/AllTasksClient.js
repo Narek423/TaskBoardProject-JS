@@ -30,6 +30,7 @@ function AllTasks(props) {
   const classes = useStyles();
   const { user } = useUserAuth(UserAuthContext);
   const clientId = user.uid;
+  console.log(clientId);
 
   const containerStyle = () => {
     return { width: "100%", height: "100%" };

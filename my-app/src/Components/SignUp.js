@@ -14,7 +14,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { useUserAuth,UserAuthContext} from "../context/UserAuthContext";
 import NavMainBar from "./Nav-Bar/NavMainBar";
-import { writeUserData } from "./firebase";
+import { writeUserData } from "../Components/firebase";
 
 const useStyles = createUseStyles({
   header: {

@@ -63,28 +63,27 @@ export function signup(
 }
 
 export function writeUserData(
-	user,
-	password,
-	name,
-	lastName,
-	dateOfBirth,
-	phoneNumber,
-	taxCode,
-	roll,
-	enabled,
-	avatar = "https://st2.depositphotos.com/1104517/11965/v/950/depositphotos_119659092-stock-illustration-male-avatar-profile-picture-vector.jpg"
+  user,
+  password,
+  name,
+  lastName,
+  dateOfBirth,
+  phoneNumber,
+  taxCode,
+  roll,
+  enabled,
+  avatar = "https://st2.depositphotos.com/1104517/11965/v/950/depositphotos_119659092-stock-illustration-male-avatar-profile-picture-vector.jpg"
 ) {
-	set(ref(database, "users/" + user.uid), {
-		email: user.email,
-		avatar,
-		name,
-		lastName,
-		dateOfBirth,
-		phoneNumber,
-		taxCode,
-		roll,
-		enabled,
-	});
+  set(ref(database, "users/" + user.uid), {
+    avatar,
+    name,
+    lastName,
+    dateOfBirth,
+    phoneNumber,
+    taxCode,
+    roll,
+    enabled,
+  });
 }
 
 export function writeUserTask(

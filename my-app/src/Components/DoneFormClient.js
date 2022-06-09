@@ -218,10 +218,7 @@ function DoneTasks(props) {
         if (snapshot.exists()) {
           data = snapshot.val();
           for (let key in data) {
-            if (
-              data[key].clientId === clientId &&
-              data[key].state === "inProgress"
-            ) {
+            if (data[key].clientId === clientId && data[key].state === "done") {
               data[key].id = key;
               data[key] = { ...data[key], ...clientData };
               dataGrid.push(data[key]);
