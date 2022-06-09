@@ -13,7 +13,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
 import NavMainBar from "./Nav-Bar/NavMainBar";
-import paths from "./constants/paths";
+import paths from "./constants/Paths";
 
 const useStyles = createUseStyles({
 	header: {

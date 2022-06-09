@@ -10,7 +10,7 @@ import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import EditIcon from "@mui/icons-material/Edit";
 import PaymentIcon from "@mui/icons-material/Payment";
 import MailIcon from "@mui/icons-material/Mail";
-import paths from "./paths";
+import paths from "./Paths";
 
 const {
     PROFILE_PATH,

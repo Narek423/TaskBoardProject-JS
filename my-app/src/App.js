@@ -18,7 +18,7 @@ import RejectedFormAdmin from "./Components/RejectedFormAdmin";
 import RejectedFormClient from "./Components/RejectedFormClient";
 import AllTasksAdmin from "./Components/AllTasksAdmin";
 import AllTasksClient from "./Components/AllTasksClient";
-import paths from "./Components/constants/paths";
+import paths from "./Components/constants/Paths";
 
 function App() {
 	const  { USER_PROFILE_PATH,SIGN_IN_PATH,SIGN_UP_PATH } = paths;

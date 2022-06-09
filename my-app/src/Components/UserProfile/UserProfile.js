@@ -9,7 +9,7 @@ import Inbox from "./Inbox/Inbox";
 import ProfilePage from "./ProfilePage/ProfilePage";
 import UserTools from "./UserToolsBar/UserTools";
 import UserWorkingTable from "./UserWorkingTable/UserWorkingTable";
-import paths from "../constants/paths";
+import paths from "../constants/Paths";
 import PendingToEvaluation from "../EvaluationFormClient";
 import RejectedTasks from "../RejectedFormClient";
 import InProgressTasks from "../InProgressFormClient";
