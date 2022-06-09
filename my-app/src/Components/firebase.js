@@ -97,12 +97,16 @@ export function writeUserTask(
 ) {
 	const db = getDatabase();
 	set(ref(db, "tasks/" + uuidv4()), {
-		userId: userId,
+		clientId: userId,
 		profile_picture: imageUrls,
 		title: titleValue,
 		nodes: nodesValue,
-		descrp: descrpValue,
-		date: date,
+		description: descrpValue,
+		creationDate: date,
+		state: 'evaluation',
+		status: 'waiting',
+		quantity: 0,
+		costForUnit: 0
 	});
 }
 

@@ -21,7 +21,7 @@ const useStyles = createUseStyles({
   },
 });
 
-function AllTasks(props) {
+function AllTasksAdmin(props) {
   const classes = useStyles();
 
   const containerStyle = () => {
@@ -266,4 +266,4 @@ function AllTasks(props) {
   );
 }
 
-export default AllTasks;
+export default AllTasksAdmin;

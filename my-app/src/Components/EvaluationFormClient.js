@@ -82,8 +82,9 @@ function PendingToEvaluation(props) {
       field: "user",
       headerName: "User",
       columnGroupShow: "closed",
-      filter: "agTextColumnFilter",
-      flex: 1.5,
+      filter: "agTextColumnFilter", 
+      hide: true,
+      suppressColumnsToolPanel: true,
     },
     {
       headerClass: classes.header,
@@ -91,7 +92,8 @@ function PendingToEvaluation(props) {
       headerName: "Email",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
-      flex: 1.5,
+      hide: true,
+      suppressColumnsToolPanel: true,
     },
     {
       headerClass: classes.header,
@@ -99,7 +101,8 @@ function PendingToEvaluation(props) {
       headerName: "Phone number",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
-      flex: 1.5,
+      hide: true,
+      suppressColumnsToolPanel: true,
     },
     {
       headerClass: classes.header,

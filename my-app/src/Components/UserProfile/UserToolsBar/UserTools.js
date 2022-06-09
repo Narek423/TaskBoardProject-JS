@@ -49,24 +49,11 @@ function UserTools(props) {
         <ArrowCircleLeftIcon
           onClick={props.userToolsClose}
           className={classes.left}
-          style={{
-            // position: "absolute",
-            // right: 0,
-            // fontSize: 30,
-            // color: "white",
-          }}
         />
       ) : (
         <ArrowCircleRightIcon
         onClick={props.userToolsClose}
         className={classes.right}
-
-        //   style={{
-        //     position: "absolute",
-        //     top: 20,
-        //     right: 12,
-        //     fontSize: 30,
-        //   }}
         />
       )}
       {props.open ? <UserAvatar /> : null}

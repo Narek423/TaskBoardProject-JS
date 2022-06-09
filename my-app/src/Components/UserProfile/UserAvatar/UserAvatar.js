@@ -23,7 +23,6 @@ const useStyle = createUseStyles(() => {
 		img: {
 			width: "25%",
 			borderRadius: 60,
-			// borderBlockColor: "blue",
 		},
 	};
 });

@@ -1,5 +1,5 @@
 const paths = {
-    USER_PROFILE_PATH: 'profile/*',
+    USER_PROFILE_PATH: 'profile',
     SIGN_UP_PATH: 'signup',
     SIGN_IN_PATH: 'signin',
     PROFILE_PATH: '/',

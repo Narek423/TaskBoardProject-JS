@@ -9,13 +9,18 @@ import Inbox from "./Inbox/Inbox";
 import ProfilePage from "./ProfilePage/ProfilePage";
 import UserTools from "./UserToolsBar/UserTools";
 import UserWorkingTable from "./UserWorkingTable/UserWorkingTable";
-import paths from "../constants/Paths";
+import paths from "../constants/paths";
 import PendingToEvaluation from "../EvaluationFormClient";
 import RejectedTasks from "../RejectedFormClient";
 import InProgressTasks from "../InProgressFormClient";
 import DoneTasks from "../DoneFormClient";
 import { getDatabase, ref, get } from "firebase/database";
 import PendingToAcceptionAdmin from "../AcceptionFormAdmin";
+import PendingToEvaluationAdmin from "../EvaluationFormAdmin";
+import AllTasksAdmin from "../AllTasksAdmin";
+import InProgressTasksAdmin from "../InProgressFormAdmin";
+import DoneTasksAdmin from "../DoneFormAdmin";
+import RejectedTasksAdmin from "../RejectedFormAdmin";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -27,13 +32,10 @@ const useStyle = createUseStyles(() => {
 });
 
 function UserProfile({ children }) {
-  const { user } = useUserAuth(UserAuthContext);
+  const { user,rull} = useUserAuth(UserAuthContext);
   const classes = useStyle();
   const [toolsBarOpen, setToolsBaropen] = useState(true);
-  const [client, setClient] = useState("");
   const dbRef = getDatabase();
-  const [rull, setRull] = useState();
- 
     const {
     PROFILE_PATH,
     INBOX_PATH,
@@ -48,19 +50,10 @@ function UserProfile({ children }) {
 
   const userToolsClose = useCallback(() => {
     setToolsBaropen(!toolsBarOpen);
+    console.log(rull);
   });
 
-  useEffect(() => {
-    get(ref(dbRef, "users/" + user.uid))
-    .then((snapshot) => {
-      setRull(snapshot.val().roll);
-      console.log("our console", rull);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  })
-
+ console.log(rull)
   return (
     <div className={classes.UserProfile}>
       <UserTools open={toolsBarOpen} userToolsClose={userToolsClose} />
@@ -84,7 +77,7 @@ function UserProfile({ children }) {
         <Route
           path={ALL_TASKS_PATH}
           element={ rull === "Admin" ?
-            <UserWorkingTable open={toolsBarOpen} component={<AllTasks />} />
+            <UserWorkingTable open={toolsBarOpen} component={<AllTasksAdmin />} />
             :
             <UserWorkingTable open={toolsBarOpen} component={<AllTasks />} />
           }
@@ -94,24 +87,22 @@ function UserProfile({ children }) {
           element={ rull === "Admin" ?
             <UserWorkingTable
               open={toolsBarOpen}
-              component={<PendingToAcception />}
+              component={<PendingToAcceptionAdmin />}
             /> 
             : 
             <UserWorkingTable
               open={toolsBarOpen}
-              component={<PendingToAcceptionAdmin />}
+              component={<PendingToAcception />}
             />
           }
         />
         <Route
           path={CREATE_TASK_PATH}
-          element={  rull === "Admin" ?
+          element={ 
             <UserWorkingTable
               open={toolsBarOpen}
               component={<CreateNewTask />}
             /> 
-            :
-            null
           }
         />
         <Route
@@ -119,7 +110,7 @@ function UserProfile({ children }) {
           element={  rull === "Admin" ?
             <UserWorkingTable
               open={toolsBarOpen}
-              component={<PendingToEvaluation />}
+              component={<PendingToEvaluationAdmin />}
             /> 
             :
             <UserWorkingTable
@@ -133,7 +124,7 @@ function UserProfile({ children }) {
           element={ rull === "Admin" ?
             <UserWorkingTable
               open={toolsBarOpen}
-              component={<RejectedTasks />}
+              component={<RejectedTasksAdmin />}
             /> 
             :
             <UserWorkingTable
@@ -147,7 +138,7 @@ function UserProfile({ children }) {
           element={ rull === "Admin" ?
             <UserWorkingTable
               open={toolsBarOpen}
-              component={<InProgressTasks />}
+              component={<InProgressTasksAdmin />}
             />
             :
             <UserWorkingTable
@@ -159,7 +150,7 @@ function UserProfile({ children }) {
         <Route
           path={DONE_TASKS_PATH}
           element={ rull === "Admin" ?
-            <UserWorkingTable open={toolsBarOpen} component={<DoneTasks />} />
+            <UserWorkingTable open={toolsBarOpen} component={<DoneTasksAdmin />} />
             : 
             <UserWorkingTable open={toolsBarOpen} component={<DoneTasks />} />
           }

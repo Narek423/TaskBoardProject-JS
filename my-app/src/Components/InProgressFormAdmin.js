@@ -21,7 +21,7 @@ const useStyles = createUseStyles({
   },
 });
 
-function InProgressTasks(props) {
+function InProgressTasksAdmin(props) {
   const classes = useStyles();
 
   const containerStyle = () => {
@@ -296,4 +296,4 @@ function InProgressTasks(props) {
   );
 }
 
-export default InProgressTasks;
+export default InProgressTasksAdmin;

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -7,12 +7,15 @@ import {
 } from "firebase/auth";
 import { auth, database } from "../Components/firebase";
 import { getDatabase, ref, set, get, child } from "firebase/database";
+import { ArrAdminTools, ArrClientTools } from "../Components/constants/Tools";
 
 export const UserAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [rull, setRull] = useState(null);
+  const dbRef = getDatabase();
 
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -43,7 +46,22 @@ export function UserAuthContextProvider({ children }) {
     };
   }, []);
 
-  const value = { user, signUp, signIn, logOut };
+  useEffect(() => {
+    console.log("useEffect")
+    if (!!user) {
+      get(ref(dbRef, "users/" + user.uid))
+        .then((snapshot) => {
+          setRull(snapshot.val().roll);
+          console.log(snapshot.val());
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  },[user]);
+
+  
+   const value = { user, signUp, signIn, logOut, toolsList: rull && rull === "Admin" ? ArrAdminTools : ArrClientTools,rull};
 
   return (
     <UserAuthContext.Provider value={value}>

@@ -13,6 +13,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
 import NavMainBar from "./Nav-Bar/NavMainBar";
+import paths from "./constants/paths";
 
 const useStyles = createUseStyles({
 	header: {
@@ -92,6 +93,7 @@ function SignIn(props) {
 	const [signInButtonActive] = useState(false);
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
+
 
 	const classes = useStyles();
 	const [values, setValues] = useState({

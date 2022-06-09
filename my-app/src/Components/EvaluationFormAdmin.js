@@ -158,7 +158,7 @@ const useStyles = createUseStyles({
   },
 });
 
-function PendingToEvaluation(props) {
+function PendingToEvaluationAdmin(props) {
   const units = [
     { unit: "hour", cost: 20000 },
     { unit: "unit", cost: 0 },
@@ -663,4 +663,4 @@ function PendingToEvaluation(props) {
   );
 }
 
-export default PendingToEvaluation;
+export default PendingToEvaluationAdmin;

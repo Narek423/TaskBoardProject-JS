@@ -21,7 +21,7 @@ const useStyles = createUseStyles({
   },
 });
 
-function RejectedTasks(props) {
+function RejectedTasksAdmin(props) {
   const classes = useStyles();
 
   const containerStyle = () => {
@@ -269,4 +269,4 @@ function RejectedTasks(props) {
   );
 }
 
-export default RejectedTasks;
+export default RejectedTasksAdmin;

@@ -87,12 +87,12 @@ function CreateNewTask() {
   const [titleValue, setTittleValue] = useState("");
   const [nodesValue, setNodesValue] = useState("");
   const [descrpValue, setDescrpValue] = useState("");
-  const [createDate, setCreateDate] = useState(); 
   const { user } = useUserAuth(UserAuthContext);
   const [fileData, setFileData] = useState([]);
   const status = "waiting";
+
   const  writeData = () => {
-    setCreateDate(new Date().toLocaleString());
+    const createDate = new Date().toLocaleString();
     writeUserTask(user.uid,fileData,titleValue,nodesValue,descrpValue,createDate);
     setFileData([]);
     setNodesValue("");
@@ -207,6 +207,7 @@ function CreateNewTask() {
           </Button>
         </div>
       </div>
+      
     </div>
   );
 }

@@ -18,7 +18,7 @@ import RejectedFormAdmin from "./Components/RejectedFormAdmin";
 import RejectedFormClient from "./Components/RejectedFormClient";
 import AllTasksAdmin from "./Components/AllTasksAdmin";
 import AllTasksClient from "./Components/AllTasksClient";
-import paths from "./Components/constants/Paths";
+import paths from "./Components/constants/paths";
 
 function App() {
 	const  { USER_PROFILE_PATH,SIGN_IN_PATH,SIGN_UP_PATH } = paths;
@@ -29,7 +29,7 @@ function App() {
 					<Route path='/' element={<h1>HOME PAGE</h1>} />
 
 					<Route
-						path={USER_PROFILE_PATH}
+						path={`${USER_PROFILE_PATH}/*`}
 						element={
 							<ProtectedRoute>
 								<UserProfile />
