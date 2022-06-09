@@ -57,7 +57,7 @@ const useStyle = createUseStyles(() => {
 function UserToolsList(props) {
   const navigate = useNavigate();
   const classes = useStyle();
-  const { user } = useUserAuth(UserAuthContext);
+  const { user,toolsList } = useUserAuth(UserAuthContext);
   const clientId = user.uid;
   const dbRef = getDatabase();
   const [rull, setRull] = useState();
@@ -73,94 +73,7 @@ function UserToolsList(props) {
       console.error(error);
     });
 
-  const arrTools = [
-    {
-      icon: <AssignmentIndIcon className={classes.icon} />,
-      text: "Profile",
-      path: "profile/Div",
-      id: 1,
-    },
-    {
-      icon: <AssignmentIcon className={classes.icon} />,
-      text: "All Tasks",
-      id: 2,
-      path:
-        rull === "Admin"
-          ? "/profile/admin/alltasks/"
-          : "/profile/client/alltasks/",
-    },
-    {
-      icon: <PublishedWithChangesIcon className={classes.icon} />,
-      text: "Evaluation Tasks",
-      id: 3,
-      path:
-        rull === "Admin"
-          ? "/profile/admin/evaluationtasks/"
-          : "/profile/client/evaluationtasks/",
-    },
-    {
-      icon: <TaskIcon className={classes.icon} />,
-      text: "Acception Tasks",
-      id: 4,
-      path:
-        rull === "Admin"
-          ? "/profile/admin/acceptiontasks/"
-          : "/profile/client/acceptiontasks/",
-    },
-    {
-      icon: <AssignmentLateIcon className={classes.icon} />,
-      text: "In Progress Tasks Tasks",
-      id: 5,
-      path:
-        rull === "Admin"
-          ? "/profile/admin/inprogresstasks/"
-          : "/profile/client/inprogresstasks/",
-    },
-    {
-      icon: <AssignmentIcon className={classes.icon} />,
-      text: "Done Tasks Admin",
-      id: 6,
-      path:
-        rull === "Admin"
-          ? "/profile/admin/donetasks/"
-          : "/profile/client/donetasks/",
-    },
-    {
-      icon: <AssignmentIcon className={classes.icon} />,
-      text: "Rejected tasks Admin",
-      id: 7,
-      path:
-        rull === "Admin"
-          ? "/profile/admin/rejectedtasks/"
-          : "/profile/client/rejectedtasks/",
-    },
-    {
-      icon: <EditIcon className={classes.icon} />,
-      text: "Create Task",
-      path: "/",
-      id: 8,
-    },
-    {
-      icon: <EqualizerIcon className={classes.icon} />,
-      text: "Statics",
-      path: "/",
-      id: 9,
-    },
-    {
-      icon: <PaymentIcon className={classes.icon} />,
-      text: "Payment History",
-      path: "Profile",
-      id: 10,
-    },
-    {
-      icon: <MailIcon className={classes.icon} />,
-      text: "Inbox",
-      id: 11,
-      path: "Profile",
-    },
-  ];
-
-  // const [arrTools, setToolsData] = useState(arr);
+  const arrTools = toolsList();
 
   return (
     <div
