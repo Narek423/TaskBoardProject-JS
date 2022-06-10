@@ -257,7 +257,7 @@ function SignUp(props) {
         <div className={classes.signUp}>
           <TextField
             className={classes.fields}
-            value={name}
+            value={username}
             onChange={(e) => setUsername(e.target.value)}
             id="usernameId"
             label="Username"
@@ -280,7 +280,7 @@ function SignUp(props) {
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             id="lastNameId"
-            label="UsLaster name"
+            label="Last name"
             variant="outlined"
           />
         </div>
