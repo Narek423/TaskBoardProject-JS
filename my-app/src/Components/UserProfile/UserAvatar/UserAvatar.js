@@ -29,26 +29,26 @@ const useStyle = createUseStyles(() => {
 });
 
 function UserAvatar() {
-  const { user } = useUserAuth(UserAuthContext);
+  const { user,email,imgUrl} = useUserAuth(UserAuthContext);
   const classes = useStyle();
-  const [imgUrl, setImgUrl] = useState("");
+  // const [imgUrl, setImgUrl] = useState("");
 
-  useEffect(() => {
-    if(user?.email){
-    getDownloadURL(ref(storage, `${user.email}/avatar`))
-      .then((url) => {
-        setImgUrl(url);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if(user?.email){
+  //   getDownloadURL(ref(storage, `${props.email}/avatar`))
+  //     .then((url) => {
+  //       setImgUrl(url);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  //   }
+  // }, [user]);
 
   return (
     <div className={classes.avatar}>
       <img className={classes.img} alt="avatar" src={imgUrl ? imgUrl : avatar}></img>
-      <p className={classes.useremail}>{user.email}</p>
+      <p className={classes.useremail}>{email}</p>
     </div>
   );
 }
