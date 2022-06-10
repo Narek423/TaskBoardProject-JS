@@ -20,14 +20,27 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 
 const useStyles = createUseStyles({
+  // page: {
+  //   margin: 0,
+  //   width: "100%",
+  //   backgroundColor: "#e2ebfc",
+  //   justifyContent: "center",
+  //   height: "55vh",
+  //   flex: 3,
+  // },
   page: {
-    margin: 0,
-    width: "100%",
     backgroundColor: "#e2ebfc",
     justifyContent: "center",
-    height: "55vh",
-    flex: 3
   },
+  // container: {
+  //   backgroundColor: "#f9fbff",
+  //   width: "95vw",
+  //   height: "60vh",
+  //   borderColor: "#FF3D00",
+  //   borderWidth: 2,
+  //   borderRadius: 9,
+  //   justifyContent: "center",
+  // },
   container: {
     backgroundColor: "#f9fbff",
     width: "95%",
@@ -54,7 +67,7 @@ const useStyles = createUseStyles({
   defaultColDef: {
     fontFamily: "Palatino",
     fontSize: 15,
-    backgroundColor: 'red'
+    backgroundColor: "red",
   },
   grouping: {
     display: "flex",
@@ -165,7 +178,7 @@ function PendingToEvaluationAdmin(props) {
   ];
   const classes = useStyles();
   const [avatar, setAvatar] = useState("");
-  const [user, setUser] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [title, setTitle] = useState("");
@@ -182,10 +195,18 @@ function PendingToEvaluationAdmin(props) {
   const [clientId, setClientId] = useState("");
 
   const containerStyle = () => {
-    return { width: "100%", flex: 1 };
+    return {
+      width: "100%",
+      height: "100%",
+      backgroundColor: "#e2ebfc",
+      justifyContent: "center",
+      textAlign: "center",
+      display: "flex",
+      flexDirection: "column",
+    };
   };
   const gridStyle = () => {
-    return { height: "100%", width: "100%" };
+    return { width: "100%", margin: "auto", flex: 10 };
   };
   const [rowData, setRowData] = useState();
   const columnDefs = [
@@ -207,7 +228,7 @@ function PendingToEvaluationAdmin(props) {
     },
     {
       headerClass: classes.header,
-      field: "user",
+      field: "username",
       headerName: "User",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
@@ -391,7 +412,7 @@ function PendingToEvaluationAdmin(props) {
         if (snapshot.exists()) {
           data = snapshot.val();
           for (let key in data) {
-            if (data[key].state === "evaluation") {
+            if (data[key].state === "Evaluation") {
               let clId = data[key].clientId;
               data[key].id = key;
               data[key] = { ...data[key], ...clientData[clId] };
@@ -418,8 +439,8 @@ function PendingToEvaluationAdmin(props) {
         costForUnit: costForUnit,
         unit: unit.unit || unit,
         cost: cost,
-        status: "waiting",
-        state: "acception",
+        status: "Waiting",
+        state: "Acception",
         clientId: clientId,
       };
 
@@ -435,7 +456,7 @@ function PendingToEvaluationAdmin(props) {
     const selectedRows = param.api.getSelectedRows();
     if (selectedRows.length === 1) {
       setAvatar(selectedRows[0].avatar || "");
-      setUser(selectedRows[0].user);
+      setUsername(selectedRows[0].username);
       setClientId(selectedRows[0].clientId);
       setEmail(selectedRows[0].email);
       setPhoneNumber(selectedRows[0].phoneNumber || "");
@@ -460,7 +481,7 @@ function PendingToEvaluationAdmin(props) {
   const autoGroupColumnDef = useMemo(() => {
     return {
       headerName: "User",
-      field: "user",
+      field: "username",
       minWidth: 250,
       cellRenderer: "agGroupCellRenderer",
       cellRendererParams: {
@@ -470,18 +491,32 @@ function PendingToEvaluationAdmin(props) {
   }, []);
 
   return (
-    <div style={{
-      textAlign: 'center',
-      display: 'flex',
-      flexDirection: 'column'
-    }}>
-      
+    <div
+      style={{
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <div className={classes.page}>
-      <span style={{
-        fontFamily: 'cursive',
-        fontSize: 50
-      }}>Evaluation</span>
+        <span
+          style={{
+            fontFamily: "cursive",
+            fontSize: 50,
+          }}
+        >
+          Evaluation
+        </span>
         <div className={classes.container}>
+          <span
+            style={{
+              fontFamily: "cursive",
+              fontSize: 40,
+              flex: 1,
+            }}
+          >
+            Evaluation tasks
+          </span>
           <React.Fragment>
             <CssBaseline />
             <Container>
@@ -490,7 +525,7 @@ function PendingToEvaluationAdmin(props) {
                   <div className={classes.TextFieldLeftAvatar}>
                     <div className={classes.groupingName}>
                       <div className={classes.avatar}>{avatar}</div>
-                      <div className={classes.nameText}>{user}</div>
+                      <div className={classes.nameText}>{username}</div>
                     </div>
                   </div>
                   <div className={classes.TextFieldRightTitle}>

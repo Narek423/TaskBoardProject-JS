@@ -8,10 +8,6 @@ import { getDatabase, ref, get } from "firebase/database";
 import { UserAuthContext, useUserAuth } from "../context/UserAuthContext";
 
 const useStyles = createUseStyles({
-  page: {
-    backgroundColor: "#e2ebfc",
-    justifyContent: "center",
-  },
   container: {
     backgroundColor: "#f9fbff",
     width: "95vw",
@@ -48,16 +44,18 @@ function PendingToEvaluation(props) {
   const clientId = user.uid;
 
   const containerStyle = () => {
-    return { width: "100%", height: "100%",
-    backgroundColor: "#e2ebfc",
-    justifyContent: "center",
-    textAlign: 'center',
-    display: 'flex',
-    flexDirection: 'column'
-  };
+    return {
+      width: "100%",
+      height: "100%",
+      backgroundColor: "#e2ebfc",
+      justifyContent: "center",
+      textAlign: "center",
+      display: "flex",
+      flexDirection: "column",
+    };
   };
   const gridStyle = () => {
-    return { width: "100%",margin: 'auto',flex: 10};
+    return { width: "100%", margin: "auto", flex: 10 };
   };
   const [rowData, setRowData] = useState();
   const columnDefs = [
@@ -79,10 +77,10 @@ function PendingToEvaluation(props) {
     },
     {
       headerClass: classes.header,
-      field: "user",
+      field: "username",
       headerName: "User",
       columnGroupShow: "closed",
-      filter: "agTextColumnFilter", 
+      filter: "agTextColumnFilter",
       hide: true,
       suppressColumnsToolPanel: true,
     },
@@ -245,7 +243,7 @@ function PendingToEvaluation(props) {
           for (let key in data) {
             if (
               data[key].clientId === clientId &&
-              data[key].state === "evaluation"
+              data[key].state === "Evaluation"
             ) {
               data[key].id = key;
               data[key] = { ...data[key], ...clientData };
@@ -261,24 +259,28 @@ function PendingToEvaluation(props) {
   }, []);
 
   return (
-      <div style={containerStyle()}>
-        <span style={{
-          fontFamily: 'cursive',
+    <div style={containerStyle()}>
+      <span
+        style={{
+          fontFamily: "cursive",
           fontSize: 40,
-          flex: 1
-        }}>EvaluationFormClient</span>
-        <div style={gridStyle()} className="ag-theme-alpine">
-          <AgGridReact
-            rowData={rowData}
-            columnDefs={columnDefs}
-            rowSelection={"single"}
-            suppressRowClickSelection={false}
-            defaultColDef={defaultColDef}
-            sideBar={sideBar}
-            onGridReady={onGridReady}
-          ></AgGridReact>
-        </div>
+          flex: 1,
+        }}
+      >
+        Evaluation tasks
+      </span>
+      <div style={gridStyle()} className="ag-theme-alpine">
+        <AgGridReact
+          rowData={rowData}
+          columnDefs={columnDefs}
+          rowSelection={"single"}
+          suppressRowClickSelection={false}
+          defaultColDef={defaultColDef}
+          sideBar={sideBar}
+          onGridReady={onGridReady}
+        ></AgGridReact>
       </div>
+    </div>
   );
 }
 

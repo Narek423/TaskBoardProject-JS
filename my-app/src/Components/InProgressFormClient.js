@@ -8,8 +8,13 @@ import { getDatabase, ref, get } from "firebase/database";
 import { UserAuthContext, useUserAuth } from "../context/UserAuthContext";
 
 const useStyles = createUseStyles({
-  page: {
-    backgroundColor: "#e2ebfc",
+  container: {
+    backgroundColor: "#f9fbff",
+    width: "95vw",
+    height: "60vh",
+    borderColor: "#FF3D00",
+    borderWidth: 2,
+    borderRadius: 9,
     justifyContent: "center",
   },
   groupingInputs: {
@@ -27,10 +32,18 @@ function InProgressTasks(props) {
   const clientId = user.uid;
 
   const containerStyle = () => {
-    return { width: "100%", height: "100%" };
+    return {
+      width: "100%",
+      height: "100%",
+      backgroundColor: "#e2ebfc",
+      justifyContent: "center",
+      textAlign: "center",
+      display: "flex",
+      flexDirection: "column",
+    };
   };
   const gridStyle = () => {
-    return {  height: "100%", width: "100%" };
+    return { width: "100%", margin: "auto", flex: 10 };
   };
 
   const [rowData, setRowData] = useState();
@@ -63,7 +76,7 @@ function InProgressTasks(props) {
     },
     {
       headerClass: classes.header,
-      field: "user",
+      field: "username",
       headerName: "User",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
@@ -218,7 +231,7 @@ function InProgressTasks(props) {
           for (let key in data) {
             if (
               data[key].clientId === clientId &&
-              data[key].state === "inProgress"
+              data[key].state === "In progress"
             ) {
               data[key].id = key;
               data[key] = { ...data[key], ...clientData };
@@ -234,18 +247,27 @@ function InProgressTasks(props) {
   }, []);
 
   return (
-      <div style={containerStyle()}>
-        <div style={gridStyle()} className="ag-theme-alpine">
-          <AgGridReact
-            rowData={rowData}
-            columnDefs={columnDefs}
-            suppressRowClickSelection={false}
-            defaultColDef={defaultColDef}
-            sideBar={sideBar}
-            onGridReady={onGridReady}
-          ></AgGridReact>
-        </div>
+    <div style={containerStyle()}>
+      <span
+        style={{
+          fontFamily: "cursive",
+          fontSize: 40,
+          flex: 1,
+        }}
+      >
+        In progress tasks
+      </span>
+      <div style={gridStyle()} className="ag-theme-alpine">
+        <AgGridReact
+          rowData={rowData}
+          columnDefs={columnDefs}
+          suppressRowClickSelection={false}
+          defaultColDef={defaultColDef}
+          sideBar={sideBar}
+          onGridReady={onGridReady}
+        ></AgGridReact>
       </div>
+    </div>
   );
 }
 

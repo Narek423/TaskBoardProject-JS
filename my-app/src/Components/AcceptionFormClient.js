@@ -8,15 +8,18 @@ import { getDatabase, ref, get, update } from "firebase/database";
 import { UserAuthContext, useUserAuth } from "../context/UserAuthContext";
 
 const useStyles = createUseStyles({
-  page: {
-    backgroundColor: "#e2ebfc",
+  container: {
+    backgroundColor: "#f9fbff",
+    width: "95vw",
+    height: "60vh",
+    borderColor: "#FF3D00",
+    borderWidth: 2,
+    borderRadius: 9,
     justifyContent: "center",
   },
   groupingInputs: {
     display: "flex",
-    // marginTop: 0,
     width: "100%",
-    // height: 10,
     justifyContent: "left",
   },
   buttonDiv: {
@@ -116,10 +119,18 @@ function PendingToAcception(props) {
   const clientId = user.uid;
 
   const containerStyle = () => {
-    return { width: "100%", height: "100%" , display: 'flex', flexDirection: 'column'};
+    return {
+      width: "100%",
+      height: "100%",
+      backgroundColor: "#e2ebfc",
+      justifyContent: "center",
+      textAlign: "center",
+      display: "flex",
+      flexDirection: "column",
+    };
   };
   const gridStyle = () => {
-    return {  height: "100%", width: "100%" };
+    return { width: "100%", margin: "auto", flex: 10 };
   };
 
   const [rowData, setRowData] = useState();
@@ -267,8 +278,8 @@ function PendingToAcception(props) {
         costForUnit: selectedRow.costForUnit,
         unit: selectedRow.unit,
         cost: selectedRow.cost,
-        status: "waiting",
-        state: param.target.innerText === "Accept" ? "inProgress" : "rejected",
+        status: "Waiting",
+        state: param.target.innerText === "Accept" ? "In progress" : "Rejected",
         clientId: selectedRow.clientId,
       };
       const updates = {};
@@ -304,7 +315,7 @@ function PendingToAcception(props) {
           for (let key in data) {
             if (
               data[key].clientId === clientId &&
-              data[key].state === "acception"
+              data[key].state === "Acception"
             ) {
               data[key].id = key;
               data[key] = { ...data[key], ...clientData };
@@ -320,39 +331,46 @@ function PendingToAcception(props) {
   }, []);
 
   return (
-    // <div className={classes.page}>
-      <div style={containerStyle()}>
-        <div className={classes.groupingInputs}>
-          <button
-            onClick={onAcceptRejectBtnClick}
-            className={classes.acceptButton}
-            type="button"
-          >
-            {" "}
-            Accept{" "}
-          </button>
-          <button
-            onClick={onAcceptRejectBtnClick}
-            className={classes.rejectButton}
-            type="button"
-          >
-            {" "}
-            Reject{" "}
-          </button>
-        </div>
-        <div style={gridStyle()} className="ag-theme-alpine">
-          <AgGridReact
-            rowData={rowData}
-            columnDefs={columnDefs}
-            rowSelection={"multiple"}
-            suppressRowClickSelection={false}
-            defaultColDef={defaultColDef}
-            sideBar={sideBar}
-            onGridReady={onGridReady}
-          ></AgGridReact>
-        </div>
+    <div style={containerStyle()}>
+      <span
+        style={{
+          fontFamily: "cursive",
+          fontSize: 40,
+          flex: 1,
+        }}
+      >
+        Tasks for acception
+      </span>
+      <div className={classes.groupingInputs}>
+        <button
+          onClick={onAcceptRejectBtnClick}
+          className={classes.acceptButton}
+          type="button"
+        >
+          {" "}
+          Accept{" "}
+        </button>
+        <button
+          onClick={onAcceptRejectBtnClick}
+          className={classes.rejectButton}
+          type="button"
+        >
+          {" "}
+          Reject{" "}
+        </button>
       </div>
-    // </div>
+      <div style={gridStyle()} className="ag-theme-alpine">
+        <AgGridReact
+          rowData={rowData}
+          columnDefs={columnDefs}
+          rowSelection={"multiple"}
+          suppressRowClickSelection={false}
+          defaultColDef={defaultColDef}
+          sideBar={sideBar}
+          onGridReady={onGridReady}
+        ></AgGridReact>
+      </div>
+    </div>
   );
 }
 

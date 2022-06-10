@@ -1,10 +1,10 @@
 import { initializeApp } from "firebase/app";
 import {
-	browserSessionPersistence,
-	getAuth,
-	setPersistence,
-	signInWithEmailAndPassword,
-	createUserWithEmailAndPassword,
+  browserSessionPersistence,
+  getAuth,
+  setPersistence,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { useUserAuth } from "../context/UserAuthContext";
 import { getStorage } from "firebase/storage";
@@ -17,14 +17,14 @@ import { v4 as uuidv4 } from "uuid";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-	apiKey: "AIzaSyAeMdajQ5RYUmEj6bxOcsVUYZYlFz55sKA",
-	authDomain: "taskboardproject-3dd1f.firebaseapp.com",
-	databaseURL: "https://taskboardproject-3dd1f-default-rtdb.firebaseio.com",
-	projectId: "taskboardproject-3dd1f",
-	storageBucket: "taskboardproject-3dd1f.appspot.com",
-	messagingSenderId: "1021091163244",
-	appId: "1:1021091163244:web:5eeeb99edf48dec361fc49",
-	measurementId: "G-7SS21PZV79",
+  apiKey: "AIzaSyAeMdajQ5RYUmEj6bxOcsVUYZYlFz55sKA",
+  authDomain: "taskboardproject-3dd1f.firebaseapp.com",
+  databaseURL: "https://taskboardproject-3dd1f-default-rtdb.firebaseio.com",
+  projectId: "taskboardproject-3dd1f",
+  storageBucket: "taskboardproject-3dd1f.appspot.com",
+  messagingSenderId: "1021091163244",
+  appId: "1:1021091163244:web:5eeeb99edf48dec361fc49",
+  measurementId: "G-7SS21PZV79",
 };
 
 // Initialize Firebase
@@ -33,33 +33,34 @@ export const database = getDatabase(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 export function signup(
-	email,
-	password,
-	name,
-	lastName,
-	dateOfBirth,
-	phoneNumber,
-	taxCode,
-	roll,
-	enabled
+  email,
+  password,
+  name,
+  lastName,
+  username,
+  dateOfBirth,
+  phoneNumber,
+  taxCode,
+  roll,
+  enabled
 ) {
-	return createUserWithEmailAndPassword(auth, email, password).then(
-		(userCredential) => {
-			const user = userCredential.user;
-			console.log(user);
-			writeUserData(
-				user,
-				password,
-				name,
-				lastName,
-				dateOfBirth,
-				phoneNumber,
-				taxCode,
-				roll,
-				enabled
-			);
-		}
-	);
+  return createUserWithEmailAndPassword(auth, email, password).then(
+    (userCredential) => {
+      const user = userCredential.user;
+      writeUserData(
+        user,
+        password,
+        name,
+        lastName,
+        username,
+        dateOfBirth,
+        phoneNumber,
+        taxCode,
+        roll,
+        enabled
+      );
+    }
+  );
 }
 
 export function writeUserData(
@@ -67,6 +68,7 @@ export function writeUserData(
   password,
   name,
   lastName,
+  username,
   dateOfBirth,
   phoneNumber,
   taxCode,
@@ -78,6 +80,7 @@ export function writeUserData(
     avatar,
     name,
     lastName,
+    username,
     dateOfBirth,
     phoneNumber,
     taxCode,
@@ -87,35 +90,35 @@ export function writeUserData(
 }
 
 export function writeUserTask(
-	userId,
-	imageUrls,
-	titleValue,
-	nodesValue,
-	descrpValue,
-	date
+  userId,
+  imageUrls,
+  titleValue,
+  nodesValue,
+  descrpValue,
+  date
 ) {
-	const db = getDatabase();
-	set(ref(db, "tasks/" + uuidv4()), {
-		clientId: userId,
-		profile_picture: imageUrls,
-		title: titleValue,
-		nodes: nodesValue,
-		description: descrpValue,
-		creationDate: date,
-		state: 'evaluation',
-		status: 'waiting',
-		quantity: 0,
-		costForUnit: 0
-	});
+  const db = getDatabase();
+  set(ref(db, "tasks/" + uuidv4()), {
+    clientId: userId,
+    profile_picture: imageUrls,
+    title: titleValue,
+    nodes: nodesValue,
+    description: descrpValue,
+    creationDate: date,
+    state: "evaluation",
+    status: "waiting",
+    quantity: 0,
+    costForUnit: 0,
+  });
 }
 
 export async function signin(email, password) {
-	return signInWithEmailAndPassword(auth, email, password).then(
-		(userCredential) => {
-			const user = userCredential.user;
-			const userId = user.uid;
-			const dbRef = ref(getDatabase());
-			return get(child(dbRef, `users/${userId}`)).then((snep) => snep.val());
-		}
-	);
+  return signInWithEmailAndPassword(auth, email, password).then(
+    (userCredential) => {
+      const user = userCredential.user;
+      const userId = user.uid;
+      const dbRef = ref(getDatabase());
+      return get(child(dbRef, `users/${userId}`)).then((snep) => snep.val());
+    }
+  );
 }

@@ -8,10 +8,6 @@ import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get } from "firebase/database";
 
 const useStyles = createUseStyles({
-  page: {
-    backgroundColor: "#e2ebfc",
-    justifyContent: "center",
-  },
   groupingInputs: {
     display: "flex",
     marginTop: 0,
@@ -25,10 +21,18 @@ function DoneTasksAdmin(props) {
   const classes = useStyles();
 
   const containerStyle = () => {
-    return { width: "100vw", height: "100vh" };
+    return {
+      width: "100%",
+      height: "100%",
+      backgroundColor: "#e2ebfc",
+      justifyContent: "center",
+      textAlign: "center",
+      display: "flex",
+      flexDirection: "column",
+    };
   };
   const gridStyle = () => {
-    return { marginTop: "40px", height: "94vh", width: "100vw" };
+    return { width: "100%", margin: "auto", flex: 10 };
   };
 
   const [rowData, setRowData] = useState();
@@ -61,7 +65,7 @@ function DoneTasksAdmin(props) {
     },
     {
       headerClass: classes.header,
-      field: "user",
+      field: "username",
       headerName: "User",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
@@ -227,7 +231,7 @@ function DoneTasksAdmin(props) {
         if (snapshot.exists()) {
           data = snapshot.val();
           for (let key in data) {
-            if (data[key].state === "done") {
+            if (data[key].state === "Done") {
               let clId = data[key].clientId;
               data[key].id = key;
               data[key] = { ...data[key], ...clientData[clId] };
@@ -245,7 +249,7 @@ function DoneTasksAdmin(props) {
   const autoGroupColumnDef = useMemo(() => {
     return {
       headerName: "User",
-      field: "user",
+      field: "username",
       minWidth: 250,
       cellRenderer: "agGroupCellRenderer",
       cellRendererParams: {
@@ -255,19 +259,26 @@ function DoneTasksAdmin(props) {
   }, []);
 
   return (
-    <div className={classes.page}>
-      <div style={containerStyle()}>
-        <div style={gridStyle()} className="ag-theme-alpine">
-          <AgGridReact
-            rowData={rowData}
-            columnDefs={columnDefs}
-            suppressRowClickSelection={false}
-            defaultColDef={defaultColDef}
-            sideBar={sideBar}
-            onGridReady={onGridReady}
-            autoGroupColumnDef={autoGroupColumnDef}
-          ></AgGridReact>
-        </div>
+    <div style={containerStyle()}>
+      <span
+        style={{
+          fontFamily: "cursive",
+          fontSize: 40,
+          flex: 1,
+        }}
+      >
+        Done tasks
+      </span>
+      <div style={gridStyle()} className="ag-theme-alpine">
+        <AgGridReact
+          rowData={rowData}
+          columnDefs={columnDefs}
+          suppressRowClickSelection={false}
+          defaultColDef={defaultColDef}
+          sideBar={sideBar}
+          onGridReady={onGridReady}
+          autoGroupColumnDef={autoGroupColumnDef}
+        ></AgGridReact>
       </div>
     </div>
   );
