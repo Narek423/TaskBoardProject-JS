@@ -30,8 +30,10 @@ export function UserAuthContextProvider({ children }) {
   }
 
   function signIn(email, password) {
+    console.log(email);
     return signInWithEmailAndPassword(auth, email, password).then(
       (currentUser) => {
+        console.log("user", currentUser);
         setUser(currentUser);
       }
     );
@@ -50,8 +52,9 @@ export function UserAuthContextProvider({ children }) {
 
     return () => {
       unsubscribe();
+      setImgUrl("");
     };
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (!!user?.accessToken) {

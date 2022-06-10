@@ -56,7 +56,7 @@ function InProgressTasksAdmin(props) {
       unit: selectedRow.unit,
       cost: selectedRow.cost,
       status: selectedRow.status,
-      state: selectedRow.status === "Done" ? "Done" : "InProgress",
+      state: selectedRow.status === "Done" ? "Done" : "In progress",
       closedDate: selectedRow.status === "Done" ? new Date() : "",
       clientId: selectedRow.clientId,
       lastChangedDate: new Date(),
