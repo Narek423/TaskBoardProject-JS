@@ -8,7 +8,11 @@ import {
 import { auth, database, storage } from "../Components/firebase";
 import { getDatabase, ref, set, get, child } from "firebase/database";
 import { ArrAdminTools, ArrClientTools } from "../Components/constants/Tools";
-import { getDownloadURL, ref as resstore, uploadBytesResumable } from "firebase/storage";
+import {
+  getDownloadURL,
+  ref as resstore,
+  uploadBytesResumable,
+} from "firebase/storage";
 
 export const UserAuthContext = createContext();
 
@@ -19,7 +23,7 @@ export function UserAuthContextProvider({ children }) {
   const dbRef = getDatabase();
   const [avatarLink, setAvatarLink] = useState("");
   const [imgUrl, setImgUrl] = useState("");
-  const [email,setEmail] = useState();
+  const [email, setEmail] = useState();
 
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -64,18 +68,18 @@ export function UserAuthContextProvider({ children }) {
   }, [user]);
 
   useEffect(() => {
-    if(user?.email){
-      setEmail(user.email)
-    getDownloadURL(resstore(storage, `${user.email}/avatar`))
-    .then((url) => {
-      setImgUrl(url);
-      console.log(url)
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
-  },[user])
+    if (user?.email) {
+      setEmail(user.email);
+      getDownloadURL(resstore(storage, `${user.email}/avatar`))
+        .then((url) => {
+          setImgUrl(url);
+          console.log(url);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [user]);
 
   const value = {
     user,
