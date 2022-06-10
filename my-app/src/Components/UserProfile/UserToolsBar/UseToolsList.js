@@ -58,20 +58,19 @@ function UserToolsList(props) {
   const navigate = useNavigate();
   const classes = useStyle();
   const { user,toolsList } = useUserAuth(UserAuthContext);
-  const clientId = user.uid;
-  const dbRef = getDatabase();
-  const [rull, setRull] = useState();
+  // // const clientId = user.uid;
+  // const dbRef = getDatabase();
+  // const [rull, setRull] = useState();
 
-  let clientData = {};
-  get(ref(dbRef, "users/" + clientId))
-    .then((snapshot) => {
-      clientData = snapshot.val();
-      setRull(clientData.roll);
-      console.log("our console", clientData);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  // let clientData = {};
+  // get(ref(dbRef, "users/" + clientId))
+  //   .then((snapshot) => {
+  //     clientData = snapshot.val();
+  //     setRull(clientData.roll);
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
 
   const arrTools = toolsList();
 

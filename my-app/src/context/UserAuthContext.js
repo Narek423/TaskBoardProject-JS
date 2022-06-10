@@ -9,6 +9,7 @@ import { auth, database } from "../Components/firebase";
 import { getDatabase, ref, set, get, child } from "firebase/database";
 import { ArrAdminTools, ArrClientTools } from "../Components/constants/Tools";
 
+
 export const UserAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
@@ -16,6 +17,7 @@ export function UserAuthContextProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [rull, setRull] = useState(null);
   const dbRef = getDatabase();
+  const [avatarLink,setAvatarLink] = useState("")
 
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -36,7 +38,6 @@ export function UserAuthContextProvider({ children }) {
   useEffect(() => {
     // durs hanel  onAuthStateChanged
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log(`useEffect`, currentUser);
       setUser(currentUser);
       setLoading(false);
     });
@@ -47,12 +48,12 @@ export function UserAuthContextProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    console.log("useEffect")
-    if (!!user) {
+    if (!!user?.accessToken) {
+      // console.log("User",user)
       get(ref(dbRef, "users/" + user.uid))
         .then((snapshot) => {
+          console.log("snapshot",snapshot.val().roll)
           setRull(snapshot.val().roll);
-          console.log(snapshot.val());
         })
         .catch((error) => {
           console.error(error);
@@ -61,7 +62,7 @@ export function UserAuthContextProvider({ children }) {
   },[user]);
 
   
-   const value = { user, signUp, signIn, logOut, toolsList: rull && rull === "Admin" ? ArrAdminTools : ArrClientTools,rull};
+   const value = { user, signUp, signIn, avatarLink: avatarLink,logOut, toolsList: rull && rull === "Admin" ? ArrAdminTools : ArrClientTools,rull};
 
   return (
     <UserAuthContext.Provider value={value}>

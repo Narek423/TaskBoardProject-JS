@@ -6,18 +6,6 @@ import NavMainBar from "./Components/Nav-Bar/NavMainBar";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import UserProfile from "./Components/UserProfile/UserProfile";
 import ProtectedRoute from "./Components/ProtectedRoute";
-import EvaluationFormAdmin from "./Components/EvaluationFormAdmin";
-import EvaluationFormClient from "./Components/EvaluationFormClient";
-import AcceptionFormAdmin from "./Components/AcceptionFormAdmin";
-import AcceptionFormClient from "./Components/AcceptionFormClient";
-import InProgressFormAdmin from "./Components/InProgressFormAdmin";
-import InProgressFormClient from "./Components/InProgressFormClient";
-import DoneFormAdmin from "./Components/DoneFormAdmin";
-import DoneFormClient from "./Components/DoneFormClient";
-import RejectedFormAdmin from "./Components/RejectedFormAdmin";
-import RejectedFormClient from "./Components/RejectedFormClient";
-import AllTasksAdmin from "./Components/AllTasksAdmin";
-import AllTasksClient from "./Components/AllTasksClient";
 import paths from "./Components/constants/Paths";
 
 function App() {
@@ -26,7 +14,7 @@ function App() {
 		<>
 			<UserAuthContextProvider>
 				<Routes>
-					<Route path='/' element={<h1>HOME PAGE</h1>} />
+					<Route path='/' element={<NavMainBar />} />
 
 					<Route
 						path={`${USER_PROFILE_PATH}/*`}

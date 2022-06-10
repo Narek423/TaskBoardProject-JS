@@ -72,10 +72,9 @@ export function writeUserData(
   taxCode,
   roll,
   enabled,
-  avatar = "https://st2.depositphotos.com/1104517/11965/v/950/depositphotos_119659092-stock-illustration-male-avatar-profile-picture-vector.jpg"
+  avatar
 ) {
   set(ref(database, "users/" + user.uid), {
-    avatar,
     name,
     lastName,
     dateOfBirth,
@@ -83,6 +82,7 @@ export function writeUserData(
     taxCode,
     roll,
     enabled,
+	avatar
   });
 }
 

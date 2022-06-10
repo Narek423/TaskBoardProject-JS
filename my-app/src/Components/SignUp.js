@@ -12,9 +12,17 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useState } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { useUserAuth,UserAuthContext} from "../context/UserAuthContext";
+import { useUserAuth, UserAuthContext } from "../context/UserAuthContext";
 import NavMainBar from "./Nav-Bar/NavMainBar";
-import { writeUserData } from "../Components/firebase";
+import { writeUserData, storage } from "../Components/firebase";
+import { Button, Input } from "@mui/material";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+  deleteObject,
+} from "firebase/storage";
+import paths from "./constants/Paths";
 
 const useStyles = createUseStyles({
   header: {
@@ -38,6 +46,8 @@ const useStyles = createUseStyles({
       right: 0,
       bottom: 10,
     },
+    width: "100%",
+    height: "100%"
   },
   fields: {
     width: 300,
@@ -99,8 +109,10 @@ function SignUp(props) {
   const [roll, setRoll] = useState("Client");
   const [enabled, setEnabled] = useState(false);
   const [error, setError] = useState("");
-  
-
+  const [avatar, setAvatar] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [progress, setProgress] = useState(0);
+  const { signUp } = useUserAuth();
   const [signInButtonHover, setSigInButtonHover] = useState(false);
   const [signInButtonActive, setSignInButtonActive] = useState(false);
   const navigate = useNavigate();
@@ -114,6 +126,8 @@ function SignUp(props) {
     showPassword: false,
   });
 
+  const { USER_PROFILE_PATH } = paths
+
   const handleClickShowPassword = () => {
     setValues({
       ...values,
@@ -125,14 +139,38 @@ function SignUp(props) {
     event.preventDefault();
   };
 
-  const { signUp } = useUserAuth();
-  
+  const handleChange = (e) => {
+    e.preventDefault();
+    setAvatar(e.target.files[0]);
+    setProgress(0);
+  };
+
+  const uploadFiles = (file) => {
+    if (!file) return;
+    const storageRef = ref(storage, `/${email}/avatar`);
+    const uploadProcent = uploadBytesResumable(storageRef, file);
+
+    uploadProcent.on(
+      "state_changed",
+      (snapshot) => {
+        const proc = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(proc);
+      },
+      (err) => console.log(err),
+      () =>
+        getDownloadURL(uploadProcent.snapshot.ref).then((url) =>
+          setAvatarUrl(url)
+        )
+    );
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
       let user = await signUp(email, password, roll);
-      console.log(user);
       await writeUserData(
         user.user,
         password,
@@ -146,7 +184,8 @@ function SignUp(props) {
         enabled,
         phoneNumber
       );
-      navigate("/");
+      uploadFiles(avatar);
+      navigate(`/${USER_PROFILE_PATH}`);
     } catch (err) {
       setError(err.message);
     }
@@ -182,7 +221,6 @@ function SignUp(props) {
   // 		console.log("Error");
   // 	}
   // }
-
   return (
     <>
       <NavMainBar />
@@ -274,6 +312,47 @@ function SignUp(props) {
             label="Phone number"
             variant="outlined"
           />
+        </div>
+        <div className={classes.signUp}>
+          {!avatarUrl ? null : (
+            <img
+             src={avatarUrl}
+            ></img>
+          )}
+          <div
+            style={{
+              display: "flex",
+              margin: {
+                top: 0,
+                left: "auto",
+                right: "auto",
+                bottom: 10,
+              },
+              width: 300,
+            }}
+          >
+            <label htmlFor="contained-button-file" style={{}}>
+              <Input
+                style={{
+                  display: "none",
+                }}
+                accept="image/*"
+                id="contained-button-file"
+                onChange={handleChange}
+                multiple
+                type="file"
+              />
+              <Button
+                variant="contained"
+                component="span"
+                style={{
+                  fontSize: 40,
+                }}
+              >
+                +
+              </Button>
+            </label>
+          </div>
         </div>
         <div className={classes.signUp}>
           <TextField
