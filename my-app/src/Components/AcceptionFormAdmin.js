@@ -8,8 +8,13 @@ import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get } from "firebase/database";
 
 const useStyles = createUseStyles({
-  page: {
-    backgroundColor: "#e2ebfc",
+  container: {
+    backgroundColor: "#f9fbff",
+    width: "95vw",
+    height: "60vh",
+    borderColor: "#FF3D00",
+    borderWidth: 2,
+    borderRadius: 9,
     justifyContent: "center",
   },
   groupingInputs: {
@@ -25,10 +30,18 @@ function PendingToAcceptionAdmin(props) {
   const classes = useStyles();
 
   const containerStyle = () => {
-    return { width: "100%", height: "100%" };
+    return {
+      width: "100%",
+      height: "100%",
+      backgroundColor: "#e2ebfc",
+      justifyContent: "center",
+      textAlign: "center",
+      display: "flex",
+      flexDirection: "column",
+    };
   };
   const gridStyle = () => {
-    return {height: "100%", width: "100%" };
+    return { width: "100%", margin: "auto", flex: 10 };
   };
 
   const [rowData, setRowData] = useState();
@@ -60,7 +73,7 @@ function PendingToAcceptionAdmin(props) {
     },
     {
       headerClass: classes.header,
-      field: "user",
+      field: "username",
       headerName: "User",
       columnGroupShow: "closed",
       filter: "agTextColumnFilter",
@@ -192,7 +205,7 @@ function PendingToAcceptionAdmin(props) {
         if (snapshot.exists()) {
           data = snapshot.val();
           for (let key in data) {
-            if (data[key].state === "acception") {
+            if (data[key].state === "Acception") {
               let clId = data[key].clientId;
               data[key].id = key;
               data[key] = { ...data[key], ...clientData[clId] };
@@ -210,7 +223,7 @@ function PendingToAcceptionAdmin(props) {
   const autoGroupColumnDef = useMemo(() => {
     return {
       headerName: "User",
-      field: "user",
+      field: "username",
       minWidth: 250,
       cellRenderer: "agGroupCellRenderer",
       cellRendererParams: {
@@ -220,19 +233,28 @@ function PendingToAcceptionAdmin(props) {
   }, []);
 
   return (
-      <div style={containerStyle()}>
-        <div style={gridStyle()} className="ag-theme-alpine">
-          <AgGridReact
-            rowData={rowData}
-            columnDefs={columnDefs}
-            suppressRowClickSelection={false}
-            defaultColDef={defaultColDef}
-            sideBar={sideBar}
-            onGridReady={onGridReady}
-            autoGroupColumnDef={autoGroupColumnDef}
-          ></AgGridReact>
-        </div>
+    <div style={containerStyle()}>
+      <span
+        style={{
+          fontFamily: "cursive",
+          fontSize: 40,
+          flex: 1,
+        }}
+      >
+        Tasks for acception
+      </span>
+      <div style={gridStyle()} className="ag-theme-alpine">
+        <AgGridReact
+          rowData={rowData}
+          columnDefs={columnDefs}
+          suppressRowClickSelection={false}
+          defaultColDef={defaultColDef}
+          sideBar={sideBar}
+          onGridReady={onGridReady}
+          autoGroupColumnDef={autoGroupColumnDef}
+        ></AgGridReact>
       </div>
+    </div>
   );
 }
 

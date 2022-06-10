@@ -47,7 +47,7 @@ const useStyles = createUseStyles({
       bottom: 10,
     },
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   fields: {
     width: 300,
@@ -96,11 +96,11 @@ const useStyles = createUseStyles({
     },
   },
 });
-
 function SignUp(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -126,7 +126,7 @@ function SignUp(props) {
     showPassword: false,
   });
 
-  const { USER_PROFILE_PATH } = paths
+  const { USER_PROFILE_PATH } = paths;
 
   const handleClickShowPassword = () => {
     setValues({
@@ -176,6 +176,7 @@ function SignUp(props) {
         password,
         name,
         lastName,
+        username,
         dateOfBirth,
         phoneNumber,
         taxCode,
@@ -191,36 +192,6 @@ function SignUp(props) {
     }
   };
 
-  // async function () {
-  // 	try {
-  // 		await signup(
-  // 			email,
-  // 			password,
-  // 			name,
-  // 			lastName,
-  // 			dateOfBirth,
-  // 			phoneNumber,
-  // 			taxCode,
-  // 			roll,
-  // 			enabled
-  // 		);
-  // 		console.log(signin(email, password));
-  // 		let currentUserData = await signin(email, password).then((data) => data);
-  // 		props.updateUser(currentUserData);
-  // 		setEmail("");
-  // 		setPassword("");
-  // 		setRepeatedPassword("");
-  // 		setName("");
-  // 		setLastName("");
-  // 		setPhoneNumber("");
-  // 		setDateOfBirth("");
-  // 		setTaxCode("");
-  // 		setRoll("");
-  // 		setEnabled("");
-  // 	} catch (e) {
-  // 		console.log("Error");
-  // 	}
-  // }
   return (
     <>
       <NavMainBar />
@@ -287,6 +258,16 @@ function SignUp(props) {
           <TextField
             className={classes.fields}
             value={name}
+            onChange={(e) => setUsername(e.target.value)}
+            id="usernameId"
+            label="Username"
+            variant="outlined"
+          />
+        </div>
+        <div className={classes.signUp}>
+          <TextField
+            className={classes.fields}
+            value={name}
             onChange={(e) => setName(e.target.value)}
             id="nameId"
             label="Name"
@@ -314,11 +295,7 @@ function SignUp(props) {
           />
         </div>
         <div className={classes.signUp}>
-          {!avatarUrl ? null : (
-            <img
-             src={avatarUrl}
-            ></img>
-          )}
+          {!avatarUrl ? null : <img src={avatarUrl}></img>}
           <div
             style={{
               display: "flex",
