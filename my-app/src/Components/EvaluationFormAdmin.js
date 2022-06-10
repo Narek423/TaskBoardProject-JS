@@ -19,32 +19,16 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 
-const useStyles = createUseStyles({
-  // page: {
-  //   margin: 0,
-  //   width: "100%",
-  //   backgroundColor: "#e2ebfc",
-  //   justifyContent: "center",
-  //   height: "55vh",
-  //   flex: 3,
-  // },
+const useStyles = createUseStyles({\
   page: {
     backgroundColor: "#e2ebfc",
     justifyContent: "center",
+    height: "100vh",
   },
-  // container: {
-  //   backgroundColor: "#f9fbff",
-  //   width: "95vw",
-  //   height: "60vh",
-  //   borderColor: "#FF3D00",
-  //   borderWidth: 2,
-  //   borderRadius: 9,
-  //   justifyContent: "center",
-  // },
   container: {
     backgroundColor: "#f9fbff",
     width: "95%",
-    height: "80%",
+    height: "50%",
     marginLeft: "auto",
     marginRight: "auto",
     marginTop: 0,
@@ -197,7 +181,7 @@ function PendingToEvaluationAdmin(props) {
   const containerStyle = () => {
     return {
       width: "100%",
-      height: "100%",
+      height: "35.9%",
       backgroundColor: "#e2ebfc",
       justifyContent: "center",
       textAlign: "center",
@@ -505,18 +489,9 @@ function PendingToEvaluationAdmin(props) {
             fontSize: 50,
           }}
         >
-          Evaluation
+          Evaluation tasks
         </span>
         <div className={classes.container}>
-          <span
-            style={{
-              fontFamily: "cursive",
-              fontSize: 40,
-              flex: 1,
-            }}
-          >
-            Evaluation tasks
-          </span>
           <React.Fragment>
             <CssBaseline />
             <Container>
@@ -678,20 +653,21 @@ function PendingToEvaluationAdmin(props) {
             </Container>
           </React.Fragment>
         </div>
-      </div>
-      <div style={containerStyle()}>
-        <div style={gridStyle()} className="ag-theme-alpine">
-          <AgGridReact
-            rowData={rowData}
-            columnDefs={columnDefs}
-            rowSelection={"multiple"}
-            suppressRowClickSelection={false}
-            defaultColDef={defaultColDef}
-            sideBar={sideBar}
-            onGridReady={onGridReady}
-            onSelectionChanged={onSelectionChanged}
-            autoGroupColumnDef={autoGroupColumnDef}
-          ></AgGridReact>
+
+        <div style={containerStyle()}>
+          <div style={gridStyle()} className="ag-theme-alpine">
+            <AgGridReact
+              rowData={rowData}
+              columnDefs={columnDefs}
+              rowSelection={"multiple"}
+              suppressRowClickSelection={false}
+              defaultColDef={defaultColDef}
+              sideBar={sideBar}
+              onGridReady={onGridReady}
+              onSelectionChanged={onSelectionChanged}
+              autoGroupColumnDef={autoGroupColumnDef}
+            ></AgGridReact>
+          </div>
         </div>
       </div>
     </div>
