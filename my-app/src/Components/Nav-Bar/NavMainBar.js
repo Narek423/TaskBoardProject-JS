@@ -8,25 +8,7 @@ import backImg from "../img/subtle.png"
 const useStyle = createUseStyles(() => {
   return {
     nav_bar: { 
-      height: "100vh",
-      // backgroundImage: `url(${backImg})`,
-      // backgroundSize: "auto auto",
       display: "flex",
-      overflowX: "scroll",
-      "&::-webkit-scrollbar": {
-        height: 10,
-      },
-      "&::-webkit-scrollbar-track": {
-        background: "white",
-      },
-      "&::-webkit-scrollbar-thumb": {
-        background: "#019CAD",
-      },
-      "&::-webkit-scrollbar-thumb:hover": {
-        background: "#019CAD",
-      },
-      
-
     },
   };
 });

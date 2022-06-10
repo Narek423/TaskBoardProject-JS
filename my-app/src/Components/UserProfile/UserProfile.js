@@ -32,7 +32,7 @@ const useStyle = createUseStyles(() => {
 });
 
 function UserProfile({ children }) {
-  const { user,rull} = useUserAuth(UserAuthContext);
+  const { user, rull} = useUserAuth(UserAuthContext);
   const classes = useStyle();
   const [toolsBarOpen, setToolsBaropen] = useState(true);
   const dbRef = getDatabase();
@@ -47,13 +47,12 @@ function UserProfile({ children }) {
     IN_PROCCESS_TASKS_PATH,
     DONE_TASKS_PATH,
   } = paths;
+  console.log(rull)
 
   const userToolsClose = useCallback(() => {
     setToolsBaropen(!toolsBarOpen);
-    console.log(rull);
   });
 
- console.log(rull)
   return (
     <div className={classes.UserProfile}>
       <UserTools open={toolsBarOpen} userToolsClose={userToolsClose} />

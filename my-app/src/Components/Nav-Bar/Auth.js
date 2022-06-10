@@ -32,7 +32,7 @@ function Auth() {
 		<div className={classes.auth}>
 			<div className={classes.authBtns}>
 				<ThemeProvider theme={theme}>
-					<Link to='/signin'>
+					<Link to='/signup'>
 						<Button
 							style={{
 								position: "absolute",
@@ -44,7 +44,7 @@ function Auth() {
 							Sing In
 						</Button>
 					</Link>
-					<Link to='/signup'>
+					<Link to='/signin'>
 						<Button
 							style={{
 								position: "absolute",

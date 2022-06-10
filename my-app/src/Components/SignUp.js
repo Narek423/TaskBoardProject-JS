@@ -100,6 +100,7 @@ function SignUp(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -141,12 +142,12 @@ function SignUp(props) {
   const handleChange = (e) => {
     e.preventDefault();
     setAvatar(e.target.files[0]);
-
     setProgress(0);
   };
+
   const uploadFiles = (file) => {
     if (!file) return;
-    const storageRef = ref(storage, `${email}/avatar`);
+    const storageRef = ref(storage, `/${email}/avatar`);
     const uploadProcent = uploadBytesResumable(storageRef, file);
 
     uploadProcent.on(
@@ -175,6 +176,7 @@ function SignUp(props) {
         password,
         name,
         lastName,
+        username,
         dateOfBirth,
         phoneNumber,
         taxCode,
@@ -184,42 +186,12 @@ function SignUp(props) {
         phoneNumber
       );
       uploadFiles(avatar);
-      navigate(`${USER_PROFILE_PATH}`);
+      navigate(`/${USER_PROFILE_PATH}`);
     } catch (err) {
       setError(err.message);
     }
   };
 
-  // async function () {
-  //  try {
-  //   await signup(
-  //    email,
-  //    password,
-  //    name,
-  //    lastName,
-  //    dateOfBirth,
-  //    phoneNumber,
-  //    taxCode,
-  //    roll,
-  //    enabled
-  //   );
-  //   console.log(signin(email, password));
-  //   let currentUserData = await signin(email, password).then((data) => data);
-  //   props.updateUser(currentUserData);
-  //   setEmail("");
-  //   setPassword("");
-  //   setRepeatedPassword("");
-  //   setName("");
-  //   setLastName("");
-  //   setPhoneNumber("");
-  //   setDateOfBirth("");
-  //   setTaxCode("");
-  //   setRoll("");
-  //   setEnabled("");
-  //  } catch (e) {
-  //   console.log("Error");
-  //  }
-  // }
   return (
     <>
       <NavMainBar />
@@ -282,6 +254,16 @@ function SignUp(props) {
             />
           </div>
         )}
+        <div className={classes.signUp}>
+          <TextField
+            className={classes.fields}
+            value={name}
+            onChange={(e) => setUsername(e.target.value)}
+            id="usernameId"
+            label="Username"
+            variant="outlined"
+          />
+        </div>
         <div className={classes.signUp}>
           <TextField
             className={classes.fields}
