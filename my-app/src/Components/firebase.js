@@ -10,6 +10,8 @@ import { useUserAuth } from "../context/UserAuthContext";
 import { getStorage } from "firebase/storage";
 import { getDatabase, ref, set, get, child } from "firebase/database";
 import { v4 as uuidv4 } from "uuid";
+import States from "../constants/States";
+import Statuses from "../constants/Statuses";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -105,8 +107,8 @@ export function writeUserTask(
     nodes: nodesValue,
     description: descrpValue,
     creationDate: date,
-    state: "Evaluation",
-    status: "Waiting",
+    state: States.evaluation,
+    status: Statuses[0],
     quantity: 0,
     costForUnit: 0,
   });
