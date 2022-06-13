@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
 import { getDatabase, ref, get } from "firebase/database";
-import paths from "../../constants/Paths";
+import paths from "../../../constants/Paths";
 
 const useStyle = createUseStyles(() => {
   return {

@@ -5,9 +5,9 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth, database, storage } from "../Components/firebase";
+import { auth, database, storage } from "../components/firebase";
 import { getDatabase, ref, set, get, child } from "firebase/database";
-import { ArrAdminTools, ArrClientTools } from "../Components/constants/Tools";
+import { ArrAdminTools, ArrClientTools } from "../constants/Tools";
 import {
   getDownloadURL,
   ref as resstore,
@@ -19,7 +19,7 @@ export const UserAuthContext = createContext();
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [rull, setRull] = useState(null);
+  const [roll, setRoll] = useState(null);
   const dbRef = getDatabase();
   const [avatarLink, setAvatarLink] = useState("");
   const [imgUrl, setImgUrl] = useState("");
@@ -62,7 +62,7 @@ export function UserAuthContextProvider({ children }) {
       get(ref(dbRef, "users/" + user.uid))
         .then((snapshot) => {
           console.log("snapshot", snapshot.val().roll);
-          setRull(snapshot.val().roll);
+          setRoll(snapshot.val().roll);
         })
         .catch((error) => {
           console.error(error);
@@ -92,8 +92,8 @@ export function UserAuthContextProvider({ children }) {
     signIn,
     avatarLink: avatarLink,
     logOut,
-    toolsList: rull && rull === "Admin" ? ArrAdminTools : ArrClientTools,
-    rull,
+    toolsList: roll && roll === "Admin" ? ArrAdminTools : ArrClientTools,
+    roll,
   };
 
   return (

@@ -10,7 +10,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useState } from "react";
 import { useUserAuth, UserAuthContext } from "../context/UserAuthContext";
 import NavMainBar from "./Nav-Bar/NavMainBar";
-import { writeUserData, storage } from "../Components/firebase";
+import { writeUserData, storage } from "./firebase";
 import { Button, Input } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -22,7 +22,7 @@ import {
   uploadBytesResumable,
   deleteObject,
 } from "firebase/storage";
-import paths from "./constants/Paths";
+import paths from "../constants/Paths";
 
 const useStyles = createUseStyles({
   header: {
