@@ -2,16 +2,17 @@ import { Outlet, useNavigate } from "react-router-dom";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
-import IconButton from "@material-ui/core/IconButton";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useState } from "react";
 import { useUserAuth, UserAuthContext } from "../context/UserAuthContext";
 import NavMainBar from "./Nav-Bar/NavMainBar";
 import { writeUserData, storage } from "./firebase";
-import { Button, Input } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Input,
+  InputAdornment,
+  OutlinedInput,
+} from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -23,6 +24,7 @@ import {
   deleteObject,
 } from "firebase/storage";
 import paths from "../constants/Paths";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const useStyles = createUseStyles({
   header: {
@@ -47,7 +49,7 @@ const useStyles = createUseStyles({
       bottom: 10,
     },
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   fields: {
     width: 300,
@@ -101,6 +103,7 @@ function SignUp(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -126,7 +129,7 @@ function SignUp(props) {
     showPassword: false,
   });
 
-  const { USER_PROFILE_PATH } = paths
+  const { USER_PROFILE_PATH } = paths;
 
   const handleClickShowPassword = () => {
     setValues({
@@ -174,6 +177,7 @@ function SignUp(props) {
       await writeUserData(
         user.user,
         password,
+        username,
         name,
         lastName,
         dateOfBirth,
@@ -286,6 +290,16 @@ function SignUp(props) {
         <div className={classes.signUp}>
           <TextField
             className={classes.fields}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            id="usernameId"
+            label="Username"
+            variant="outlined"
+          />
+        </div>
+        <div className={classes.signUp}>
+          <TextField
+            className={classes.fields}
             value={name}
             onChange={(e) => setName(e.target.value)}
             id="nameId"
@@ -299,7 +313,7 @@ function SignUp(props) {
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             id="lastNameId"
-            label="UsLaster name"
+            label="Last name"
             variant="outlined"
           />
         </div>
@@ -314,11 +328,7 @@ function SignUp(props) {
           />
         </div>
         <div className={classes.signUp}>
-          {!avatarUrl ? null : (
-            <img
-             src={avatarUrl}
-            ></img>
-          )}
+          {!avatarUrl ? null : <img alt="" src={avatarUrl}></img>}
           <div
             style={{
               display: "flex",
