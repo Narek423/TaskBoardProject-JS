@@ -11,6 +11,7 @@ const paths = {
   REJECTED_TASKS_PATH: "recectedtasks",
   IN_PROCCESS_TASKS_PATH: "inprocessasks",
   DONE_TASKS_PATH: "donetasks",
+  STATICS_PATH: "statics",
 };
 
 export default paths;
