@@ -12,7 +12,7 @@ import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
 import ImgModal from "./ImgModal";
 import { Button, CircularProgress, Input } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import  defaultImg  from "../../img/img.jpg"
+import  defaultImg  from "../../img/images.png"
 export let avatarUrl = "";
 
 
@@ -197,50 +197,6 @@ function FireBaseFileUpload(props) {
           </div>
         );
       })}
-      {/* <div
-        style={{
-          height: "100%",
-          width: "10%",
-          backgroundColor: "red",
-        }}
-      >
-        {progress !== 100 && progress !== 0 ? (
-          <div
-            style={{
-              height: 140,
-            }}
-          >
-            {" "}
-            <CircularProgress variant="determinate" value={progress} />
-          </div>
-        ) : (
-          <div
-            style={{
-              position: "absolute",
-              width: "30%",
-              backgroundColor: "red",
-            }}
-          >
-            <label
-              style={{
-                cursor: "pointer",
-                backgroundColor: "blue",
-                justifyContent: "center",
-              }}
-              className="custom-file-upload"
-            >
-              <AddIcon></AddIcon>
-              <input
-                type="file"
-                onChange={handleChange}
-                style={{
-                  display: "none",
-                }}
-              />
-            </label>
-          </div>
-        )}
-      </div> */}
       <label
         htmlFor="contained-button-file"
         style={{

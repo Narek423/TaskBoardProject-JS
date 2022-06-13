@@ -7,6 +7,7 @@ import { UserAuthContextProvider } from "./context/UserAuthContext";
 import UserProfile from "./Components/UserProfile/UserProfile";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import paths from "./Components/constants/Paths";
+import HomePage from "./Components/HomePage/HomePage";
 
 function App() {
 	const  { USER_PROFILE_PATH,SIGN_IN_PATH,SIGN_UP_PATH } = paths;
@@ -14,7 +15,7 @@ function App() {
 		<>
 			<UserAuthContextProvider>
 				<Routes>
-					<Route path='/' element={<NavMainBar />} />
+					<Route path='/' element={<HomePage />} />
 
 					<Route
 						path={`${USER_PROFILE_PATH}/*`}

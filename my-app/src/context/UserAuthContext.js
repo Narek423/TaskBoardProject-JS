@@ -42,7 +42,6 @@ export function UserAuthContextProvider({ children }) {
   }
 
   useEffect(() => {
-    // durs hanel  onAuthStateChanged
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
@@ -50,8 +49,9 @@ export function UserAuthContextProvider({ children }) {
 
     return () => {
       unsubscribe();
+      setImgUrl("")
     };
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (!!user?.accessToken) {

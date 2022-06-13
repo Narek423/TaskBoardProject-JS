@@ -20,7 +20,7 @@ const useStyle = createUseStyles(() => {
 	return {
 		auth: {
 			flex: 1,
-			position: "relative",
+			margin: 'auto'
 		},
 	};
 });
@@ -34,11 +34,11 @@ function Auth() {
 				<ThemeProvider theme={theme}>
 					<Link to='/signup'>
 						<Button
-							style={{
-								position: "absolute",
-								right: 50,
-								top: 15,
-							}}
+							// style={{
+							// 	position: "absolute",
+							// 	right: 50,
+							// 	top: 15,
+							// }}
 							variant='outlined'
 						>
 							Sing In
@@ -46,11 +46,11 @@ function Auth() {
 					</Link>
 					<Link to='/signin'>
 						<Button
-							style={{
-								position: "absolute",
-								right: 140,
-								top: 15,
-							}}
+							// style={{
+							// 	position: "absolute",
+							// 	right: 140,
+							// 	top: 15,
+							// }}
 							variant='outlined'
 						>
 							Sing Up

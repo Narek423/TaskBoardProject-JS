@@ -21,6 +21,7 @@ import AllTasksAdmin from "../AllTasksAdmin";
 import InProgressTasksAdmin from "../InProgressFormAdmin";
 import DoneTasksAdmin from "../DoneFormAdmin";
 import RejectedTasksAdmin from "../RejectedFormAdmin";
+import Statics from "./statics/Statics";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -46,6 +47,7 @@ function UserProfile({ children }) {
     REJECTED_TASKS_PATH,
     IN_PROCCESS_TASKS_PATH,
     DONE_TASKS_PATH,
+    STATICS_PATH
   } = paths;
   console.log(rull)
 
@@ -152,6 +154,14 @@ function UserProfile({ children }) {
             <UserWorkingTable open={toolsBarOpen} component={<DoneTasksAdmin />} />
             : 
             <UserWorkingTable open={toolsBarOpen} component={<DoneTasks />} />
+          }
+        />
+        <Route
+          path={STATICS_PATH}
+          element={ rull === "Admin" ?
+            <UserWorkingTable open={toolsBarOpen} component={<Statics />} />
+            : 
+            <UserWorkingTable open={toolsBarOpen} component={<Statics />} />
           }
         />
       </Routes>

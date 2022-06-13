@@ -1,33 +1,31 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const useStyle = createUseStyles(() => {
 	return {
 		homeicon: {
-			flex: 1,
-			position: "relative",
+			flex: 2,
 			color: "#0000e6",
-			cursor: "pointer",
+			margin: 'auto'
 		},
 		icon: {
-			position: "absolute",
-			left: 150,
 			fontFamily: "monospace",
 			fontSize: 25,
 			color: "blue",
+			cursor: 'pointer',
+			marginLeft: "10%"
 		},
 	};
 });
 
 function HomeIcon(params) {
 	const classes = useStyle();
+	const navigate = useNavigate();
 
 	return (
 		<div className={classes.homeicon}>
-			<Link to='/'>
-				<h3 className={classes.icon}>HomeIcon</h3>
-			</Link>
+				<h3 onClick={() => navigate("/")} className={classes.icon}>HomeIcon</h3>
 		</div>
 	);
 }

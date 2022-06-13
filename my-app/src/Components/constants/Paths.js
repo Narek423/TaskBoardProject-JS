@@ -10,7 +10,8 @@ const paths = {
     EVALUATION_TASKS_PATH: 'evaluationtasks',
     REJECTED_TASKS_PATH: 'recectedtasks',
     IN_PROCCESS_TASKS_PATH: 'inprocessasks',
-    DONE_TASKS_PATH: 'donetasks'
+    DONE_TASKS_PATH: 'donetasks',
+    STATICS_PATH: "statics"
 }
 
 

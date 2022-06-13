@@ -22,6 +22,7 @@ const {
     REJECTED_TASKS_PATH,
     IN_PROCCESS_TASKS_PATH,
     DONE_TASKS_PATH,
+    STATICS_PATH
   } = paths;
 
 
@@ -86,15 +87,15 @@ export function ArrAdminTools(){
         {
             icon: <EqualizerIcon className={classes.icon} />,
             text: "Statics",
-            path: "/",
+            path: STATICS_PATH,
             id: 9,
         },
-        {
-            icon: <PaymentIcon className={classes.icon} />,
-            text: "Payment History",
-            path: "Profile",
-            id: 10,
-        },
+        // {
+        //     icon: <PaymentIcon className={classes.icon} />,
+        //     text: "Payment History",
+        //     path: "Profile",
+        //     id: 10,
+        // },
         {
             icon: <MailIcon className={classes.icon} />,
             text: "Inbox",
@@ -163,12 +164,12 @@ export function ArrClientTools(){
             path: "/",
             id: 9,
         },
-        {
-            icon: <PaymentIcon className={classes.icon} />,
-            text: "Payment History",
-            path: "Profile",
-            id: 10,
-        },
+        // {
+        //     icon: <PaymentIcon className={classes.icon} />,
+        //     text: "Payment History",
+        //     path: "Profile",
+        //     id: 10,
+        // },
         {
             icon: <MailIcon className={classes.icon} />,
             text: "Inbox",
