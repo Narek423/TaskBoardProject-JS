@@ -5,7 +5,7 @@ import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
 import { writeUserTask } from "../../firebase";
 import FireBaseFileUpload from "./FireBaseFileUpload";
 import HelperModal from "./HelperModal";
-import img from "../../img/subtle.png"
+import img from "../../img/subtle.png";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -22,7 +22,7 @@ const useStyle = createUseStyles(() => {
       borderBottomColor: "#019CAD",
       display: "flex",
       flexDirection: "column",
-      position: 'relative',
+      position: "relative",
     },
     tittle: {
       flex: 1,
@@ -36,7 +36,7 @@ const useStyle = createUseStyles(() => {
     },
 
     conteiner: {
-      overflowY: "scroll",  
+      overflowY: "scroll",
       flex: 10,
       width: "100%",
       backgroundColor: "#e2ebfc",
@@ -87,19 +87,26 @@ function CreateNewTask() {
   const [titleValue, setTittleValue] = useState("");
   const [nodesValue, setNodesValue] = useState("");
   const [descrpValue, setDescrpValue] = useState("");
-  const { user } = useUserAuth(UserAuthContext);
+  const { user } = useUserAuth();
   const [fileData, setFileData] = useState([]);
-  const status = "waiting";
+  const status = "Waiting";
 
-  const  writeData = () => {
+  const writeData = () => {
     const createDate = new Date().toLocaleString();
-    writeUserTask(user.uid,fileData,titleValue,nodesValue,descrpValue,createDate);
+    writeUserTask(
+      user.uid,
+      fileData,
+      titleValue,
+      nodesValue,
+      descrpValue,
+      createDate
+    );
     setFileData([]);
     setNodesValue("");
     setDescrpValue("");
     setDescrpValue("");
     setTittleValue("");
-  }
+  };
 
   return (
     <div className={classes.main}>
@@ -168,16 +175,16 @@ function CreateNewTask() {
             display: "flex",
             marginBottom: "1%",
             marginTop: "2%",
-            height: '20%',
+            height: "20%",
           }}
         >
-        
-          <FireBaseFileUpload fileData={fileData} setFileData={setFileData}/>
-         
-            <HelperModal   inputName={"Files"}
-            text={
-              "If you have files you can upload that"}
-            style={{ marginTop: "1.8%", marginLeft: "0.5%", flex: 1 }}/>
+          <FireBaseFileUpload fileData={fileData} setFileData={setFileData} />
+
+          <HelperModal
+            inputName={"Files"}
+            text={"If you have files you can upload that"}
+            style={{ marginTop: "1.8%", marginLeft: "0.5%", flex: 1 }}
+          />
         </div>
 
         <div
@@ -207,7 +214,6 @@ function CreateNewTask() {
           </Button>
         </div>
       </div>
-      
     </div>
   );
 }

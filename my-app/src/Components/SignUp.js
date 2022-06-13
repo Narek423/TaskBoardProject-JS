@@ -2,27 +2,27 @@ import { Outlet, useNavigate } from "react-router-dom";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
-import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useState } from "react";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import { useUserAuth, UserAuthContext } from "../context/UserAuthContext";
 import NavMainBar from "./Nav-Bar/NavMainBar";
-import { writeUserData, storage } from "../Components/firebase";
+import { writeUserData, storage } from "./firebase";
 import { Button, Input } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import {
   getDownloadURL,
   ref,
   uploadBytesResumable,
   deleteObject,
 } from "firebase/storage";
-import paths from "./constants/Paths";
+import paths from "../constants/Paths";
 
 const useStyles = createUseStyles({
   header: {

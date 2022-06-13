@@ -85,7 +85,7 @@ export function writeUserData(
     taxCode,
     roll,
     enabled,
-	avatar
+    avatar,
   });
 }
 
@@ -105,8 +105,8 @@ export function writeUserTask(
     nodes: nodesValue,
     description: descrpValue,
     creationDate: date,
-    state: "evaluation",
-    status: "waiting",
+    state: "Evaluation",
+    status: "Waiting",
     quantity: 0,
     costForUnit: 0,
   });

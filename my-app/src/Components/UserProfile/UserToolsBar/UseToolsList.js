@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
 import { getDatabase, ref, get } from "firebase/database";
-import paths from "../../constants/Paths";
+import paths from "../../../constants/Paths";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -28,8 +28,8 @@ const useStyle = createUseStyles(() => {
     toolsspan: {
       color: "#B4C8EC",
       verticalAlign: "middle",
-	  flex: 5,
-	  marginTop: "5%",
+      flex: 5,
+      marginTop: "5%",
     },
     icon: {
       flex: 1,
@@ -57,7 +57,7 @@ const useStyle = createUseStyles(() => {
 function UserToolsList(props) {
   const navigate = useNavigate();
   const classes = useStyle();
-  const { user,toolsList } = useUserAuth(UserAuthContext);
+  const { user, toolsList } = useUserAuth();
   // // const clientId = user.uid;
   // const dbRef = getDatabase();
   // const [rull, setRull] = useState();
@@ -92,11 +92,7 @@ function UserToolsList(props) {
             >
               {e.icon}
               {props.open ? (
-                <span
-                  className={classes.toolsspan}
-                >
-                  {e.text}
-                </span>
+                <span className={classes.toolsspan}>{e.text}</span>
               ) : null}
             </div>
           );
