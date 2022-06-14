@@ -8,10 +8,13 @@ import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get } from "firebase/database";
 import { sharedStyles } from "../../styles/sharedStyles";
 import GridColumns from "../GridColumns";
+import ViewTask from "../ViewTask/Main";
 
 function AllTasksAdmin(props) {
   const classes = sharedStyles;
   const [rowData, setRowData] = useState();
+  const [data, setData] = useState();
+  const [isOpen, setIsOpen] = useState(false);
 
   const gridParams = {
     checkbox: false,
@@ -48,6 +51,14 @@ function AllTasksAdmin(props) {
       toolPanels: ["columns", "filters"],
       defaultToolPanel: "",
     };
+  }, []);
+
+  const onRowDoubleClicked = useCallback((param) => {
+    const selectedRow = param.api.getSelectedRows();
+    if (selectedRow.length === 1) {
+      setData(selectedRow[0]);
+      setIsOpen(true);
+    }
   }, []);
 
   const onGridReady = (params) => {
@@ -102,12 +113,15 @@ function AllTasksAdmin(props) {
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
+          rowSelection={"multiple"}
           suppressRowClickSelection={false}
           defaultColDef={defaultColDef}
           sideBar={sideBar}
           onGridReady={onGridReady}
+          onRowDoubleClicked={onRowDoubleClicked}
           autoGroupColumnDef={autoGroupColumnDef}
         ></AgGridReact>
+        {isOpen && <ViewTask data={data} setIsOpen={setIsOpen} />}
       </div>
     </div>
   );

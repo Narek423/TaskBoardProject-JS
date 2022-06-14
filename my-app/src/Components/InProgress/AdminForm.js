@@ -10,9 +10,12 @@ import { sharedStyles } from "../../styles/sharedStyles";
 import States from "../../constants/States";
 import Statuses from "../../constants/Statuses";
 import GridColumns from "../GridColumns";
+import ViewTask from "../ViewTask/Main";
 
 function InProgressTasksAdmin(props) {
   const classes = sharedStyles;
+  const [data, setData] = useState();
+  const [isOpen, setIsOpen] = useState(false);
   const onCellEditingStopped = useCallback((event) => {
     const selectedRow = event.data;
     const db = getDatabase();
@@ -94,6 +97,14 @@ function InProgressTasksAdmin(props) {
     };
   }, []);
 
+  const onRowDoubleClicked = useCallback((param) => {
+    const selectedRow = param.api.getSelectedRows();
+    if (selectedRow.length === 1) {
+      setData(selectedRow[0]);
+      setIsOpen(true);
+    }
+  }, []);
+
   const onGridReady = useCallback((params) => {
     const dbRef = getDatabase();
     let data = {};
@@ -148,13 +159,16 @@ function InProgressTasksAdmin(props) {
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
+          rowSelection={"multiple"}
           suppressRowClickSelection={false}
           defaultColDef={defaultColDef}
           sideBar={sideBar}
           onGridReady={onGridReady}
           autoGroupColumnDef={autoGroupColumnDef}
           onCellEditingStopped={onCellEditingStopped}
+          onRowDoubleClicked={onRowDoubleClicked}
         ></AgGridReact>
+        {isOpen && <ViewTask data={data} setIsOpen={setIsOpen} />}
       </div>
     </div>
   );

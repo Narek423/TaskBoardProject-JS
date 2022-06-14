@@ -22,6 +22,7 @@ import States from "../../constants/States";
 import Statuses from "../../constants/Statuses";
 import { sharedStyles } from "../../styles/sharedStyles";
 import GridColumns from "../GridColumns";
+import ViewTask from "../ViewTask/Main";
 
 const useStyles = createUseStyles({
   page: {
@@ -182,6 +183,8 @@ function PendingToEvaluationAdmin(props) {
   const [cost, setCost] = useState("");
   const [taxCode, setTaxCode] = useState("");
   const [clientId, setClientId] = useState("");
+  const [data, setData] = useState();
+  const [isOpen, setIsOpen] = useState(false);
 
   const containerStyle = () => {
     return {
@@ -295,6 +298,14 @@ function PendingToEvaluationAdmin(props) {
       return onGridReady();
     }
   };
+
+  const onRowDoubleClicked = useCallback((param) => {
+    const selectedRow = param.api.getSelectedRows();
+    if (selectedRow.length === 1) {
+      setData(selectedRow[0]);
+      setIsOpen(true);
+    }
+  }, []);
 
   const onSelectionChanged = useCallback((param) => {
     const selectedRows = param.api.getSelectedRows();
@@ -515,8 +526,10 @@ function PendingToEvaluationAdmin(props) {
             sideBar={sideBar}
             onGridReady={onGridReady}
             onSelectionChanged={onSelectionChanged}
+            onRowDoubleClicked={onRowDoubleClicked}
             autoGroupColumnDef={autoGroupColumnDef}
           ></AgGridReact>
+          {isOpen && <ViewTask data={data} setIsOpen={setIsOpen} />}
         </div>
       </div>
     </div>

@@ -9,10 +9,13 @@ import { getDatabase, ref, get } from "firebase/database";
 import { sharedStyles } from "../../styles/sharedStyles";
 import States from "../../constants/States";
 import GridColumns from "../GridColumns";
+import ViewTask from "../ViewTask/Main";
 
 function DoneTasksAdmin(props) {
   const classes = sharedStyles;
   const [rowData, setRowData] = useState();
+  const [data, setData] = useState();
+  const [isOpen, setIsOpen] = useState(false);
 
   const gridParams = {
     checkbox: false,
@@ -49,6 +52,14 @@ function DoneTasksAdmin(props) {
       toolPanels: ["columns", "filters"],
       defaultToolPanel: "",
     };
+  }, []);
+
+  const onRowDoubleClicked = useCallback((param) => {
+    const selectedRow = param.api.getSelectedRows();
+    if (selectedRow.length === 1) {
+      setData(selectedRow[0]);
+      setIsOpen(true);
+    }
   }, []);
 
   const onGridReady = useCallback((params) => {
@@ -105,12 +116,15 @@ function DoneTasksAdmin(props) {
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
+          rowSelection={"multiple"}
           suppressRowClickSelection={false}
           defaultColDef={defaultColDef}
           sideBar={sideBar}
           onGridReady={onGridReady}
+          onRowDoubleClicked={onRowDoubleClicked}
           autoGroupColumnDef={autoGroupColumnDef}
         ></AgGridReact>
+        {isOpen && <ViewTask data={data} setIsOpen={setIsOpen} />}
       </div>
     </div>
   );
