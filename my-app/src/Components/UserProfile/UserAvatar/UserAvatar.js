@@ -3,7 +3,7 @@ import { createUseStyles } from "react-jss";
 import { storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
-import avatar from "../../avatar/avatar.jpg"
+import avatar from "../../../Images/avatar/avatar.jpg"
 
 const useStyle = createUseStyles(() => {
   return {
