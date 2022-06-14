@@ -93,6 +93,7 @@ function SignIn(props) {
 	const [signInButtonActive] = useState(false);
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
+	const {USER_PROFILE_PATH} = paths;
 
 	const classes = useStyles();
 	const [values, setValues] = useState({
@@ -115,13 +116,13 @@ function SignIn(props) {
 	};
 
 	const { signIn, user } = useUserAuth();
-	if (user) navigate("/profile");
+	if (user) navigate(`/${USER_PROFILE_PATH}`);
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setError("");
 		try {
 			await signIn(email, password);
-			navigate("/profile");
+			navigate(`/${USER_PROFILE_PATH}`);
 		} catch (err) {
 			setError(err.message);
 		}

@@ -195,7 +195,7 @@ function SignUp(props) {
 		}
 	};
 	const { user } = useUserAuth();
-	if (user) navigate("/profile");
+	if (user) navigate(`/${USER_PROFILE_PATH}`);
 
 	// async function () {
 	// 	try {
