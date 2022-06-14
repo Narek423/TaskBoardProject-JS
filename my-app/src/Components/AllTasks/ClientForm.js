@@ -47,7 +47,7 @@ function AllTasks(props) {
       floatingFilter: true,
       flex: 1,
     };
-  }, []);
+  }, [classes.defaultColDef]);
 
   const sideBar = useMemo(() => {
     return {
@@ -55,7 +55,7 @@ function AllTasks(props) {
       toolPanels: ["columns", "filters"],
       defaultToolPanel: "",
     };
-  }, []);
+  }, [defaultColDef]);
 
   const onRowDoubleClicked = useCallback((param) => {
     const selectedRow = param.api.getSelectedRows();

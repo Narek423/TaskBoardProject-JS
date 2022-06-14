@@ -44,7 +44,7 @@ function RejectedTasksAdmin(props) {
       floatingFilter: true,
       flex: 1,
     };
-  }, []);
+  }, [classes.defaultColDef]);
 
   const sideBar = useMemo(() => {
     return {
@@ -52,7 +52,7 @@ function RejectedTasksAdmin(props) {
       toolPanels: ["columns", "filters"],
       defaultToolPanel: "",
     };
-  }, []);
+  }, [defaultColDef]);
 
   const onRowDoubleClicked = useCallback((param) => {
     const selectedRow = param.api.getSelectedRows();

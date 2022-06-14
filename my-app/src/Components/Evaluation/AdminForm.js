@@ -230,7 +230,7 @@ function PendingToEvaluationAdmin(props) {
       floatingFilter: true,
       flex: 1,
     };
-  }, []);
+  }, [classes.defaultColDef]);
 
   const sideBar = useMemo(() => {
     return {
@@ -238,7 +238,7 @@ function PendingToEvaluationAdmin(props) {
       toolPanels: ["columns", "filters"],
       defaultToolPanel: "",
     };
-  }, []);
+  }, [defaultColDef]);
 
   const onGridReady = (params) => {
     const dbRef = getDatabase();

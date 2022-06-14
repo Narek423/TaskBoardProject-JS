@@ -46,7 +46,7 @@ function PendingToAcception(props) {
       floatingFilter: true,
       flex: 1,
     };
-  }, []);
+  }, [classes.defaultColDef]);
 
   const sideBar = useMemo(() => {
     return {
@@ -54,7 +54,7 @@ function PendingToAcception(props) {
       toolPanels: ["columns", "filters"],
       defaultToolPanel: "",
     };
-  }, []);
+  }, [defaultColDef]);
 
   const onAcceptRejectBtnClick = function (param) {
     let selectedNodes = gridApi.getSelectedNodes();
