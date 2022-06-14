@@ -8,7 +8,7 @@ import EqualizerIcon from "@mui/icons-material/Equalizer";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import EditIcon from "@mui/icons-material/Edit";
 import MailIcon from "@mui/icons-material/Mail";
-import paths from "./Paths";
+import paths from "../../../constants/Paths";
 
 const {
     PROFILE_PATH,
@@ -66,7 +66,7 @@ export function ArrAdminTools(){
         },
         {
             icon: <AssignmentLateIcon className={classes.icon} />,
-            text: "In Progress Tasks Tasks",
+            text: "In Progress Tasks ",
             id: 5,
             path: IN_PROCCESS_TASKS_PATH
         },
@@ -134,7 +134,7 @@ export function ArrClientTools(){
         },
         {
             icon: <AssignmentLateIcon className={classes.icon} />,
-            text: "In Progress Tasks Tasks",
+            text: "In Progress Tasks ",
             id: 5,
             path: IN_PROCCESS_TASKS_PATH
         },

@@ -12,7 +12,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 // import { signin } from "../firebase";
 import { useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
-import NavMainBar from "./Nav-Bar/NavMainBar";
+import NavMainBar from "./Nav-Bar/HomePageNavBar";
 import paths from "../constants/Paths";
 
 const useStyles = createUseStyles({

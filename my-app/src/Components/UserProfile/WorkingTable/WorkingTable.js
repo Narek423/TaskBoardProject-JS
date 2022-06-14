@@ -11,7 +11,7 @@ const useStyle = createUseStyles(() => {
   };
 });
 
-function UserWorkingTable(props) {
+function WorkingTable(props) {
   const { open,component } = props
   const classes = useStyle();
  
@@ -23,4 +23,4 @@ function UserWorkingTable(props) {
     </div>
   );
 }
-export default UserWorkingTable;
+export default WorkingTable;

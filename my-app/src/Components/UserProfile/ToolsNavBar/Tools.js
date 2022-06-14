@@ -3,8 +3,8 @@ import { createUseStyles } from "react-jss";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import LogOutBtn from "./LogOutBtn";
-import UserAvatar from "../UserAvatar/UserAvatar";
-import UserToolsList from "./UseToolsList";
+import UserAvatar from "../Avatar/Avatar";
+import UserToolsList from "./ToolsList";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -40,7 +40,7 @@ const useStyle = createUseStyles(() => {
   };
 });
 
-function UserTools(props) {
+function Tools(props) {
   const classes = useStyle();
   const {open,userToolsClose} = props;
   return (
@@ -65,4 +65,4 @@ function UserTools(props) {
   );
 }
 
-export default UserTools;
+export default Tools;

@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
 import { useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
-import NavMainBar from "./Nav-Bar/NavMainBar";
+import NavMainBar from "./Nav-Bar/HomePageNavBar";
 import { writeUserData, storage } from "./firebase";
 import {
 	Button,

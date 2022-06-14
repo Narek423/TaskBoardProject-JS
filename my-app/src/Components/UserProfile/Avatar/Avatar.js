@@ -28,7 +28,7 @@ const useStyle = createUseStyles(() => {
   };
 });
 
-function UserAvatar() {
+function Avatar() {
   const { user,email,imgUrl} = useUserAuth();
   const classes = useStyle();
   // const [imgUrl, setImgUrl] = useState("");
@@ -52,4 +52,4 @@ function UserAvatar() {
     </div>
   );
 }
-export default UserAvatar;
+export default Avatar;

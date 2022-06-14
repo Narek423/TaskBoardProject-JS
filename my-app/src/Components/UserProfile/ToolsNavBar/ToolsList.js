@@ -43,7 +43,7 @@ const useStyle = createUseStyles(() => {
     },
   };
 });
-function UserToolsList(props) {
+function ToolsList(props) {
   const navigate = useNavigate();
   const classes = useStyle();
   const { user, toolsList } = useUserAuth();
@@ -78,4 +78,4 @@ function UserToolsList(props) {
     </div>
   );
 }
-export default UserToolsList;
+export default ToolsList;
