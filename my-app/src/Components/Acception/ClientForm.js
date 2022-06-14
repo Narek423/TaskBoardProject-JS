@@ -10,6 +10,7 @@ import { sharedStyles } from "../../styles/sharedStyles";
 import Statuses from "../../constants/Statuses";
 import States from "../../constants/States";
 import GridColumns from "../GridColumns";
+import ViewTask from "../ViewTask/Main";
 
 function PendingToAcception(props) {
   const classes = sharedStyles;
@@ -17,6 +18,8 @@ function PendingToAcception(props) {
   const clientId = user.uid;
   const [rowData, setRowData] = useState();
   const [gridApi, setGridApi] = useState("");
+  const [data, setData] = useState();
+  const [isOpen, setIsOpen] = useState(false);
   const gridParams = {
     checkbox: true,
     username: { rowGroup: false, hide: true, flex: 3, panel: true },
@@ -80,6 +83,14 @@ function PendingToAcception(props) {
       onGridReady();
     }
   };
+
+  const onRowDoubleClicked = useCallback((param) => {
+    const selectedRow = param.api.getSelectedRows();
+    if (selectedRow.length === 1) {
+      setData(selectedRow[0]);
+      setIsOpen(true);
+    }
+  }, []);
 
   const onGridReady = (params) => {
     if (params) {
@@ -151,7 +162,9 @@ function PendingToAcception(props) {
           defaultColDef={defaultColDef}
           sideBar={sideBar}
           onGridReady={onGridReady}
+          onRowDoubleClicked={onRowDoubleClicked}
         ></AgGridReact>
+        {isOpen && <ViewTask data={data} setIsOpen={setIsOpen} />}
       </div>
     </div>
   );
