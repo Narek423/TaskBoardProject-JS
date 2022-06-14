@@ -77,6 +77,7 @@ function UserProfile({ children }) {
             <UserWorkingTable
               open={toolsBarOpen}
               component={<CreateNewTask />}
+              create={true}
             />
           }
         />
