@@ -37,7 +37,7 @@ const useStyle = createUseStyles(() => {
 
 function NavBarBtns(props) {
   const classes = useStyle();
-  console.log(props)
+  const {scrollTo,about,contactUs} = props.refs;
 
   return (
     <div className={classes.navbarbtns}>
@@ -51,9 +51,9 @@ function NavBarBtns(props) {
       //     left: 80,
       // }}
        variant="text" aria-label="text button group">
-        <Button onClick={() => props.refs.scrollTo(props.refs.about)}>Company</Button>
+        <Button onClick={() => scrollTo(about)}>Company</Button>
         <Button >About Us</Button>
-        <Button onClick={() => props.refs.scrollTo(props.refs.contactUs)}>Contacts</Button>
+        <Button onClick={() => scrollTo(contactUs)}>Contacts</Button>
       </ButtonGroup>
       </ThemeProvider>
     </div>
