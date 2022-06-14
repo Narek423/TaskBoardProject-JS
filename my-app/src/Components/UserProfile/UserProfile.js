@@ -1,7 +1,7 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback,useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
+import {  useUserAuth } from "../../context/UserAuthContext";
 import CreateNewTask from "./CreateNewTask/CreateNewTask";
 import Inbox from "./Inbox/Inbox";
 import UserTools from "./UserToolsBar/UserTools";
@@ -28,7 +28,7 @@ const useStyle = createUseStyles(() => {
 });
 
 function UserProfile({ children }) {
-  const { user, roll } = useUserAuth(UserAuthContext);
+  const { user, roll } = useUserAuth();
   const classes = useStyle();
   const [toolsBarOpen, setToolsBaropen] = useState(true);
   const dbRef = getDatabase();

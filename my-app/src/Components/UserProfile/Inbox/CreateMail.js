@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { createUseStyles } from "react-jss";
 // import {writeUserEmailTask} from "../../firebase";
-import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
+import {  useUserAuth } from "../../../context/UserAuthContext";
 
 
 const useStyle = createUseStyles(() => {
@@ -20,7 +20,7 @@ function CreateMail() {
   const [mailValue, setMailValue] = useState("");
   const [mailContentValue, setMailContentValue] = useState("");
   const classes = useStyle();
-  const { user } = useUserAuth(UserAuthContext);
+  const { user } = useUserAuth();
 
 
   const mailSent = () => {

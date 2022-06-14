@@ -3,7 +3,7 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
 import { useState } from "react";
-import { useUserAuth, UserAuthContext } from "../context/UserAuthContext";
+import { useUserAuth } from "../context/UserAuthContext";
 import NavMainBar from "./Nav-Bar/NavMainBar";
 import { writeUserData, storage } from "./firebase";
 import {

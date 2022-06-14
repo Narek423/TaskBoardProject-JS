@@ -1,11 +1,10 @@
-import { Button, Input, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { createUseStyles } from "react-jss";
-import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
+import {  useUserAuth } from "../../../context/UserAuthContext";
 import { writeUserTask } from "../../firebase";
 import FireBaseFileUpload from "./FireBaseFileUpload";
 import HelperModal from "./HelperModal";
-import img from "../../img/subtle.png";
 
 const useStyle = createUseStyles(() => {
   return {

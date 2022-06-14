@@ -1,20 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React from "react";
 import { createUseStyles } from "react-jss";
-import AssignmentLateIcon from "@mui/icons-material/AssignmentLate";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import TaskIcon from "@mui/icons-material/Task";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import AddTaskIcon from "@mui/icons-material/AddTask";
-import EqualizerIcon from "@mui/icons-material/Equalizer";
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
-import EditIcon from "@mui/icons-material/Edit";
-import PaymentIcon from "@mui/icons-material/Payment";
-import MailIcon from "@mui/icons-material/Mail";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
-import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
+import {  useUserAuth } from "../../../context/UserAuthContext";
 import { getDatabase, ref, get } from "firebase/database";
-import paths from "../../../constants/Paths";
 
 const useStyle = createUseStyles(() => {
   return {

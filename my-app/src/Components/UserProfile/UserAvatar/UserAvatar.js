@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
+import { useUserAuth } from "../../../context/UserAuthContext";
 import avatar from "../../../Images/avatar/avatar.jpg"
 
 const useStyle = createUseStyles(() => {
@@ -29,7 +29,7 @@ const useStyle = createUseStyles(() => {
 });
 
 function UserAvatar() {
-  const { user,email,imgUrl} = useUserAuth(UserAuthContext);
+  const { user,email,imgUrl} = useUserAuth();
   const classes = useStyle();
   // const [imgUrl, setImgUrl] = useState("");
 

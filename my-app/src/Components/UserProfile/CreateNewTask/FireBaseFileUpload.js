@@ -8,7 +8,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { storage, writeUserTask } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 import { createUseStyles } from "react-jss";
-import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
+import { useUserAuth } from "../../../context/UserAuthContext";
 import ImgModal from "./ImgModal";
 import { Button, CircularProgress, Input } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -78,7 +78,7 @@ function FireBaseFileUpload(props) {
   const { fileData, setFileData } = props;
   const [modalImg, setModalImg] = useState(fileData[imgIndex]);
   const classes = useStyle();
-  const { user } = useUserAuth(UserAuthContext);
+  const { user } = useUserAuth();
 
 
   const handleChange = (e) => {

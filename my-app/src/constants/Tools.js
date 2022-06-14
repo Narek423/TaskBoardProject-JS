@@ -4,11 +4,9 @@ import AssignmentLateIcon from "@mui/icons-material/AssignmentLate";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import TaskIcon from "@mui/icons-material/Task";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import AddTaskIcon from "@mui/icons-material/AddTask";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import EditIcon from "@mui/icons-material/Edit";
-import PaymentIcon from "@mui/icons-material/Payment";
 import MailIcon from "@mui/icons-material/Mail";
 import paths from "./Paths";
 
