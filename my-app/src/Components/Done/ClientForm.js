@@ -64,7 +64,7 @@ function DoneTasks(props) {
     }
   }, []);
 
-  const onGridReady = useCallback((params) => {
+  const onGridReady = (params) => {
     const dbRef = getDatabase();
     let data = {};
     let dataGrid = [];
@@ -99,7 +99,7 @@ function DoneTasks(props) {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  };
 
   return (
     <div style={classes.containerStyle}>

@@ -105,7 +105,7 @@ function InProgressTasksAdmin(props) {
     }
   }, []);
 
-  const onGridReady = useCallback((params) => {
+  const onGridReady = (params) => {
     const dbRef = getDatabase();
     let data = {};
     let dataGrid = [];
@@ -138,7 +138,7 @@ function InProgressTasksAdmin(props) {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  };
 
   const autoGroupColumnDef = useMemo(() => {
     return {

@@ -65,7 +65,7 @@ function AllTasks(props) {
     }
   }, []);
 
-  const onGridReady = useCallback((params) => {
+  const onGridReady = (params) => {
     const dbRef = getDatabase();
     let data = {};
     let dataGrid = [];
@@ -97,7 +97,7 @@ function AllTasks(props) {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  };
 
   const autoGroupColumnDef = useMemo(() => {
     return {
