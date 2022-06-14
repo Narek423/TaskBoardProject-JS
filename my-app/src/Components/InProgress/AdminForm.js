@@ -9,8 +9,8 @@ import { getDatabase, ref, get, update } from "firebase/database";
 import { sharedStyles } from "../../styles/sharedStyles";
 import States from "../../constants/States";
 import Statuses from "../../constants/Statuses";
-import GridColumns from "../GridColumns";
 import ViewTask from "../ViewTask/Main";
+import gridPainting from "../../utils/grid";
 
 function InProgressTasksAdmin(props) {
   const classes = sharedStyles;
@@ -74,7 +74,7 @@ function InProgressTasksAdmin(props) {
       cellEditorSelector: cellEditorSelector,
     },
   };
-  const columnDefs = GridColumns(gridParams);
+  const columnDefs = gridPainting(gridParams);
 
   const defaultColDef = useMemo(() => {
     return {

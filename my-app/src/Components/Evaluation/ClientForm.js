@@ -7,8 +7,8 @@ import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get } from "firebase/database";
 import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
 import { sharedStyles } from "../../styles/sharedStyles";
-import GridColumns from "../GridColumns";
 import ViewTask from "../ViewTask/Main";
+import gridPainting from "../../utils/grid";
 
 function PendingToEvaluation(props) {
   const classes = sharedStyles;
@@ -32,7 +32,7 @@ function PendingToEvaluation(props) {
     state: { rowGroup: false, hide: true, flex: 2, panel: true },
     status: { rowGroup: false, hide: true, flex: 2, panel: true },
   };
-  const columnDefs = GridColumns(gridParams);
+  const columnDefs = gridPainting(gridParams);
 
   const defaultColDef = useMemo(() => {
     return {
