@@ -1,13 +1,13 @@
 import "./App.css";
-import SignUp from "./components/SignUp";
-import SignIn from "./components/SignIn";
+import SignUp from "./Components/SignUp";
+import SignIn from "./Components/SignIn";
 import { Route, Routes } from "react-router-dom";
-import NavMainBar from "./components/Nav-Bar/NavMainBar";
+import NavMainBar from "./Components/Nav-Bar/NavMainBar";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
-import UserProfile from "./components/UserProfile/UserProfile";
-import ProtectedRoute from "./components/ProtectedRoute";
+import UserProfile from "./Components/UserProfile/UserProfile";
+import ProtectedRoute from "./Components/ProtectedRoute";
 import paths from "./constants/Paths";
-import HomePage from "./components/HomePage/HomePage";
+import HomePage from "./Components/HomePage/HomePage";
 
 function App() {
   const { USER_PROFILE_PATH, SIGN_IN_PATH, SIGN_UP_PATH } = paths;

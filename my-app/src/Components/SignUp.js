@@ -63,6 +63,8 @@ const useStyles = createUseStyles({
   },
   useSpace: {
     marginTop: 70,
+    width: '60%',
+    margin: 'auto'
   },
   signInButton: {
     appearance: "none",
@@ -227,12 +229,41 @@ function SignUp(props) {
   // }
   return (
     <>
-      <NavMainBar />
       <div className={classes.useSpace}>
         <h1 className={classes.signUp}>Sign up</h1>
         {error && (
           <div style={{ color: "red", textAlign: "center" }}> {error} </div>
         )}
+         </div>
+        <div style={{
+          display: "flex"
+        }}>
+        <div className={classes.signUp}>
+          <TextField
+            className={classes.fields}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            id="nameId"
+            label="Name"
+            variant="outlined"
+          />
+        </div>
+        <div className={classes.signUp}>
+          <TextField
+            className={classes.fields}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            id="lastNameId"
+            label="Last name"
+            variant="outlined"
+          />
+        </div>
+        </div>
+        <div style={{
+          display: 'flex',
+          backgroundColor: 'red',
+          height: "20%"
+        }}>
         <div className={classes.signUp}>
           <TextField
             className={classes.fields}
@@ -244,6 +275,20 @@ function SignUp(props) {
             variant="outlined"
           />
         </div>
+        <div className={classes.signUp}>
+          <TextField
+            className={classes.fields}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            id="usernameId"
+            label="Username"
+            variant="outlined"
+          />
+        </div>
+        </div>
+        <div style={{
+          display: "flex"
+        }}>
         <div className={classes.signUp}>
           <FormControl
             className={classes.fields}
@@ -287,36 +332,8 @@ function SignUp(props) {
             />
           </div>
         )}
-        <div className={classes.signUp}>
-          <TextField
-            className={classes.fields}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            id="usernameId"
-            label="Username"
-            variant="outlined"
-          />
-        </div>
-        <div className={classes.signUp}>
-          <TextField
-            className={classes.fields}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            id="nameId"
-            label="Name"
-            variant="outlined"
-          />
-        </div>
-        <div className={classes.signUp}>
-          <TextField
-            className={classes.fields}
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            id="lastNameId"
-            label="Last name"
-            variant="outlined"
-          />
-        </div>
+    
+
         <div className={classes.signUp}>
           <TextField
             className={classes.fields}
@@ -423,7 +440,7 @@ function SignUp(props) {
         </div>
       </div>
       <Outlet />
-    </>
+      </>
   );
 }
 

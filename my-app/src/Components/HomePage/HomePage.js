@@ -189,13 +189,13 @@ function HomePage(params) {
 
       <div style={{
         textAlign: 'center',
-        backgroundColor: '#99ffdd',
+          backgroundColor: '#99ffdd',
           marginTop: '4%',
       }}>
       <h1>Abot us</h1>
       <span>saaaaaaaaaadylkasudjasdiasjd
-        sfdsfsdddddddddddddddddddddddddddddddddddddddddddddddddf
-        sdfsdf        dsfdssssss dfsdf fds      fsdfsd fsdfsdfsd 
+        sfdsfsddddddddddddddddddddddd<br />ddddddddddddddddddddddddddf
+        sdfsdf   <br />     dsfdssssss dfsdf fds   <br />   fsdfsd fsdfsdfsd 
          sdfsdfsdfdsfsdfsdfsd
       </span>
       </div>

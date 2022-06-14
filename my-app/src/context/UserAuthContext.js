@@ -5,7 +5,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth, database, storage } from "../components/firebase";
+import { auth, database, storage } from "../Components/firebase";
 import { getDatabase, ref, set, get, child } from "firebase/database";
 import { ArrAdminTools, ArrClientTools } from "../constants/Tools";
 import {
