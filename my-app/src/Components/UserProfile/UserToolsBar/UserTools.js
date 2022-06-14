@@ -42,25 +42,25 @@ const useStyle = createUseStyles(() => {
 
 function UserTools(props) {
   const classes = useStyle();
-
+  const {open,userToolsClose} = props;
   return (
     <div className={classes.UserTools}>
-      {props.open ? (
+      {open ? (
         <ArrowCircleLeftIcon
-          onClick={props.userToolsClose}
+          onClick={userToolsClose}
           className={classes.left}
         />
       ) : (
         <ArrowCircleRightIcon
-        onClick={props.userToolsClose}
+        onClick={userToolsClose}
         className={classes.right}
         />
       )}
-      {props.open ? <UserAvatar /> : null}
+      {open ? <UserAvatar /> : null}
       <hr className={classes.line}></hr>
-      <UserToolsList open={props.open} />
+      <UserToolsList open={open} />
       <hr className={classes.line}></hr>
-      <LogOutBtn open={props.open} />
+      <LogOutBtn open={open} />
     </div>
   );
 }

@@ -16,13 +16,14 @@ const useStyle = createUseStyles(() => {
 });
 
 function UserWorkingTable(props) {
+  const { open,component } = props
   const classes = useStyle();
  
   return (
     <div className={classes.UserWorkingTable} style={{
-      flex: props.open ? 4 : 25,
-    }}>{props.open}
-      {props.component}
+      flex: open ? 4 : 25,
+    }}>{open}
+      {component}
     </div>
   );
 }

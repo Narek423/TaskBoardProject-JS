@@ -58,19 +58,7 @@ function UserToolsList(props) {
   const navigate = useNavigate();
   const classes = useStyle();
   const { user, toolsList } = useUserAuth();
-  // // const clientId = user.uid;
-  // const dbRef = getDatabase();
-  // const [rull, setRull] = useState();
-
-  // let clientData = {};
-  // get(ref(dbRef, "users/" + clientId))
-  //   .then((snapshot) => {
-  //     clientData = snapshot.val();
-  //     setRull(clientData.roll);
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
+  const  {open} = props;
 
   const arrTools = toolsList();
 
@@ -78,8 +66,8 @@ function UserToolsList(props) {
     <div
       className={classes.usertoolslist}
       style={{
-        marginLeft: props.open ? 30 : 15,
-        marginTop: props.open ? null : 40,
+        marginLeft: open ? 30 : 15,
+        marginTop: open ? null : 40,
       }}
     >
       {arrTools.map((e) => {
@@ -91,7 +79,7 @@ function UserToolsList(props) {
               key={uuidv4()}
             >
               {e.icon}
-              {props.open ? (
+              {open ? (
                 <span className={classes.toolsspan}>{e.text}</span>
               ) : null}
             </div>
