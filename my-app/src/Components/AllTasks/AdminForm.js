@@ -7,8 +7,8 @@ import { createUseStyles } from "react-jss";
 import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get } from "firebase/database";
 import { sharedStyles } from "../../styles/sharedStyles";
-import GridColumns from "../GridColumns";
 import ViewTask from "../ViewTask/Main";
+import gridPainting from "../../utils/grid";
 
 function AllTasksAdmin(props) {
   const classes = sharedStyles;
@@ -30,7 +30,7 @@ function AllTasksAdmin(props) {
     state: { rowGroup: true, hide: true, flex: 2, panel: true },
     status: { rowGroup: false, hide: false, flex: 2, panel: false },
   };
-  const columnDefs = GridColumns(gridParams);
+  const columnDefs = gridPainting(gridParams);
 
   const defaultColDef = useMemo(() => {
     return {
@@ -43,7 +43,7 @@ function AllTasksAdmin(props) {
       floatingFilter: true,
       flex: 1,
     };
-  }, []);
+  }, [classes.defaultColDef]);
 
   const sideBar = useMemo(() => {
     return {
@@ -51,7 +51,7 @@ function AllTasksAdmin(props) {
       toolPanels: ["columns", "filters"],
       defaultToolPanel: "",
     };
-  }, []);
+  }, [defaultColDef]);
 
   const onRowDoubleClicked = useCallback((param) => {
     const selectedRow = param.api.getSelectedRows();

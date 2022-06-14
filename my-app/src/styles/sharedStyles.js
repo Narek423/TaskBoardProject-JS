@@ -1,5 +1,17 @@
 import { createUseStyles } from "react-jss";
 
+export const useContainerStyles = createUseStyles({
+  root: {
+    backgroundColor: "#f9fbff",
+    width: "95vw",
+    height: "60vh",
+    borderColor: "#FF3D00",
+    borderWidth: 2,
+    borderRadius: 9,
+    justifyContent: "center",
+  },
+});
+
 const container = {
   backgroundColor: "#f9fbff",
   width: "95vw",

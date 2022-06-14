@@ -8,8 +8,8 @@ import { getDatabase, ref, get } from "firebase/database";
 import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
 import { sharedStyles } from "../../styles/sharedStyles";
 import States from "../../constants/States";
-import GridColumns from "../GridColumns";
 import ViewTask from "../ViewTask/Main";
+import gridPainting from "../../utils/grid";
 
 function InProgressTasks(props) {
   const classes = sharedStyles;
@@ -33,7 +33,7 @@ function InProgressTasks(props) {
     state: { rowGroup: false, hide: true, flex: 2, panel: true },
     status: { rowGroup: true, hide: false, flex: 2, panel: true },
   };
-  const columnDefs = GridColumns(gridParams);
+  const columnDefs = gridPainting(gridParams);
 
   const defaultColDef = useMemo(() => {
     return {
@@ -46,7 +46,7 @@ function InProgressTasks(props) {
       floatingFilter: true,
       flex: 1,
     };
-  }, []);
+  }, [classes.defaultColDef]);
 
   const sideBar = useMemo(() => {
     return {
@@ -54,7 +54,7 @@ function InProgressTasks(props) {
       toolPanels: ["columns", "filters"],
       defaultToolPanel: "",
     };
-  }, []);
+  }, [defaultColDef]);
 
   const onRowDoubleClicked = useCallback((param) => {
     const selectedRow = param.api.getSelectedRows();
@@ -64,7 +64,7 @@ function InProgressTasks(props) {
     }
   }, []);
 
-  const onGridReady = useCallback((params) => {
+  const onGridReady = (params) => {
     const dbRef = getDatabase();
     let data = {};
     let dataGrid = [];
@@ -99,7 +99,7 @@ function InProgressTasks(props) {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  };
 
   return (
     <div style={classes.containerStyle}>

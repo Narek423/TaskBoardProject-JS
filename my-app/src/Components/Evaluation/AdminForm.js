@@ -20,9 +20,9 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import States from "../../constants/States";
 import Statuses from "../../constants/Statuses";
-import { sharedStyles } from "../../styles/sharedStyles";
-import GridColumns from "../GridColumns";
+import { sharedStyles, useContainerStyles } from "../../styles/sharedStyles";
 import ViewTask from "../ViewTask/Main";
+import gridPainting from "../../utils/grid";
 
 const useStyles = createUseStyles({
   page: {
@@ -185,6 +185,7 @@ function PendingToEvaluationAdmin(props) {
   const [clientId, setClientId] = useState("");
   const [data, setData] = useState();
   const [isOpen, setIsOpen] = useState(false);
+  const containerClasses = useContainerStyles();
 
   const containerStyle = () => {
     return {
@@ -216,7 +217,7 @@ function PendingToEvaluationAdmin(props) {
     state: { rowGroup: false, hide: true, flex: 2, panel: true },
     status: { rowGroup: false, hide: true, flex: 2, panel: true },
   };
-  const columnDefs = GridColumns(gridParams);
+  const columnDefs = gridPainting(gridParams);
 
   const defaultColDef = useMemo(() => {
     return {
@@ -229,7 +230,7 @@ function PendingToEvaluationAdmin(props) {
       floatingFilter: true,
       flex: 1,
     };
-  }, []);
+  }, [classes.defaultColDef]);
 
   const sideBar = useMemo(() => {
     return {
@@ -237,9 +238,9 @@ function PendingToEvaluationAdmin(props) {
       toolPanels: ["columns", "filters"],
       defaultToolPanel: "",
     };
-  }, []);
+  }, [defaultColDef]);
 
-  const onGridReady = useCallback((params) => {
+  const onGridReady = (params) => {
     const dbRef = getDatabase();
     let data = {};
     let dataGrid = [];
@@ -272,7 +273,7 @@ function PendingToEvaluationAdmin(props) {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  };
   const onSaveBtnClick = async (e) => {
     if (title !== "" && clientId !== "") {
       const db = getDatabase();
@@ -346,7 +347,7 @@ function PendingToEvaluationAdmin(props) {
   }, []);
 
   return (
-    <div className={`${classes1.pageEvaluation}`}>
+    <div className={classes1.pageEvaluation}>
       <span
         style={{
           fontFamily: "cursive",
@@ -355,7 +356,7 @@ function PendingToEvaluationAdmin(props) {
       >
         Evaluation tasks
       </span>
-      <div className={`${classes1.containerEvaluation}`}>
+      <div className={containerClasses.root}>
         <React.Fragment>
           <CssBaseline />
           <Container>

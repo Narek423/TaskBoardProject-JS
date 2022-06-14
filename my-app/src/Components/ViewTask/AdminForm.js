@@ -10,7 +10,7 @@ import React from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { createUseStyles } from "react-jss";
 //import { ModalStyle } from "../../styles/modalStyle";
-import { sharedStyles } from "../../styles/sharedStyles";
+import { sharedStyles, useContainerStyles } from "../../styles/sharedStyles";
 
 const useStyles = createUseStyles({
   darkBG: {

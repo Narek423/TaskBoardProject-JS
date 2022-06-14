@@ -9,8 +9,8 @@ import { getDatabase, ref, get, update } from "firebase/database";
 import { sharedStyles } from "../../styles/sharedStyles";
 import States from "../../constants/States";
 import Statuses from "../../constants/Statuses";
-import GridColumns from "../GridColumns";
 import ViewTask from "../ViewTask/Main";
+import gridPainting from "../../utils/grid";
 
 function InProgressTasksAdmin(props) {
   const classes = sharedStyles;
@@ -74,7 +74,7 @@ function InProgressTasksAdmin(props) {
       cellEditorSelector: cellEditorSelector,
     },
   };
-  const columnDefs = GridColumns(gridParams);
+  const columnDefs = gridPainting(gridParams);
 
   const defaultColDef = useMemo(() => {
     return {
@@ -87,7 +87,7 @@ function InProgressTasksAdmin(props) {
       floatingFilter: true,
       flex: 1,
     };
-  }, []);
+  }, [classes.defaultColDef]);
 
   const sideBar = useMemo(() => {
     return {
@@ -95,7 +95,7 @@ function InProgressTasksAdmin(props) {
       toolPanels: ["columns", "filters"],
       defaultToolPanel: "",
     };
-  }, []);
+  }, [defaultColDef]);
 
   const onRowDoubleClicked = useCallback((param) => {
     const selectedRow = param.api.getSelectedRows();
@@ -105,7 +105,7 @@ function InProgressTasksAdmin(props) {
     }
   }, []);
 
-  const onGridReady = useCallback((params) => {
+  const onGridReady = (params) => {
     const dbRef = getDatabase();
     let data = {};
     let dataGrid = [];
@@ -138,7 +138,7 @@ function InProgressTasksAdmin(props) {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  };
 
   const autoGroupColumnDef = useMemo(() => {
     return {

@@ -9,8 +9,8 @@ import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
 import { sharedStyles } from "../../styles/sharedStyles";
 import Statuses from "../../constants/Statuses";
 import States from "../../constants/States";
-import GridColumns from "../GridColumns";
 import ViewTask from "../ViewTask/Main";
+import gridPainting from "../../utils/grid";
 
 function PendingToAcception(props) {
   const classes = sharedStyles;
@@ -34,7 +34,7 @@ function PendingToAcception(props) {
     state: { rowGroup: false, hide: true, flex: 2, panel: true },
     status: { rowGroup: false, hide: true, flex: 2, panel: true },
   };
-  const columnDefs = GridColumns(gridParams);
+  const columnDefs = gridPainting(gridParams);
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
@@ -46,7 +46,7 @@ function PendingToAcception(props) {
       floatingFilter: true,
       flex: 1,
     };
-  }, []);
+  }, [classes.defaultColDef]);
 
   const sideBar = useMemo(() => {
     return {
@@ -54,7 +54,7 @@ function PendingToAcception(props) {
       toolPanels: ["columns", "filters"],
       defaultToolPanel: "",
     };
-  }, []);
+  }, [defaultColDef]);
 
   const onAcceptRejectBtnClick = function (param) {
     let selectedNodes = gridApi.getSelectedNodes();
