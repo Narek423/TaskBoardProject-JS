@@ -5,6 +5,8 @@ import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import LogOutBtn from "./LogOutBtn";
 import UserAvatar from "../Avatar/Avatar";
 import UserToolsList from "./ToolsList";
+import SwitchLeftIcon from '@mui/icons-material/SwitchLeft';
+import SwitchRightIcon from '@mui/icons-material/SwitchRight';
 
 const useStyle = createUseStyles(() => {
   return {
@@ -21,16 +23,14 @@ const useStyle = createUseStyles(() => {
         position: "absolute",
         right: 0,
         fontSize: "large",    // class tanuc chap@ chi poxum style mech poxuma ?????
-        color: "white",
         cursor: "pointer",
         fontSize: 30,
     },
     right: {
-        position: "absolute",
-            top: 20,
-            right: 12,
-            fontSize: 30,
-            cursor: "pointer"
+        margin: 'auto',
+        paddingTop: "10%",
+        fontSize: 30,
+        cursor: "pointer"
     }, 
      line: { 
         border: "1px solid #2159B9",
@@ -46,12 +46,12 @@ function Tools(props) {
   return (
     <div className={classes.UserTools}>
       {open ? (
-        <ArrowCircleLeftIcon
+        <SwitchRightIcon
           onClick={userToolsClose}
           className={classes.left}
         />
       ) : (
-        <ArrowCircleRightIcon
+        <SwitchLeftIcon
         onClick={userToolsClose}
         className={classes.right}
         />

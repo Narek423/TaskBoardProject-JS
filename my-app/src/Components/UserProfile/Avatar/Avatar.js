@@ -11,26 +11,36 @@ const useStyle = createUseStyles(() => {
       width: "100%",
       flex: 1,
       textAlign: "center",
-      margin: {
-        top: 30,
-      },
+      marginTop: "10%"
+    },
+    avatarClose: {
+      width: "100%",
+      flex: 1,
+      textAlign: "center",
+      marginTop: "30%"
     },
     useremail: {
       color: "#B4C8EC",
-      width: "100%",
+      // width: "100%",
       fontSize: "100%",
       fontFamily: "cursive",
     },
     img: {
-      width: "40%",
+      width: "45%",
       borderRadius: 65,
     },
+    imgClose: {
+      width: "65%",
+      borderRadius: 65,
+    }
   };
 });
 
 function Avatar(props) {
   const { user,email,imgUrl} = useUserAuth();
   const classes = useStyle();
+  const {open} = props;
+
   // const [imgUrl, setImgUrl] = useState("");
 
   // useEffect(() => {
@@ -46,8 +56,8 @@ function Avatar(props) {
   // }, [user]);
 
   return (
-    <div className={classes.avatar}>
-      <img className={classes.img} alt="avatar" src={imgUrl ? imgUrl : avatar}></img>
+    <div className={open ? classes.avatar : classes.avatarClose}>
+      <img className={open ? classes.img : classes.imgClose} alt="avatar" src={imgUrl ? imgUrl : avatar}></img>
       <p className={classes.useremail}>{!!props.open ? email : null}</p>
     </div>
   );
