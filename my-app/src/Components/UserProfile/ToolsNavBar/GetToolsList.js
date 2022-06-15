@@ -35,7 +35,7 @@ const useStyle = createUseStyles(() => {
     }
 })
 
-export function ArrAdminTools(){
+export function AdminTools(){
     const classes = useStyle();
     return [
         {
@@ -43,7 +43,6 @@ export function ArrAdminTools(){
             text: "Profile",
             path: "",
             id: 1,
-            
         },
         {
             icon: <AssignmentIcon className={classes.icon} />,
@@ -72,13 +71,13 @@ export function ArrAdminTools(){
         },
         {
             icon: <AssignmentIcon className={classes.icon} />,
-            text: "Done Tasks Admin",
+            text: "Done Tasks",
             id: 6,
             path: DONE_TASKS_PATH
         },
         {
             icon: <AssignmentIcon className={classes.icon} />,
-            text: "Rejected tasks Admin",
+            text: "Rejected tasks",
             id: 7,
             path: REJECTED_TASKS_PATH
         },
@@ -88,12 +87,6 @@ export function ArrAdminTools(){
             path: STATICS_PATH,
             id: 9,
         },
-        // {
-        //     icon: <PaymentIcon className={classes.icon} />,
-        //     text: "Payment History",
-        //     path: "Profile",
-        //     id: 10,
-        // },
         {
             icon: <MailIcon className={classes.icon} />,
             text: "Inbox",
@@ -103,7 +96,7 @@ export function ArrAdminTools(){
     ];
 }
 
-export function ArrClientTools(){
+export function ClientTools(){
     const classes = useStyle();
     return [
         {
@@ -134,19 +127,19 @@ export function ArrClientTools(){
         },
         {
             icon: <AssignmentLateIcon className={classes.icon} />,
-            text: "In Progress Tasks ",
+            text: "In Progress Tasks",
             id: 5,
             path: IN_PROCCESS_TASKS_PATH
         },
         {
             icon: <AssignmentIcon className={classes.icon} />,
-            text: "Done Tasks Admin",
+            text: "Done Tasks",
             id: 6,
             path: DONE_TASKS_PATH
         },
         {
             icon: <AssignmentIcon className={classes.icon} />,
-            text: "Rejected tasks Admin",
+            text: "Rejected tasks",
             id: 7,
             path: REJECTED_TASKS_PATH
         },

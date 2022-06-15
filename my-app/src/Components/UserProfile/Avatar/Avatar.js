@@ -28,7 +28,7 @@ const useStyle = createUseStyles(() => {
   };
 });
 
-function Avatar() {
+function Avatar(props) {
   const { user,email,imgUrl} = useUserAuth();
   const classes = useStyle();
   // const [imgUrl, setImgUrl] = useState("");
@@ -48,7 +48,7 @@ function Avatar() {
   return (
     <div className={classes.avatar}>
       <img className={classes.img} alt="avatar" src={imgUrl ? imgUrl : avatar}></img>
-      <p className={classes.useremail}>{email}</p>
+      <p className={classes.useremail}>{!!props.open ? email : null}</p>
     </div>
   );
 }

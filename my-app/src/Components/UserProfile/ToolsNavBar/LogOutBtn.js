@@ -7,7 +7,7 @@ import { useUserAuth } from "../../../context/UserAuthContext";
 const useStyle = createUseStyles(() => {
   return {
     LogoutIcon: {
-      flex: 2,
+      flex: 1,
       textAlign: "center",
       position: "relative",
     },

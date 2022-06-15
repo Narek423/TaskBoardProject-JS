@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { auth, database, storage } from "../Components/firebase";
 import { getDatabase, ref, set, get, child } from "firebase/database";
-import { ArrAdminTools, ArrClientTools } from "../Components/UserProfile/ToolsNavBar/GetToolsList";
+import { AdminTools, ClientTools } from "../Components/UserProfile/ToolsNavBar/GetToolsList";
 import {
   getDownloadURL,
   ref as resstore,
@@ -91,7 +91,6 @@ export function UserAuthContextProvider({ children }) {
     signIn,
     avatarLink: avatarLink,
     logOut,
-    toolsList: roll && roll === "Admin" ? ArrAdminTools : ArrClientTools,
     roll,
   };
 

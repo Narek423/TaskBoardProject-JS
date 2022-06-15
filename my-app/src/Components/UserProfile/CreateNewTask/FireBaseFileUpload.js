@@ -12,7 +12,7 @@ import { useUserAuth } from "../../../context/UserAuthContext";
 import ImgModal from "./ImgModal";
 import { Button, CircularProgress, Input } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import  defaultImg  from "../../img/images.png"
+import  defaultImg  from "../../../Images/images.png"
 export let avatarUrl = "";
 
 

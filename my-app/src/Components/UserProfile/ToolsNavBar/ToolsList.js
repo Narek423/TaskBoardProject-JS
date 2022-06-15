@@ -2,17 +2,17 @@ import React from "react";
 import { createUseStyles } from "react-jss";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
-import {  useUserAuth } from "../../../context/UserAuthContext";
+import { useUserAuth } from "../../../context/UserAuthContext";
 import { getDatabase, ref, get } from "firebase/database";
+import Rolls from "../../../constants/Rolls";
+import { AdminTools, ClientTools } from "./GetToolsList";
 
 const useStyle = createUseStyles(() => {
   return {
     usertoolslist: {
-      flex: 2,
+      flex: 3,
       display: "flex",
       flexDirection: "column",
-      marginLeft: 30,
-      // fontSize: 19,
     },
     toolsspan: {
       color: "#B4C8EC",
@@ -27,53 +27,51 @@ const useStyle = createUseStyles(() => {
       },
     },
     div: {
-      width: "80%",
-      fontSize: "100%",
+      // fontSize: "100%",
       display: "flex",
-      justifyContent: "center",
       "&:hover": {
-        backgroundColor: "#019CAD",
-        boxShadow: "#1264F3 0 -6px 8px inset",
-        transform: "scale(1.125)",
+        backgroundColor: "#1264F3",
+        // boxShadow: "#1264F3 0 -6px 8px inset",
+        // transform: "scale(1.125)",
         cursor: "pointer",
       },
-      "&:active": {
-        transform: "scale(1.125)",
-      },
+      // "&:active": {
+      //   transform: "scale(1.125)",
+      // },
     },
   };
 });
 function ToolsList(props) {
   const navigate = useNavigate();
   const classes = useStyle();
-  const { user, toolsList } = useUserAuth();
-  const  {open} = props;
+  const { user, roll } = useUserAuth();
+  const { open } = props;
+  const { Admin } = Rolls;
 
-  const arrTools = toolsList();
+  const arrTools = roll === Admin ? AdminTools() : ClientTools();
 
   return (
     <div
       className={classes.usertoolslist}
       style={{
-        marginLeft: open ? 30 : 15,
-        marginTop: open ? null : 40,
+        justifyContent: open ? null : 'center',
+        margin: open ? null : 'auto',
+
+        // marginLeft: open ? 30 : 15,
+        // marginTop: open ? null : 40,
       }}
     >
       {arrTools.map((e) => {
-        if (e.rull !== "Admin") {
-          return (
-            <div
-              className={classes.div}
-              onClick={() => navigate(e.path)}
-              key={uuidv4()}
-            >
-              {e.icon}
-              {open ? (
-                <span className={classes.toolsspan}>{e.text}</span>
-              ) : null}
-            </div>
-          );
-        }
+        return (
+          <div
+            className={classes.div}
+            onClick={() => navigate(e.path)}
+            key={uuidv4()}
+          >
+            {e.icon}
+            {open ? <span className={classes.toolsspan}>{e.text}</span> : null}
+          </div>
+        );
       })}
     </div>
   );

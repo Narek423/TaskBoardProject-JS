@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import NavMainBar from "../Nav-Bar/HomePageNavBar";
-import img1 from "../img/img.jpg";
+import img1 from "../../Images/img.jpg";
 import { createUseStyles } from "react-jss";
 
 const useStyle = createUseStyles(() => {

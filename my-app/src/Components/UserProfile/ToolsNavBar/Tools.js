@@ -10,7 +10,7 @@ const useStyle = createUseStyles(() => {
   return {
     UserTools: {
       backgroundImage: "linear-gradient(to top, #1264F3, #019CAD)",
-      opacity:  0.8,
+      // opacity:  0.9,
       display: "flex",
       flexDirection: "column",
       position: "relative",
@@ -23,7 +23,7 @@ const useStyle = createUseStyles(() => {
         fontSize: "large",    // class tanuc chap@ chi poxum style mech poxuma ?????
         color: "white",
         cursor: "pointer",
-
+        fontSize: 30,
     },
     right: {
         position: "absolute",
@@ -56,7 +56,7 @@ function Tools(props) {
         className={classes.right}
         />
       )}
-      {open ? <UserAvatar /> : null}
+      <UserAvatar open={open}/> 
       <hr className={classes.line}></hr>
       <UserToolsList open={open} />
       <hr className={classes.line}></hr>

@@ -17,6 +17,7 @@ import GetDone from "../Done/Main";
 import GetRejected from "../Rejected/Main";
 import GetAllTasks from "../AllTasks/Main";
 import Rolls from "../../constants/Rolls";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const useStyle = createUseStyles(() => {
   return {
@@ -24,10 +25,17 @@ const useStyle = createUseStyles(() => {
       display: "flex",
       height: "100vh",
     },
+    loader: {
+      position: 'fixed',
+      left: "50%",
+      right: '50%',
+      top: '50%',
+      bottom: "50%",
+    }
   };
 });
 
-function UserProfile({ children }) {
+function Profile({ children }) {
   const { user, roll } = useUserAuth();
   const classes = useStyle();
   const [toolsBarOpen, setToolsBaropen] = useState(true);
@@ -50,9 +58,10 @@ function UserProfile({ children }) {
   });
 
   const { Admin } = Rolls;
+  console.log(user,"roll")
 
   return (
-    <div className={classes.UserProfile}>
+   !!roll ? <div className={classes.UserProfile}>
       <UserTools open={toolsBarOpen} userToolsClose={userToolsClose} />
       <Routes>
         <Route
@@ -235,8 +244,9 @@ function UserProfile({ children }) {
           }
         />
       </Routes>
-    </div>
+    </div> :
+     <CircularProgress  className={classes.loader}/>
   );
 }
 
-export default UserProfile;
+export default Profile;

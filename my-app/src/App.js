@@ -4,7 +4,7 @@ import SignIn from "./Components/SignIn";
 import { Route, Routes } from "react-router-dom";
 import NavMainBar from "./Components/Nav-Bar/HomePageNavBar";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
-import UserProfile from "./Components/UserProfile/Profile";
+import Profile from "./Components/UserProfile/Profile";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import paths from "./constants/Paths";
 import HomePage from "./Components/HomePage/HomePage";
@@ -15,12 +15,11 @@ function App() {
     <UserAuthContextProvider>
       <Routes>
         <Route path="/" element={<HomePage />} />
-
         <Route
           path={`${USER_PROFILE_PATH}/*`}
           element={
             <ProtectedRoute>
-              <UserProfile />
+              <Profile />
             </ProtectedRoute>
           }
         />

@@ -3,9 +3,9 @@ import { createUseStyles } from "react-jss";
 import Fab from "@mui/material/Fab";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
-import paths from "../../../constants/Paths"
+import paths from "../../../constants/Paths";
 import { useUserAuth } from "../../../context/UserAuthContext";
-import Rolls from "../../../constants/Rolls"
+import Rolls from "../../../constants/Rolls";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -21,8 +21,8 @@ function WorkingTable(props) {
   const classes = useStyle();
   const { roll } = useUserAuth();
   const navigate = useNavigate();
-  const {CREATE_TASK_PATH,USER_PROFILE_PATH} = paths;
-  const {Admin} = Rolls;
+  const { CREATE_TASK_PATH, USER_PROFILE_PATH } = paths;
+  const { Admin } = Rolls;
 
   return (
     <div
@@ -32,7 +32,7 @@ function WorkingTable(props) {
       }}
     >
       {component}
-      {(!create && roll !== Admin ) ? (
+      {!create && roll !== Admin ? (
         <Fab
           color="primary"
           aria-label="edit"
