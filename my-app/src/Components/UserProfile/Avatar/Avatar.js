@@ -4,14 +4,19 @@ import { storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useUserAuth } from "../../../context/UserAuthContext";
 import avatar from "../../../Images/avatar/avatar.jpg"
+import { useNavigate } from "react-router-dom";
+import paths from "../../../constants/Paths"
 
 const useStyle = createUseStyles(() => {
   return {
     avatar: {
-      width: "100%",
+      // width: "100%",
       flex: 1,
+      margin: 'auto',
       textAlign: "center",
-      marginTop: "10%"
+      marginTop: "10%",
+      display: "flex",
+      flexDirection: 'column'
     },
     avatarClose: {
       width: "100%",
@@ -21,14 +26,16 @@ const useStyle = createUseStyles(() => {
     },
     useremail: {
       color: "#B4C8EC",
-      // width: "100%",
       fontSize: "100%",
       fontFamily: "cursive",
+      flex: 1
     },
     img: {
-      width: "45%",
+      width: "15vh",
       borderRadius: 65,
-    },
+      flex: 1,
+      margin: 'auto' 
+   },
     imgClose: {
       width: "65%",
       borderRadius: 65,
@@ -39,8 +46,9 @@ const useStyle = createUseStyles(() => {
 function Avatar(props) {
   const { user,email,imgUrl} = useUserAuth();
   const classes = useStyle();
+  const navigate = useNavigate();
   const {open} = props;
-
+  const {PROFILE_PATH,USER_PROFILE_PATH} = paths;
   // const [imgUrl, setImgUrl] = useState("");
 
   // useEffect(() => {
@@ -57,7 +65,7 @@ function Avatar(props) {
 
   return (
     <div className={open ? classes.avatar : classes.avatarClose}>
-      <img className={open ? classes.img : classes.imgClose} alt="avatar" src={imgUrl ? imgUrl : avatar}></img>
+      <img onClick={() => navigate(`${PROFILE_PATH}${USER_PROFILE_PATH}`)} className={open ? classes.img : classes.imgClose} alt="avatar" src={imgUrl ? imgUrl : avatar}></img>
       <p className={classes.useremail}>{!!props.open ? email : null}</p>
     </div>
   );

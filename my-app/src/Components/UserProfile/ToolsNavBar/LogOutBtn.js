@@ -9,18 +9,13 @@ const useStyle = createUseStyles(() => {
     LogoutIcon: {
       flex: 1,
       margin: 'auto',
-      position: "relative",
+      // position: "relative",
     },
     logOutIconClose: {
       flex: 5,
       position: 'relative'
     },
     iconBtnClose: {
-      // fontSize: "15%",
-      // color: "#B4C8EC",
-      // left: '50%',
-      // right: "auto",
-      // right:  "50%",
       marginLeft: '30%', ////esi chi @nlum mechtex qcelu pah@
       position: 'absolute',
       bottom: "2%",
@@ -28,7 +23,7 @@ const useStyle = createUseStyles(() => {
     },
     iconBtn: {
       position: 'absolute',
-      bottom: '2%'
+      bottom: '2%',
     }
   };
 });
@@ -50,15 +45,6 @@ function LogOutBtn(props) {
       <LogoutIcon
         onClick={handleLogOut}
         className={open ? classes.iconBtn : classes.iconBtnClose}
-        // style={{
-        //   // fontSize: "15%",
-        //   color: "#B4C8EC",
-        //   position: 'fixed',
-        //   bottom: "2%",
-        //   margin: 'auto',
-        //   // right: open ? null : 10,
-        //   cursor: "pointer",
-        // }}
       />
     </div>
   );

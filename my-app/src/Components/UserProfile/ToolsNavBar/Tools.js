@@ -12,12 +12,11 @@ const useStyle = createUseStyles(() => {
   return {
     UserTools: {
       backgroundImage: "linear-gradient(to top, #1264F3, #019CAD)",
-      // opacity:  0.9,
       display: "flex",
       flexDirection: "column",
       position: "relative",
       flex: 1,
-      width: "100%"
+      height: "100%"
     },
     left: {
         position: "absolute",

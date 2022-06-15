@@ -10,33 +10,33 @@ import { AdminTools, ClientTools } from "./GetToolsList";
 const useStyle = createUseStyles(() => {
   return {
     usertoolslist: {
+      flex: 2,
+      display: "flex",
+      flexDirection: "column",
+    },
+    usertoolslistClose: {
       flex: 3,
       display: "flex",
       flexDirection: "column",
     },
     toolsspan: {
       color: "#B4C8EC",
-      verticalAlign: "middle",
       flex: 5,
-      marginTop: "5%",
+      fontSize: 18
     },
-    icon: {
-      flex: 1,
-      margin: {
-        top: "5%",
-      },
-    },
+  
     div: {
-      // fontSize: "100%",
+      alignItems: 'center',
+      height: '9%',
       display: "flex",
       "&:hover": {
         backgroundColor: "#1264F3",
-        // boxShadow: "#1264F3 0 -6px 8px inset",
-        // transform: "scale(1.125)",
+        // boxShadow: "blue 0 -6px 18px inset",
+        // transform: "scale(1.11)",
         cursor: "pointer",
       },
       // "&:active": {
-      //   transform: "scale(1.125)",
+      //   transform: "scale(1.085)",
       // },
     },
   };
@@ -52,13 +52,10 @@ function ToolsList(props) {
 
   return (
     <div
-      className={classes.usertoolslist}
+      className={open ? classes.usertoolslist : classes.usertoolslistClose}
       style={{
         justifyContent: open ? null : 'center',
         margin: open ? null : 'auto',
-
-        // marginLeft: open ? 30 : 15,
-        // marginTop: open ? null : 40,
       }}
     >
       {arrTools.map((e) => {
