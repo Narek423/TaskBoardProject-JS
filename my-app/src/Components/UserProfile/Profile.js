@@ -1,7 +1,7 @@
-import React, { useCallback,useState } from "react";
+import React, { useCallback, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import {  useUserAuth } from "../../context/UserAuthContext";
+import { useUserAuth } from "../../context/UserAuthContext";
 import CreateNewTask from "./CreateNewTask/CreateNewTask";
 import Inbox from "./Inbox/Inbox";
 import UserTools from "./ToolsNavBar/Tools";
@@ -17,7 +17,7 @@ import GetDone from "../Done/Main";
 import GetRejected from "../Rejected/Main";
 import GetAllTasks from "../AllTasks/Main";
 import Rolls from "../../constants/Rolls";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -26,12 +26,12 @@ const useStyle = createUseStyles(() => {
       height: "100vh",
     },
     loader: {
-      position: 'fixed',
+      position: "fixed",
       left: "50%",
-      right: '50%',
-      top: '50%',
+      right: "50%",
+      top: "50%",
       bottom: "50%",
-    }
+    },
   };
 });
 
@@ -58,10 +58,10 @@ function Profile({ children }) {
   });
 
   const { Admin } = Rolls;
-  console.log(user,"roll")
+  console.log(user, "roll");
 
-  return (
-   !!roll ? <div className={classes.UserProfile}>
+  return !!roll ? (
+    <div className={classes.UserProfile}>
       <UserTools open={toolsBarOpen} userToolsClose={userToolsClose} />
       <Routes>
         <Route
@@ -74,6 +74,7 @@ function Profile({ children }) {
             )
           }
         />
+        <Route path={`*`} element={<div>Page not found</div>} />
         <Route
           path={PROFILE_PATH}
           element={
@@ -244,8 +245,9 @@ function Profile({ children }) {
           }
         />
       </Routes>
-    </div> :
-     <CircularProgress  className={classes.loader}/>
+    </div>
+  ) : (
+    <CircularProgress className={classes.loader} />
   );
 }
 

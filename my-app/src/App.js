@@ -25,6 +25,7 @@ function App() {
         />
         <Route path={SIGN_IN_PATH} element={<SignUp />} />
         <Route path={SIGN_UP_PATH} element={<SignIn />} />
+        <Route path={`*`} element={<div> Page not found</div>} />
       </Routes>
     </UserAuthContextProvider>
   );

@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import { createUseStyles } from "react-jss";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+import paths from "../../constants/Paths"
 
 const theme = createTheme({
 	status: {
@@ -27,12 +28,13 @@ const useStyle = createUseStyles(() => {
 
 function Auth() {
 	const classes = useStyle();
+	const {SIGN_IN_PATH,SIGN_UP_PATH} = paths;
 
 	return (
 		<div className={classes.auth}>
 			<div className={classes.authBtns}>
 				<ThemeProvider theme={theme}>
-					<Link to='/signup'>
+					<Link to={`/${SIGN_UP_PATH}`}>
 						<Button
 							// style={{
 							// 	position: "absolute",
@@ -44,7 +46,7 @@ function Auth() {
 							Sing In
 						</Button>
 					</Link>
-					<Link to='/signin'>
+					<Link to={`/${SIGN_IN_PATH}`}>
 						<Button
 							// style={{
 							// 	position: "absolute",
