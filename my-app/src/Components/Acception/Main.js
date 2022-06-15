@@ -4,11 +4,11 @@ import { useUserAuth } from "../../context/UserAuthContext";
 import AdminForm from "./AdminForm";
 import ClientForm from "./ClientForm";
 
-function GetEvaluation() {
+function GetAcception() {
   const { Admin } = Rolls;
   const { roll } = useUserAuth();
   const component = roll === Admin ? <AdminForm /> : <ClientForm />;
   return component;
 }
 
-export default GetEvaluation;
+export default GetAcception;

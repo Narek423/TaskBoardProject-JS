@@ -9,8 +9,8 @@ import {
 import React from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { createUseStyles } from "react-jss";
+import { useSharedStyles } from "../../styles/sharedStyles";
 //import { ModalStyle } from "../../styles/modalStyle";
-import { sharedStyles } from "../../styles/sharedStyles";
 
 const useStyles = createUseStyles({
   darkBG: {
@@ -206,7 +206,7 @@ const useStyles = createUseStyles({
 const AdminForm = ({ setIsOpen, data }) => {
   console.log("data", data);
   const ModalStyle = useStyles();
-  const classes = useStyles();
+  const classes = useSharedStyles();
   return (
     <>
       <div className={ModalStyle.darkBG} onClick={() => setIsOpen(false)} />

@@ -6,12 +6,12 @@ import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get } from "firebase/database";
 import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
-import { sharedStyles } from "../../styles/sharedStyles";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
+import { useSharedStyles } from "../../styles/sharedStyles";
 
 function PendingToEvaluation(props) {
-  const classes = sharedStyles;
+  const classes = useSharedStyles();
   const { user } = useUserAuth(UserAuthContext);
   const clientId = user.uid;
   const [rowData, setRowData] = useState();
@@ -100,10 +100,14 @@ function PendingToEvaluation(props) {
       });
   };
 
+  const gridStyle = () => {
+    return { width: "100%", margin: "auto", flex: 10 };
+  };
+
   return (
-    <div style={classes.containerStyle}>
-      <span style={classes.formName}>Evaluation tasks</span>
-      <div style={classes.gridStyle} className="ag-theme-alpine">
+    <div className={classes.containerStyle}>
+      <span className={classes.formName}>Evaluation tasks</span>
+      <div style={gridStyle()} className="ag-theme-alpine">
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}

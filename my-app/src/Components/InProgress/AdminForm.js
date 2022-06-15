@@ -6,14 +6,14 @@ import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { createUseStyles } from "react-jss";
 import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get, update } from "firebase/database";
-import { sharedStyles } from "../../styles/sharedStyles";
 import States from "../../constants/States";
 import Statuses from "../../constants/Statuses";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
+import { useSharedStyles } from "../../styles/sharedStyles";
 
 function InProgressTasksAdmin(props) {
-  const classes = sharedStyles;
+  const classes = useSharedStyles();
   const [data, setData] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const onCellEditingStopped = useCallback((event) => {
@@ -152,10 +152,14 @@ function InProgressTasksAdmin(props) {
     };
   }, []);
 
+  const gridStyle = () => {
+    return { width: "100%", margin: "auto", flex: 10 };
+  };
+
   return (
-    <div style={classes.containerStyle}>
-      <span style={classes.formName}>In progress tasks</span>
-      <div style={classes.gridStyle} className="ag-theme-alpine">
+    <div className={classes.containerStyle}>
+      <span className={classes.formName}>In progress tasks</span>
+      <div style={gridStyle()} className="ag-theme-alpine">
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}

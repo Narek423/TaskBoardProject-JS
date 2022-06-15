@@ -6,14 +6,14 @@ import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get, update } from "firebase/database";
 import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
-import { sharedStyles } from "../../styles/sharedStyles";
+import { useSharedStyles } from "../../styles/sharedStyles";
 import Statuses from "../../constants/Statuses";
 import States from "../../constants/States";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
 
 function PendingToAcception(props) {
-  const classes = sharedStyles;
+  const classes = useSharedStyles();
   const { user } = useUserAuth(UserAuthContext);
   const clientId = user.uid;
   const [rowData, setRowData] = useState();
@@ -132,13 +132,17 @@ function PendingToAcception(props) {
       });
   };
 
+  const gridStyle = () => {
+    return { width: "100%", margin: "auto", flex: 10 };
+  };
+
   return (
-    <div style={classes.containerStyle}>
-      <span style={classes.formName}>Tasks for acception</span>
-      <div style={classes.groupingInputs}>
+    <div className={classes.containerStyle}>
+      <span className={classes.formName}>Tasks for acception</span>
+      <div className={classes.groupingInputs}>
         <button
           onClick={onAcceptRejectBtnClick}
-          style={classes.acceptButton}
+          className={classes.acceptButton}
           type="button"
         >
           {" "}
@@ -146,14 +150,14 @@ function PendingToAcception(props) {
         </button>
         <button
           onClick={onAcceptRejectBtnClick}
-          style={classes.rejectButton}
+          className={classes.rejectButton}
           type="button"
         >
           {" "}
           Reject{" "}
         </button>
       </div>
-      <div style={classes.gridStyle} className="ag-theme-alpine">
+      <div style={gridStyle()} className="ag-theme-alpine">
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}

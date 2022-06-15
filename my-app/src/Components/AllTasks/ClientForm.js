@@ -7,12 +7,12 @@ import { createUseStyles } from "react-jss";
 import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get } from "firebase/database";
 import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
-import { sharedStyles } from "../../styles/sharedStyles";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
+import { useSharedStyles } from "../../styles/sharedStyles";
 
 function AllTasks(props) {
-  const classes = sharedStyles;
+  const classes = useSharedStyles();
   const { user } = useUserAuth(UserAuthContext);
   const clientId = user.uid;
   const [data, setData] = useState();
@@ -111,10 +111,14 @@ function AllTasks(props) {
     };
   }, []);
 
+  const gridStyle = () => {
+    return { width: "100%", margin: "auto", flex: 10 };
+  };
+
   return (
-    <div style={classes.containerStyle}>
-      <span style={classes.formName}>All tasks</span>
-      <div style={classes.gridStyle} className="ag-theme-alpine">
+    <div className={classes.containerStyle}>
+      <span className={classes.formName}>All tasks</span>
+      <div style={gridStyle()} className="ag-theme-alpine">
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}

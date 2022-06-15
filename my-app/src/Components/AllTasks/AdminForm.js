@@ -3,15 +3,14 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
 import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get } from "firebase/database";
-import { sharedStyles } from "../../styles/sharedStyles";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
+import { useSharedStyles } from "../../styles/sharedStyles";
 
 function AllTasksAdmin(props) {
-  const classes = sharedStyles;
+  const classes = useSharedStyles();
   const [rowData, setRowData] = useState();
   const [data, setData] = useState();
   const [isOpen, setIsOpen] = useState(false);
@@ -106,10 +105,14 @@ function AllTasksAdmin(props) {
     };
   }, []);
 
+  const gridStyle = () => {
+    return { width: "100%", margin: "auto", flex: 10 };
+  };
+
   return (
-    <div style={classes.containerStyle}>
-      <span style={classes.formName}>All tasks</span>
-      <div style={classes.gridStyle} className="ag-theme-alpine">
+    <div className={classes.containerStyle}>
+      <span className={classes.formName}>All tasks</span>
+      <div style={gridStyle()} className="ag-theme-alpine">
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}

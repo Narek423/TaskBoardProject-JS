@@ -20,153 +20,16 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import States from "../../constants/States";
 import Statuses from "../../constants/Statuses";
-import { sharedStyles, useContainerStyles } from "../../styles/sharedStyles";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
-
-const useStyles = createUseStyles({
-  page: {
-    backgroundColor: "#e2ebfc",
-    justifyContent: "center",
-    height: "100vh",
-  },
-  container: {
-    backgroundColor: "#f9fbff",
-    width: "95%",
-    height: "50%",
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: 0,
-    marginBottom: 0,
-    borderColor: "#FF3D00",
-    borderWidth: 2,
-    borderRadius: 9,
-    justifyContent: "center",
-  },
-  nameText: {
-    marginLeft: 0,
-    marginTop: 8,
-    fontSize: 25,
-    flex: 5,
-  },
-  header: {
-    fontFamily: "Palatino",
-    fontSize: 15,
-  },
-  defaultColDef: {
-    fontFamily: "Palatino",
-    fontSize: 15,
-    backgroundColor: "red",
-  },
-  grouping: {
-    display: "flex",
-    marginTop: 10,
-    marginBottom: 10,
-    backgroundColor: "#e3f6f8",
-    width: "100%",
-    height: 40,
-    borderColor: "#FF3D00",
-    borderWidth: 2,
-    borderRadius: 9,
-    justifyContent: "center",
-  },
-  groupingName: {
-    display: "flex",
-    marginTop: 10,
-    marginBottom: 10,
-    width: "100%",
-    height: 40,
-    justifyContent: "center",
-  },
-  groupingInputs: {
-    display: "flex",
-    marginTop: 0,
-    marginBottom: 10,
-    width: "100%",
-    height: 40,
-    justifyContent: "left",
-  },
-  groupingInputsFields: {
-    display: "flex",
-    marginTop: 20,
-    marginBottom: 20,
-    width: "100%",
-    height: 40,
-    justifyContent: "left",
-  },
-  groupingInputsCard: {
-    display: "flex",
-    width: "100%",
-    height: "20vh",
-    justifyContent: "left",
-  },
-  headerText: {
-    marginLeft: 20,
-    marginTop: 7,
-    flex: 1,
-  },
-  headerValue: {
-    marginLeft: 20,
-    marginTop: 7,
-    flex: 1,
-  },
-  TextFieldLeft: {
-    marginRight: 10,
-    marginTop: 7,
-    flex: 1,
-  },
-  TextFieldRight: {
-    marginTop: 7,
-    marginRight: 10,
-    flex: 1,
-  },
-  TextFieldLeftAvatar: {
-    marginRight: 10,
-    marginTop: 7,
-    flex: 1,
-  },
-  TextFieldRightTitle: {
-    marginRight: 10,
-    marginTop: 7,
-    flex: 2,
-  },
-  saveButton: {
-    margin: "10px",
-    padding: "15px 30px",
-    textAlign: "center",
-    textTransform: "uppercase",
-    transition: "0.5s",
-    backgroundSize: "200% auto",
-    color: "white",
-    borderRadius: "10px",
-    display: "block",
-    border: "0px",
-    fontWeight: 700,
-    boxShadow: "0px 0px 14px -7px #f09819",
-    backgroundImage:
-      "linear-gradient(45deg, #FF512F 0%, #F09819  51%, #FF512F  100%)",
-    cursor: "pointer",
-    userSelect: "none",
-    webkitUserSelect: "none",
-    touchAction: "manipulation",
-    "&:hover": {
-      backgroundPosition: "right center",
-      color: "#fff",
-      textDecoration: "none",
-    },
-    "&:active": {
-      transform: "scale(0.95)",
-    },
-  },
-});
+import { useSharedStyles } from "../../styles/sharedStyles";
 
 function PendingToEvaluationAdmin(props) {
   const units = [
     { unit: "hour", cost: 20000 },
     { unit: "unit", cost: 0 },
   ];
-  const classes = useStyles();
-  const classes1 = sharedStyles;
+  const classes = useSharedStyles();
   const [avatar, setAvatar] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -185,19 +48,7 @@ function PendingToEvaluationAdmin(props) {
   const [clientId, setClientId] = useState("");
   const [data, setData] = useState();
   const [isOpen, setIsOpen] = useState(false);
-  const containerClasses = useContainerStyles();
 
-  const containerStyle = () => {
-    return {
-      width: "100%",
-      height: "35.9%",
-      backgroundColor: "#e2ebfc",
-      justifyContent: "center",
-      textAlign: "center",
-      display: "flex",
-      flexDirection: "column",
-    };
-  };
   const gridStyle = () => {
     return { width: "100%", margin: "auto", flex: 10 };
   };
@@ -347,21 +198,14 @@ function PendingToEvaluationAdmin(props) {
   }, []);
 
   return (
-    <div className={classes1.pageEvaluation}>
-      <span
-        style={{
-          fontFamily: "cursive",
-          fontSize: 50,
-        }}
-      >
-        Evaluation tasks
-      </span>
-      <div className={containerClasses.root}>
+    <div className={classes.containerStyle}>
+      <span className={classes.formName}>Evaluation tasks</span>
+      <div className={classes.containerEvaluation}>
         <React.Fragment>
           <CssBaseline />
           <Container>
             <Box>
-              <div className={classes.groupingInputs}>
+              <div className={classes.groupingInputsEvaluation}>
                 <div className={classes.TextFieldLeftAvatar}>
                   <div className={classes.groupingName}>
                     <div className={classes.avatar}>{avatar}</div>
@@ -376,7 +220,7 @@ function PendingToEvaluationAdmin(props) {
                   </div>
                 </div>
               </div>
-              <div className={classes.groupingInputs}>
+              <div className={classes.groupingInputsEvaluation}>
                 <div className={classes.TextFieldLeft}>
                   <div className={classes.grouping}>
                     <div className={classes.headerValue}>Email {email}</div>
@@ -505,8 +349,11 @@ function PendingToEvaluationAdmin(props) {
                     variant="outlined"
                   />
                 </div>
-                <div className={classes1.TextFieldRight}>
-                  <button style={classes1.saveButton} onClick={onSaveBtnClick}>
+                <div className={classes.TextFieldRight}>
+                  <button
+                    className={classes.saveButton}
+                    onClick={onSaveBtnClick}
+                  >
                     Save
                   </button>
                 </div>
@@ -515,23 +362,20 @@ function PendingToEvaluationAdmin(props) {
           </Container>
         </React.Fragment>
       </div>
-
-      <div style={containerStyle()}>
-        <div style={gridStyle()} className="ag-theme-alpine">
-          <AgGridReact
-            rowData={rowData}
-            columnDefs={columnDefs}
-            rowSelection={"multiple"}
-            suppressRowClickSelection={false}
-            defaultColDef={defaultColDef}
-            sideBar={sideBar}
-            onGridReady={onGridReady}
-            onSelectionChanged={onSelectionChanged}
-            onRowDoubleClicked={onRowDoubleClicked}
-            autoGroupColumnDef={autoGroupColumnDef}
-          ></AgGridReact>
-          {isOpen && <ViewTask data={data} setIsOpen={setIsOpen} />}
-        </div>
+      <div style={gridStyle()} className="ag-theme-alpine">
+        <AgGridReact
+          rowData={rowData}
+          columnDefs={columnDefs}
+          rowSelection={"multiple"}
+          suppressRowClickSelection={false}
+          defaultColDef={defaultColDef}
+          sideBar={sideBar}
+          onGridReady={onGridReady}
+          onSelectionChanged={onSelectionChanged}
+          onRowDoubleClicked={onRowDoubleClicked}
+          autoGroupColumnDef={autoGroupColumnDef}
+        ></AgGridReact>
+        {isOpen && <ViewTask data={data} setIsOpen={setIsOpen} />}
       </div>
     </div>
   );
