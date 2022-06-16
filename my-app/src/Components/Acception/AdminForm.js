@@ -12,7 +12,6 @@ import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
 
 function PendingToAcceptionAdmin(props) {
-  console.log("Admin form");
   const classes = useSharedStyles();
   const [rowData, setRowData] = useState();
   const [data, setData] = useState();

@@ -14,6 +14,8 @@ import { useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
 import NavMainBar from "./Nav-Bar/NavMainBar";
 import paths from "../constants/Paths";
+import AdminRegister from "./ModalMessages/AdminRegister";
+import Rolls from "../constants/Rolls";
 
 const useStyles = createUseStyles({
   header: {
@@ -93,6 +95,10 @@ function SignIn(props) {
   const [signInButtonActive] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const { Admin } = Rolls;
+  const { USER_PROFILE_PATH, PROFILE_PATH } = paths;
+  const { roll, enabled } = useUserAuth();
 
   const classes = useStyles();
   const [values, setValues] = useState({
@@ -120,7 +126,12 @@ function SignIn(props) {
     setError("");
     try {
       await signIn(email, password);
-      navigate("/profile");
+      if (roll === Admin && enabled === "false") {
+        setIsOpen(true);
+      } else {
+        setIsOpen(false);
+        navigate(`/${USER_PROFILE_PATH}`);
+      }
     } catch (err) {
       setError(err.message);
     }
@@ -194,6 +205,15 @@ function SignIn(props) {
         </div>
       </div>
       <Outlet />
+      {isOpen && (
+        <AdminRegister
+          title={"Waiting for acception"}
+          typography={
+            "Hi dear user. Please be informed that your condition as an admin user not approved yet. You can use your account as soon as it will be confirmed."
+          }
+          setIsOpen={setIsOpen}
+        />
+      )}
     </>
   );
 }

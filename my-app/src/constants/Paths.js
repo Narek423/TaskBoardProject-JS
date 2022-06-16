@@ -12,6 +12,7 @@ const paths = {
   IN_PROCCESS_TASKS_PATH: "inprocessasks",
   DONE_TASKS_PATH: "donetasks",
   STATICS_PATH: "statics",
+  ADMIN_USER_REQUESTS_PATH: "adminuserrequests",
 };
 
 export default paths;

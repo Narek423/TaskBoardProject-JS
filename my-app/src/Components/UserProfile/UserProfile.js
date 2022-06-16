@@ -17,6 +17,7 @@ import GetDone from "../Done/Main";
 import GetRejected from "../Rejected/Main";
 import GetAllTasks from "../AllTasks/Main";
 import Rolls from "../../constants/Rolls";
+import AdminUserRequests from "../AdminUserRequests/Main";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -43,11 +44,12 @@ function UserProfile({ children }) {
     IN_PROCCESS_TASKS_PATH,
     DONE_TASKS_PATH,
     STATICS_PATH,
+    ADMIN_USER_REQUESTS_PATH,
   } = paths;
 
   const userToolsClose = useCallback(() => {
     setToolsBaropen(!toolsBarOpen);
-  });
+  }, [toolsBarOpen]);
 
   const { Admin } = Rolls;
 
@@ -77,6 +79,15 @@ function UserProfile({ children }) {
             <UserWorkingTable
               open={toolsBarOpen}
               component={<CreateNewTask />}
+            />
+          }
+        />
+        <Route
+          path={ADMIN_USER_REQUESTS_PATH}
+          element={
+            <UserWorkingTable
+              open={toolsBarOpen}
+              component={AdminUserRequests(toolsBarOpen)}
             />
           }
         />

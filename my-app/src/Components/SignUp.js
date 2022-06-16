@@ -5,7 +5,7 @@ import { createUseStyles } from "react-jss";
 import { useState } from "react";
 import { useUserAuth, UserAuthContext } from "../context/UserAuthContext";
 import NavMainBar from "./Nav-Bar/NavMainBar";
-import { writeUserData, storage } from "./firebase";
+import { writeUserData, storage, auth } from "./firebase";
 import {
   Button,
   IconButton,
@@ -25,6 +25,9 @@ import {
 } from "firebase/storage";
 import paths from "../constants/Paths";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import AdminRegister from "./ModalMessages/AdminRegister";
+import Rolls from "../constants/Rolls";
+import { signOut } from "firebase/auth";
 
 const useStyles = createUseStyles({
   header: {
@@ -120,6 +123,8 @@ function SignUp(props) {
   const [signInButtonActive, setSignInButtonActive] = useState(false);
   const navigate = useNavigate();
   const classes = useStyles();
+  const [isOpen, setIsOpen] = useState(false);
+  const { Admin } = Rolls;
 
   const [values, setValues] = useState({
     amount: "",
@@ -129,7 +134,7 @@ function SignUp(props) {
     showPassword: false,
   });
 
-  const { USER_PROFILE_PATH } = paths;
+  const { USER_PROFILE_PATH, PROFILE_PATH } = paths;
 
   const handleClickShowPassword = () => {
     setValues({
@@ -185,11 +190,15 @@ function SignUp(props) {
         taxCode,
         roll,
         email,
-        enabled,
-        phoneNumber
+        enabled
       );
       uploadFiles(avatar);
-      navigate(`/${USER_PROFILE_PATH}`);
+      if (roll === Admin) {
+        setIsOpen(true);
+      } else {
+        setIsOpen(false);
+        navigate(`/${USER_PROFILE_PATH}`);
+      }
     } catch (err) {
       setError(err.message);
     }
@@ -423,6 +432,15 @@ function SignUp(props) {
         </div>
       </div>
       <Outlet />
+      {isOpen && (
+        <AdminRegister
+          title={"Wait for acception"}
+          typography={
+            "Thank you for registration. Please wait until site administrators will approve or reject your conditian as site administrator."
+          }
+          setIsOpen={setIsOpen}
+        />
+      )}
     </>
   );
 }
