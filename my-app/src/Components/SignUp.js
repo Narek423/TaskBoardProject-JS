@@ -1,10 +1,9 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
 import { useState } from "react";
 import { useUserAuth, UserAuthContext } from "../context/UserAuthContext";
-import NavMainBar from "./Nav-Bar/NavMainBar";
 import { writeUserData, storage } from "./firebase";
 import {
 	Button,
@@ -24,7 +23,9 @@ import {
 	deleteObject,
 } from "firebase/storage";
 import paths from "../constants/Paths";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { PhotoCamera, Visibility, VisibilityOff } from "@mui/icons-material";
+import Card from "./Card";
+import HomeIcon from "./Nav-Bar/HomeIcon";
 
 const useStyles = createUseStyles({
 	header: {
@@ -46,10 +47,19 @@ const useStyles = createUseStyles({
 			top: 0,
 			left: 0,
 			right: 0,
-			bottom: 10,
+			bottom: 12,
 		},
 		width: "100%",
 		height: "100%",
+	},
+	signUp1: {
+		display: "flex",
+		margin: {
+			top: 0,
+			left: 85,
+			right: 0,
+			bottom: 12,
+		},
 	},
 	fields: {
 		width: 300,
@@ -62,7 +72,7 @@ const useStyles = createUseStyles({
 		right: 0,
 	},
 	useSpace: {
-		marginTop: 70,
+		marginTop: 10,
 	},
 	signInButton: {
 		appearance: "none",
@@ -172,6 +182,7 @@ function SignUp(props) {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setError("");
+
 		try {
 			let user = await signUp(email, password, roll);
 			await writeUserData(
@@ -197,234 +208,227 @@ function SignUp(props) {
 	const { user } = useUserAuth();
 	if (user) navigate("/profile");
 
-	// async function () {
-	// 	try {
-	// 		await signup(
-	// 			email,
-	// 			password,
-	// 			name,
-	// 			lastName,
-	// 			dateOfBirth,
-	// 			phoneNumber,
-	// 			taxCode,
-	// 			roll,
-	// 			enabled
-	// 		);
-	// 		console.log(signin(email, password));
-	// 		let currentUserData = await signin(email, password).then((data) => data);
-	// 		props.updateUser(currentUserData);
-	// 		setEmail("");
-	// 		setPassword("");
-	// 		setRepeatedPassword("");
-	// 		setName("");
-	// 		setLastName("");
-	// 		setPhoneNumber("");
-	// 		setDateOfBirth("");
-	// 		setTaxCode("");
-	// 		setRoll("");
-	// 		setEnabled("");
-	// 	} catch (e) {
-	// 		console.log("Error");
-	// 	}
-	// }
-	return user ? null : (
+	return user ? (
+		<Navigate to={"/profile"} />
+	) : (
 		<>
-			<NavMainBar />
-			<div className={classes.useSpace}>
-				<h1 className={classes.signUp}>Sign up</h1>
-				{error && (
-					<div style={{ color: "red", textAlign: "center" }}> {error} </div>
-				)}
-				<div className={classes.signUp}>
-					<TextField
-						className={classes.fields}
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						type={"email"}
-						id='emailId'
-						label='Email (Login)'
-						variant='outlined'
-					/>
-				</div>
-				<div className={classes.signUp}>
-					<FormControl
-						className={classes.fields}
-						sx={{ m: 1, width: "25ch" }}
-						variant='outlined'
-					>
-						<InputLabel htmlFor='outlined-adornment-password'>
-							Password
-						</InputLabel>
-						<OutlinedInput
-							id='passwordId'
-							type={values.showPassword ? "text" : "password"}
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							endAdornment={
-								<InputAdornment position='end'>
-									<IconButton
-										aria-label='toggle password visibility'
-										onClick={handleClickShowPassword}
-										onMouseDown={handleMouseDownPassword}
-										edge='end'
-									>
-										{values.showPassword ? <VisibilityOff /> : <Visibility />}
-									</IconButton>
-								</InputAdornment>
-							}
-							label='Password'
-						/>
-					</FormControl>
-				</div>
-				{!!values.showPassword || (
-					<div id='repeatedPasswordDivId' className={classes.signUp}>
-						<TextField
-							className={classes.fields}
-							type='password'
-							value={repeatedPassword}
-							onChange={(e) => setRepeatedPassword(e.target.value)}
-							id='repeatedPassword'
-							label='Repeat password'
-							variant='outlined'
-						/>
-					</div>
-				)}
-				<div className={classes.signUp}>
-					<TextField
-						className={classes.fields}
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
-						id='usernameId'
-						label='Username'
-						variant='outlined'
-					/>
-				</div>
-				<div className={classes.signUp}>
-					<TextField
-						className={classes.fields}
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-						id='nameId'
-						label='Name'
-						variant='outlined'
-					/>
-				</div>
-				<div className={classes.signUp}>
-					<TextField
-						className={classes.fields}
-						value={lastName}
-						onChange={(e) => setLastName(e.target.value)}
-						id='lastNameId'
-						label='Last name'
-						variant='outlined'
-					/>
-				</div>
-				<div className={classes.signUp}>
-					<TextField
-						className={classes.fields}
-						value={phoneNumber}
-						onChange={(e) => setPhoneNumber(e.target.value)}
-						id='phoneNumberId'
-						label='Phone number'
-						variant='outlined'
-					/>
-				</div>
-				<div className={classes.signUp}>
-					{!avatarUrl ? null : <img alt='' src={avatarUrl}></img>}
-					<div
+			<HomeIcon />
+			<div
+				style={{
+					display: "flex",
+					marginTop: 20,
+					marginBottom: 30,
+					justifyContent: "center",
+				}}
+			>
+				<Link to='/signin'>
+					<Button
 						style={{
-							display: "flex",
-							margin: {
-								top: 0,
-								left: "auto",
-								right: "auto",
-								bottom: 10,
-							},
-							width: 300,
+							position: "absolute",
+							right: 50,
+							top: 15,
 						}}
+						variant='outlined'
 					>
-						<label htmlFor='contained-button-file' style={{}}>
-							<Input
-								style={{
-									display: "none",
-								}}
-								accept='image/*'
-								id='contained-button-file'
-								onChange={handleChange}
-								multiple
-								type='file'
+						Sing In
+					</Button>
+				</Link>
+				<Card>
+					<div className={classes.useSpace}>
+						<h1 className={classes.signUp}>Sign up</h1>
+						{error && (
+							<div style={{ color: "red", textAlign: "center" }}> {error} </div>
+						)}
+						<br />
+
+						<div className={classes.signUp}>
+							<TextField
+								error={true}
+								className={classes.fields}
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								type={"email"}
+								id='emailId'
+								label='Email (Login)'
+								variant='outlined'
 							/>
-							<Button
-								variant='contained'
-								component='span'
+						</div>
+						<div className={classes.signUp}>
+							<FormControl className={classes.fields} variant='outlined'>
+								<InputLabel htmlFor='outlined-adornment-password'>
+									Password
+								</InputLabel>
+								<OutlinedInput
+									id='passwordId'
+									type={values.showPassword ? "text" : "password"}
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
+									endAdornment={
+										<InputAdornment position='end'>
+											<IconButton
+												aria-label='toggle password visibility'
+												onClick={handleClickShowPassword}
+												onMouseDown={handleMouseDownPassword}
+												edge='end'
+											>
+												{values.showPassword ? (
+													<VisibilityOff />
+												) : (
+													<Visibility />
+												)}
+											</IconButton>
+										</InputAdornment>
+									}
+									label='Password'
+								/>
+							</FormControl>
+						</div>
+						{!!values.showPassword || (
+							<div id='repeatedPasswordDivId' className={classes.signUp}>
+								<TextField
+									className={classes.fields}
+									type='password'
+									value={repeatedPassword}
+									onChange={(e) => setRepeatedPassword(e.target.value)}
+									id='repeatedPassword'
+									label='Repeat password'
+									variant='outlined'
+								/>
+							</div>
+						)}
+						<div className={classes.signUp}>
+							<TextField
+								className={classes.fields}
+								value={username}
+								onChange={(e) => setUsername(e.target.value)}
+								id='usernameId'
+								label='Username'
+								variant='outlined'
+							/>
+						</div>
+						<div className={classes.signUp}>
+							<TextField
+								className={classes.fields}
+								value={name}
+								onChange={(e) => setName(e.target.value)}
+								id='nameId'
+								label='Name'
+								variant='outlined'
+							/>
+						</div>
+						<div className={classes.signUp}>
+							<TextField
+								className={classes.fields}
+								value={lastName}
+								onChange={(e) => setLastName(e.target.value)}
+								id='lastNameId'
+								label='Last name'
+								variant='outlined'
+							/>
+						</div>
+						<div className={classes.signUp}>
+							<TextField
+								// error={true}
+								className={classes.fields}
+								value={phoneNumber}
+								onChange={(e) => setPhoneNumber(e.target.value)}
+								id='phoneNumberId'
+								label='Phone number'
+								variant='outlined'
+							/>
+						</div>
+						<div className={classes.signUp}>
+							{!avatarUrl ? null : <img alt='' src={avatarUrl}></img>}
+							<div
 								style={{
-									fontSize: 40,
+									display: "flex",
+									margin: {
+										top: 0,
+										left: "auto",
+										right: "auto",
+										bottom: 10,
+									},
+									width: 300,
 								}}
+							></div>
+						</div>
+						<div className={classes.signUp}>
+							<TextField
+								className={classes.fields}
+								type={"date"}
+								InputLabelProps={{ shrink: true }}
+								value={dateOfBirth}
+								onChange={(e) => setDateOfBirth(e.target.value)}
+								id='dateOfBirthId'
+								label='Date of birth'
+								variant='outlined'
+							/>
+						</div>
+						<div className={classes.signUp}>
+							<TextField
+								className={classes.fields}
+								value={taxCode}
+								onChange={(e) => setTaxCode(e.target.value)}
+								id='taxCodeId'
+								label='Tax code'
+								variant='outlined'
+							/>
+						</div>
+						<div className={classes.signUp}>
+							<FormControl className={classes.fields}>
+								<InputLabel id='inputRollId'>Roll</InputLabel>
+								<Select
+									labelId='inputRollId'
+									id='RollId'
+									value={roll}
+									label='Roll'
+									onChange={(e) => {
+										setRoll(e.target.value);
+										setEnabled(e.target.value === "Admin" ? false : true);
+									}}
+								>
+									<MenuItem value={"Client"}>Client</MenuItem>
+									<MenuItem value={"Admin"}>Admin</MenuItem>
+								</Select>
+							</FormControl>
+						</div>
+						<div className={classes.signUp1}>
+							<label htmlFor='contained-button-file'>
+								<Input
+									style={{
+										display: "none",
+									}}
+									accept='image/*'
+									id='contained-button-file'
+									onChange={handleChange}
+									multiple
+									type='file'
+								/>
+								<PhotoCamera style={{ cursor: "pointer" }} />
+							</label>
+							<span>&nbsp; Upload avatar</span>
+						</div>
+						<div className={classes.signUp} id='buttons'>
+							<button
+								className={
+									signInButtonHover
+										? classes.signInButtOnHover
+										: signInButtonActive
+										? classes.signInButtonActive
+										: classes.signInButton
+								}
+								onClick={handleSubmit}
+								id='buttonSignUp'
+								variant='contained'
+								color='secondary'
 							>
-								+
-							</Button>
-						</label>
+								Sign up
+							</button>
+						</div>
 					</div>
-				</div>
-				<div className={classes.signUp}>
-					<TextField
-						className={classes.fields}
-						type={"date"}
-						InputLabelProps={{ shrink: true }}
-						value={dateOfBirth}
-						onChange={(e) => setDateOfBirth(e.target.value)}
-						id='dateOfBirthId'
-						label='Date of birth'
-						variant='outlined'
-					/>
-				</div>
-				<div className={classes.signUp}>
-					<TextField
-						className={classes.fields}
-						value={taxCode}
-						onChange={(e) => setTaxCode(e.target.value)}
-						id='taxCodeId'
-						label='Tax code'
-						variant='outlined'
-					/>
-				</div>
-				<div className={classes.signUp}>
-					<FormControl className={classes.fields} sx={{ m: 1, width: "25ch" }}>
-						<InputLabel id='inputRollId'>Roll</InputLabel>
-						<Select
-							labelId='inputRollId'
-							id='RollId'
-							value={roll}
-							label='Roll'
-							onChange={(e) => {
-								setRoll(e.target.value);
-								setEnabled(e.target.value === "Admin" ? false : true);
-							}}
-						>
-							<MenuItem value={"Client"}>Client</MenuItem>
-							<MenuItem value={"Admin"}>Admin</MenuItem>
-						</Select>
-					</FormControl>
-				</div>
-				<div className={classes.signUp} id='buttons'>
-					<button
-						className={
-							signInButtonHover
-								? classes.signInButtOnHover
-								: signInButtonActive
-								? classes.signInButtonActive
-								: classes.signInButton
-						}
-						onClick={handleSubmit}
-						id='buttonSignUp'
-						variant='contained'
-						color='secondary'
-					>
-						Sign up
-					</button>
-				</div>
+					<Outlet />
+				</Card>
 			</div>
-			<Outlet />
 		</>
 	);
 }
