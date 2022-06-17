@@ -12,7 +12,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 // import { signin } from "../firebase";
 import { useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
-import NavMainBar from "./Nav-Bar/NavMainBar";
+import NavMainBar from "./Nav-Bar/HomePageNavBar";
 import paths from "../constants/Paths";
 import AdminRegister from "./ModalMessages/AdminRegister";
 import Rolls from "../constants/Rolls";
@@ -150,7 +150,7 @@ function SignIn(props) {
     }
   };
 
-  return (
+  return user ? null : (
     <>
       <NavMainBar />
       <div className={classes.useSpace}>

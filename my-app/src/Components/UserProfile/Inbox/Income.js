@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 // import { getInbox } from "../../firebase";
-import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
+import { useUserAuth } from "../../../context/UserAuthContext";
 import { ClassNames } from "@emotion/react";
 import { createUseStyles } from "react-jss";
 
@@ -23,7 +23,7 @@ const useStyle = createUseStyles(() => {
 
 function Income() {
   const [inboxData, setInboxData] = useState([]);
-  const { user } = useUserAuth(UserAuthContext);
+  const { user } = useUserAuth();
   let page = 1;
   const [pages,setPages] = useState(page);
   const [listCountCheck, setListCountCheck] = useState([0, 10]);

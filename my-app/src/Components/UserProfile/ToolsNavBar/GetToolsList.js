@@ -4,13 +4,11 @@ import AssignmentLateIcon from "@mui/icons-material/AssignmentLate";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import TaskIcon from "@mui/icons-material/Task";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import AddTaskIcon from "@mui/icons-material/AddTask";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import EditIcon from "@mui/icons-material/Edit";
-import PaymentIcon from "@mui/icons-material/Payment";
 import MailIcon from "@mui/icons-material/Mail";
-import paths from "./Paths";
+import paths from "../../../constants/Paths";
 
 const {
   PROFILE_PATH,
@@ -30,20 +28,18 @@ const useStyle = createUseStyles(() => {
   return {
     icon: {
       flex: 1,
-      margin: {
-        top: "5%",
-      },
+      height: "auto",
     },
   };
 });
 
-export function ArrAdminTools() {
+export function AdminTools() {
   const classes = useStyle();
   return [
     {
       icon: <AssignmentIndIcon className={classes.icon} />,
       text: "Profile",
-      path: "",
+      path: PROFILE_PATH,
       id: 1,
     },
     {
@@ -66,19 +62,19 @@ export function ArrAdminTools() {
     },
     {
       icon: <AssignmentLateIcon className={classes.icon} />,
-      text: "In Progress Tasks Tasks",
+      text: "In Progress Tasks ",
       id: 5,
       path: IN_PROCCESS_TASKS_PATH,
     },
     {
       icon: <AssignmentIcon className={classes.icon} />,
-      text: "Done Tasks Admin",
+      text: "Done Tasks",
       id: 6,
       path: DONE_TASKS_PATH,
     },
     {
       icon: <AssignmentIcon className={classes.icon} />,
-      text: "Rejected tasks Admin",
+      text: "Rejected tasks",
       id: 7,
       path: REJECTED_TASKS_PATH,
     },
@@ -88,28 +84,16 @@ export function ArrAdminTools() {
       path: STATICS_PATH,
       id: 9,
     },
-    // {
-    //     icon: <PaymentIcon className={classes.icon} />,
-    //     text: "Payment History",
-    //     path: "Profile",
-    //     id: 10,
-    // },
     {
       icon: <MailIcon className={classes.icon} />,
       text: "Inbox",
       id: 11,
       path: INBOX_PATH,
     },
-    {
-      icon: <MailIcon className={classes.icon} />,
-      text: "Admin requests",
-      id: 12,
-      path: ADMIN_USER_REQUESTS_PATH,
-    },
   ];
 }
 
-export function ArrClientTools() {
+export function ClientTools() {
   const classes = useStyle();
   return [
     {
@@ -138,19 +122,19 @@ export function ArrClientTools() {
     },
     {
       icon: <AssignmentLateIcon className={classes.icon} />,
-      text: "In Progress Tasks Tasks",
+      text: "In Progress Tasks",
       id: 5,
       path: IN_PROCCESS_TASKS_PATH,
     },
     {
       icon: <AssignmentIcon className={classes.icon} />,
-      text: "Done Tasks Admin",
+      text: "Done Tasks",
       id: 6,
       path: DONE_TASKS_PATH,
     },
     {
       icon: <AssignmentIcon className={classes.icon} />,
-      text: "Rejected tasks Admin",
+      text: "Rejected tasks",
       id: 7,
       path: REJECTED_TASKS_PATH,
     },

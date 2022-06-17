@@ -1,15 +1,15 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
+import { useUserAuth } from "../../context/UserAuthContext";
 import CreateNewTask from "./CreateNewTask/CreateNewTask";
 import Inbox from "./Inbox/Inbox";
-import UserTools from "./UserToolsBar/UserTools";
-import UserWorkingTable from "./UserWorkingTable/UserWorkingTable";
+import UserTools from "./ToolsNavBar/Tools";
+import UserWorkingTable from "./WorkingTable/WorkingTable";
 import Statics from "./statics/Statics";
 import paths from "../../constants/Paths";
 import { getDatabase } from "firebase/database";
-import GetProfile from "../UserProfile/ProfilePage/Main";
+import GetProfile from "./ProfilePage/Main";
 import GetEvaluation from "../Evaluation/Main";
 import GetAcception from "../Acception/Main";
 import GetInProgress from "../InProgress/Main";
@@ -18,6 +18,7 @@ import GetRejected from "../Rejected/Main";
 import GetAllTasks from "../AllTasks/Main";
 import Rolls from "../../constants/Rolls";
 import AdminUserRequests from "../AdminUserRequests/Main";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -25,11 +26,18 @@ const useStyle = createUseStyles(() => {
       display: "flex",
       height: "100vh",
     },
+    loader: {
+      position: "fixed",
+      left: "50%",
+      right: "50%",
+      top: "50%",
+      bottom: "50%",
+    },
   };
 });
 
-function UserProfile({ children }) {
-  const { user, roll } = useUserAuth(UserAuthContext);
+function Profile({ children }) {
+  const { user, roll } = useUserAuth();
   const classes = useStyle();
   const [toolsBarOpen, setToolsBaropen] = useState(true);
   const dbRef = getDatabase();
@@ -52,8 +60,9 @@ function UserProfile({ children }) {
   }, [toolsBarOpen]);
 
   const { Admin } = Rolls;
+  console.log(user, "roll");
 
-  return (
+  return !!roll ? (
     <div className={classes.UserProfile}>
       <UserTools open={toolsBarOpen} userToolsClose={userToolsClose} />
       <Routes>
@@ -61,12 +70,21 @@ function UserProfile({ children }) {
           path={`${INBOX_PATH}/*`}
           element={
             roll === Admin ? (
-              <UserWorkingTable open={toolsBarOpen} component={<Inbox />} />
+              <UserWorkingTable
+                open={toolsBarOpen}
+                email={true}
+                component={<Inbox />}
+              />
             ) : (
-              <UserWorkingTable open={toolsBarOpen} component={<Inbox />} />
+              <UserWorkingTable
+                open={toolsBarOpen}
+                email={true}
+                component={<Inbox />}
+              />
             )
           }
         />
+        <Route path={`*`} element={<div>Page not found</div>} />
         <Route
           path={PROFILE_PATH}
           element={
@@ -79,6 +97,7 @@ function UserProfile({ children }) {
             <UserWorkingTable
               open={toolsBarOpen}
               component={<CreateNewTask />}
+              create={true}
             />
           }
         />
@@ -231,9 +250,9 @@ function UserProfile({ children }) {
             ) : (
               <UserWorkingTable open={toolsBarOpen} component={<DoneTasks />} />
             )
-          }
+          }        />
+
           */}
-        />
         <Route
           path={STATICS_PATH}
           element={
@@ -244,10 +263,11 @@ function UserProfile({ children }) {
             )
           }
         />
-        />
       </Routes>
     </div>
+  ) : (
+    <CircularProgress className={classes.loader} />
   );
 }
 
-export default UserProfile;
+export default Profile;

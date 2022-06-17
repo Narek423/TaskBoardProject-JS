@@ -22,8 +22,9 @@ const useStyle = createUseStyles(() => {
   };
 });
 
-function Inbox() {
+function Inbox(props) {
   const classes = useStyle();
+  const { create } = props;
   return (
     <div style={{
       position: 'relative'
@@ -33,7 +34,7 @@ function Inbox() {
      <Routes>
        <Route path="/" element={<Income />}/>
        <Route path="spam" element={<Spam />}/>
-       <Route path="createMail" element={<CreateMail />}/>
+       <Route path="createMail" element={<CreateMail inPage={"inPage"}/>}/>
      </Routes>
     </div>
   );

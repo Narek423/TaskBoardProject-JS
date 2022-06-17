@@ -5,15 +5,15 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get } from "firebase/database";
-import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
+import { useUserAuth } from "../../context/UserAuthContext";
+import { useSharedStyles } from "../../styles/sharedStyles";
 import States from "../../constants/States";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
-import { useSharedStyles } from "../../styles/sharedStyles";
 
 function DoneTasks(props) {
   const classes = useSharedStyles();
-  const { user } = useUserAuth(UserAuthContext);
+  const { user } = useUserAuth();
   const clientId = user.uid;
   const [rowData, setRowData] = useState();
   const [data, setData] = useState();

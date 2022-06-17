@@ -12,7 +12,7 @@ import { useSharedStyles } from "../../styles/sharedStyles";
 
 function PendingToEvaluation(props) {
   const classes = useSharedStyles();
-  const { user } = useUserAuth(UserAuthContext);
+  const { user } = useUserAuth();
   const clientId = user.uid;
   const [rowData, setRowData] = useState();
   const [data, setData] = useState();
