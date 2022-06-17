@@ -152,7 +152,7 @@ function SignIn(props) {
   };
 
   return user ? (
-    <Navigate to={"/profile"} />
+    <Navigate to={"/home"} />
   ) : (
     <>
       <HomeIcon />

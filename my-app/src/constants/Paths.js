@@ -1,8 +1,8 @@
 const paths = {
-  USER_PROFILE_PATH: "home",
+  USER_PROFILE_PATH: "",
   SIGN_UP_PATH: "signup",
   SIGN_IN_PATH: "signin",
-  PROFILE_PATH: "/",
+  PROFILE_PATH: "profile",
   INBOX_PATH: "inbox",
   ALL_TASKS_PATH: "alltasks",
   ACCEPTION_TASKS_PATH: "acceptiontasks",
