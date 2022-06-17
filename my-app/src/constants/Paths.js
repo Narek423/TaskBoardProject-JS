@@ -1,8 +1,8 @@
 const paths = {
-  USER_PROFILE_PATH: "home",
+  USER_PROFILE_PATH: "",
   SIGN_UP_PATH: "signup",
   SIGN_IN_PATH: "signin",
-  PROFILE_PATH: "/",
+  PROFILE_PATH: "profile",
   INBOX_PATH: "inbox",
   ALL_TASKS_PATH: "alltasks",
   ACCEPTION_TASKS_PATH: "acceptiontasks",
@@ -12,6 +12,7 @@ const paths = {
   IN_PROCCESS_TASKS_PATH: "inprocesstasks",
   DONE_TASKS_PATH: "donetasks",
   STATICS_PATH: "statics",
+  ADMIN_USER_REQUESTS_PATH: "adminuserrequests",
 };
 
 export default paths;

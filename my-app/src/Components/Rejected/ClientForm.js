@@ -5,14 +5,14 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get } from "firebase/database";
-import {  useUserAuth } from "../../context/UserAuthContext";
-import { sharedStyles } from "../../styles/sharedStyles";
+import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
 import States from "../../constants/States";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
+import { useSharedStyles } from "../../styles/sharedStyles";
 
-function RejectedTasks(props) {
-  const classes = sharedStyles;
+function InProgressTasks(props) {
+  const classes = useSharedStyles();
   const { user } = useUserAuth();
   const clientId = user.uid;
   const [rowData, setRowData] = useState();
@@ -20,18 +20,18 @@ function RejectedTasks(props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const gridParams = {
-    checkbox: false,
+    checkbox: true,
     username: { rowGroup: false, hide: true, flex: 3, panel: true },
     title: { rowGroup: false, hide: false, flex: 3, panel: false },
-    creationDate: { rowGroup: false, hide: false, flex: 1, panel: false },
+    creationDate: { rowGroup: false, hide: true, flex: 1, panel: false },
     description: { rowGroup: false, hide: true, flex: 5, panel: false },
     notes: { rowGroup: false, hide: true, flex: 4, panel: false },
-    quantity: { rowGroup: false, hide: true, flex: 1, panel: false },
+    quantity: { rowGroup: false, hide: false, flex: 1, panel: false },
     unit: { rowGroup: false, hide: true, flex: 1, panel: false },
     costForUnit: { rowGroup: false, hide: true, flex: 1, panel: false },
     totalCost: { rowGroup: false, hide: false, flex: 1, panel: false },
     state: { rowGroup: false, hide: true, flex: 2, panel: true },
-    status: { rowGroup: false, hide: true, flex: 2, panel: true },
+    status: { rowGroup: true, hide: false, flex: 2, panel: true },
   };
   const columnDefs = gridPainting(gridParams);
 
@@ -86,7 +86,7 @@ function RejectedTasks(props) {
           for (let key in data) {
             if (
               data[key].clientId === clientId &&
-              data[key].state === States.rejected
+              data[key].state === States.inProgress
             ) {
               data[key].id = key;
               data[key] = { ...data[key], ...clientData };
@@ -101,10 +101,14 @@ function RejectedTasks(props) {
       });
   };
 
+  const gridStyle = () => {
+    return { width: "100%", margin: "auto", flex: 10 };
+  };
+
   return (
-    <div style={classes.containerStyle}>
-      <span style={classes.formName}>Rejected tasks</span>
-      <div style={classes.gridStyle} className="ag-theme-alpine">
+    <div className={classes.containerStyle}>
+      <span className={classes.formName}>In progress tasks</span>
+      <div style={gridStyle()} className="ag-theme-alpine">
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
@@ -121,4 +125,4 @@ function RejectedTasks(props) {
   );
 }
 
-export default RejectedTasks;
+export default InProgressTasks;

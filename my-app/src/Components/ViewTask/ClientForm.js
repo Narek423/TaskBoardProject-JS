@@ -7,7 +7,7 @@ import {
   Typography,
   useRadioGroup,
 } from "@mui/material";
-import { getDownloadURL,  listAll,  ref } from "firebase/storage";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { createUseStyles } from "react-jss";
@@ -212,35 +212,35 @@ const AdminForm = ({ setIsOpen, data }) => {
   const classes = useStyles();
   const [files, setFiles] = useState([]);
   const urls = [];
-  const [URLS,setURLS] = useState([])
+  const [URLS, setURLS] = useState([]);
   // import { getStorage, ref, list } from "firebase/storage";
 
-  
   //
-    console.log(data.clientId,data.filesUID,"true")
-    const storageRef = ref(storage,`${data.clientId}/${data.filesUID}`);
+  console.log(data.clientId, data.filesUID, "true");
+  const storageRef = ref(storage, `${data.clientId}/${data.filesUID}`);
 
-    listAll(storageRef).then(function(result) {
-      console.log(result,"listAll")
+  listAll(storageRef)
+    .then(function (result) {
+      console.log(result, "listAll");
       result.items.forEach((imageRef) => {
-        console.log(true,"forEach")
+        console.log(true, "forEach");
         displayImage(imageRef);
-      },
-      console.log(urls,'urls')
-      );
-    }).catch(function(error) {
-    });
+      }, console.log(urls, "urls"));
+    })
+    .catch(function (error) {});
 
-    function displayImage(imageRef) {
-      getDownloadURL(imageRef).then(function(url) {
-        console.log(url,"getDownload")
-        urls.push(url)
-      }).catch(function(error) {
+  function displayImage(imageRef) {
+    getDownloadURL(imageRef)
+      .then(function (url) {
+        console.log(url, "getDownload");
+        urls.push(url);
+      })
+      .catch(function (error) {
         // Handle any errors
       });
-    }
-   
-  console.log(urls,'urls');
+  }
+
+  console.log(urls, "urls");
 
   return (
     <>
@@ -375,15 +375,7 @@ const AdminForm = ({ setIsOpen, data }) => {
           style={{
             display: "flex",
           }}
-        >
-          {urls.map((e) => {
-            console.log(e,"e")
-            return 
-            <div>
-              <img src={e}></img>
-            </div>;
-          })}
-        </div>
+        ></div>
       </div>
     </>
   );

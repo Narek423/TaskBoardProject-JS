@@ -17,6 +17,7 @@ import GetDone from "../Done/Main";
 import GetRejected from "../Rejected/Main";
 import GetAllTasks from "../AllTasks/Main";
 import Rolls from "../../constants/Rolls";
+import AdminUserRequests from "../AdminUserRequests/Main";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const useStyle = createUseStyles(() => {
@@ -51,11 +52,12 @@ function Profile({ children }) {
     IN_PROCCESS_TASKS_PATH,
     DONE_TASKS_PATH,
     STATICS_PATH,
+    ADMIN_USER_REQUESTS_PATH,
   } = paths;
 
   const userToolsClose = useCallback(() => {
     setToolsBaropen(!toolsBarOpen);
-  });
+  }, [toolsBarOpen]);
 
   const { Admin } = Rolls;
   console.log(user, "roll");
@@ -68,9 +70,17 @@ function Profile({ children }) {
           path={`${INBOX_PATH}/*`}
           element={
             roll === Admin ? (
-              <UserWorkingTable open={toolsBarOpen}  email={true} component={<Inbox/>} />
+              <UserWorkingTable
+                open={toolsBarOpen}
+                email={true}
+                component={<Inbox />}
+              />
             ) : (
-              <UserWorkingTable open={toolsBarOpen} email={true} component={<Inbox />} />
+              <UserWorkingTable
+                open={toolsBarOpen}
+                email={true}
+                component={<Inbox />}
+              />
             )
           }
         />
@@ -88,6 +98,15 @@ function Profile({ children }) {
               open={toolsBarOpen}
               component={<CreateNewTask />}
               create={true}
+            />
+          }
+        />
+        <Route
+          path={ADMIN_USER_REQUESTS_PATH}
+          element={
+            <UserWorkingTable
+              open={toolsBarOpen}
+              component={AdminUserRequests(toolsBarOpen)}
             />
           }
         />

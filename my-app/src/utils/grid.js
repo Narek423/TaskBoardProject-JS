@@ -1,4 +1,4 @@
-import { sharedStyles } from "../styles/sharedStyles";
+import { sharedStyles, useSharedStyles } from "../styles/sharedStyles";
 
 function gridPainting(props) {
   const classes = sharedStyles;

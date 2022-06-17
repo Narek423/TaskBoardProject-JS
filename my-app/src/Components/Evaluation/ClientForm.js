@@ -5,125 +5,123 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get } from "firebase/database";
-import { useUserAuth } from "../../context/UserAuthContext";
-import { sharedStyles } from "../../styles/sharedStyles";
-import GridColumns from "../GridColumns";
-import EditDialog from "../EditDialog";
+import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
+import ViewTask from "../ViewTask/Main";
+import gridPainting from "../../utils/grid";
+import { useSharedStyles } from "../../styles/sharedStyles";
 
 function PendingToEvaluation(props) {
-	const classes = sharedStyles;
-	const { user } = useUserAuth();
-	const clientId = user.uid;
-	const [rowData, setRowData] = useState();
-	const [edit, setEdit] = useState(false);
-	const [editData, setEditData] = useState(null);
+  const classes = useSharedStyles();
+  const { user } = useUserAuth();
+  const clientId = user.uid;
+  const [rowData, setRowData] = useState();
+  const [data, setData] = useState();
+  const [isOpen, setIsOpen] = useState(false);
 
-	const gridParams = {
-		checkbox: false,
-		username: { rowGroup: false, hide: true, flex: 3, panel: true },
-		title: { rowGroup: false, hide: false, flex: 3, panel: false },
-		creationDate: { rowGroup: false, hide: false, flex: 1, panel: false },
-		description: { rowGroup: false, hide: false, flex: 5, panel: false },
-		notes: { rowGroup: false, hide: false, flex: 4, panel: false },
-		quantity: { rowGroup: false, hide: true, flex: 1, panel: true },
-		unit: { rowGroup: false, hide: true, flex: 1, panel: true },
-		costForUnit: { rowGroup: false, hide: true, flex: 1, panel: true },
-		totalCost: { rowGroup: false, hide: true, flex: 1, panel: true },
-		state: { rowGroup: false, hide: true, flex: 2, panel: true },
-		status: { rowGroup: false, hide: true, flex: 2, panel: true },
-	};
-	const columnDefs = GridColumns(gridParams);
+  const gridParams = {
+    checkbox: false,
+    username: { rowGroup: false, hide: true, flex: 3, panel: true },
+    title: { rowGroup: false, hide: false, flex: 3, panel: false },
+    creationDate: { rowGroup: false, hide: false, flex: 1, panel: false },
+    description: { rowGroup: false, hide: false, flex: 5, panel: false },
+    notes: { rowGroup: false, hide: false, flex: 4, panel: false },
+    quantity: { rowGroup: false, hide: true, flex: 1, panel: true },
+    unit: { rowGroup: false, hide: true, flex: 1, panel: true },
+    costForUnit: { rowGroup: false, hide: true, flex: 1, panel: true },
+    totalCost: { rowGroup: false, hide: true, flex: 1, panel: true },
+    state: { rowGroup: false, hide: true, flex: 2, panel: true },
+    status: { rowGroup: false, hide: true, flex: 2, panel: true },
+  };
+  const columnDefs = gridPainting(gridParams);
 
-	const defaultColDef = useMemo(() => {
-		return {
-			className: classes.defaultColDef,
-			editable: true,
-			sortable: true,
-			minWidth: 100,
-			filter: true,
-			resizable: true,
-			floatingFilter: true,
-			flex: 1,
-		};
-	}, []);
+  const defaultColDef = useMemo(() => {
+    return {
+      className: classes.defaultColDef,
+      editable: true,
+      sortable: true,
+      minWidth: 100,
+      filter: true,
+      resizable: true,
+      floatingFilter: true,
+      flex: 1,
+    };
+  }, [classes.defaultColDef]);
 
-	const sideBar = useMemo(() => {
-		return {
-			defaultColDef,
-			toolPanels: ["columns", "filters"],
-			defaultToolPanel: "",
-		};
-	}, []);
+  const sideBar = useMemo(() => {
+    return {
+      defaultColDef,
+      toolPanels: ["columns", "filters"],
+      defaultToolPanel: "",
+    };
+  }, [defaultColDef]);
 
-	const onGridReady = useCallback((params) => {
-		const dbRef = getDatabase();
-		let data = {};
-		let dataGrid = [];
-		let clientData = {};
-		get(ref(dbRef, "users/" + clientId))
-			.then((snapshot) => {
-				if (snapshot.exists()) {
-					clientData = snapshot.val();
-				}
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+  const onRowDoubleClicked = useCallback((param) => {
+    const selectedRow = param.api.getSelectedRows();
+    if (selectedRow.length === 1) {
+      setData(selectedRow[0]);
+      setIsOpen(true);
+    }
+  }, []);
 
-		get(ref(dbRef, "tasks"))
-			.then((snapshot) => {
-				if (snapshot.exists()) {
-					data = snapshot.val();
-					console.log("task", data);
-					for (let key in data) {
-						if (
-							data[key].clientId === clientId &&
-							data[key].state === "Evaluation"
-						) {
-							data[key].id = key;
-							data[key] = { ...data[key], ...clientData };
-							dataGrid.push(data[key]);
-						}
-					}
-					setRowData(dataGrid);
-				}
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}, []);
+  const onGridReady = (params) => {
+    const dbRef = getDatabase();
+    let data = {};
+    let dataGrid = [];
+    let clientData = {};
+    get(ref(dbRef, "users/" + clientId))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          clientData = snapshot.val();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-	const editDialog = (event) => {
-		console.log("task5454", event);
-		setEdit(true);
-		setEditData(event);
-	};
-	console.log(rowData);
-	return (
-		<div style={classes.containerStyle}>
-			<span style={classes.formName}>Evaluation tasks</span>
-			<div style={classes.gridStyle} className='ag-theme-alpine'>
-				<AgGridReact
-					rowData={rowData}
-					columnDefs={columnDefs}
-					rowSelection={"single"}
-					suppressRowClickSelection={false}
-					defaultColDef={defaultColDef}
-					sideBar={sideBar}
-					onGridReady={onGridReady}
-					onRowClicked={editDialog}
-				></AgGridReact>
-			</div>
+    get(ref(dbRef, "tasks"))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          data = snapshot.val();
+          for (let key in data) {
+            if (
+              data[key].clientId === clientId &&
+              data[key].state === "Evaluation"
+            ) {
+              data[key].id = key;
+              data[key] = { ...data[key], ...clientData };
+              dataGrid.push(data[key]);
+            }
+          }
+          setRowData(dataGrid);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
-			<EditDialog
-				edit={edit}
-				setEdit={setEdit}
-				editData={editData}
-				rowData={rowData}
-				setRowData={setRowData}
-			/>
-		</div>
-	);
+  const gridStyle = () => {
+    return { width: "100%", margin: "auto", flex: 10 };
+  };
+
+  return (
+    <div className={classes.containerStyle}>
+      <span className={classes.formName}>Evaluation tasks</span>
+      <div style={gridStyle()} className="ag-theme-alpine">
+        <AgGridReact
+          rowData={rowData}
+          columnDefs={columnDefs}
+          rowSelection={"multiple"}
+          suppressRowClickSelection={false}
+          defaultColDef={defaultColDef}
+          sideBar={sideBar}
+          onGridReady={onGridReady}
+          onRowDoubleClicked={onRowDoubleClicked}
+        ></AgGridReact>
+        {isOpen && <ViewTask data={data} setIsOpen={setIsOpen} />}
+      </div>
+    </div>
+  );
 }
 
 export default PendingToEvaluation;

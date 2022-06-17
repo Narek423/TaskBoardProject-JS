@@ -20,6 +20,7 @@ export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [roll, setRoll] = useState(null);
+  const [enabled, setEnabled] = useState(null);
   const dbRef = getDatabase();
   const [avatarLink, setAvatarLink] = useState("");
   const [imgUrl, setImgUrl] = useState("");
@@ -51,7 +52,7 @@ export function UserAuthContextProvider({ children }) {
 
     return () => {
       unsubscribe();
-      setImgUrl("");
+      setImgUrl(""); //  urish kerpov datan poxel
     };
   }, [user]);
 
@@ -62,6 +63,7 @@ export function UserAuthContextProvider({ children }) {
         .then((snapshot) => {
           console.log("snapshot", snapshot.val().roll);
           setRoll(snapshot.val().roll);
+          setEnabled(snapshot.val().enabled);
         })
         .catch((error) => {
           console.error(error);
@@ -92,6 +94,7 @@ export function UserAuthContextProvider({ children }) {
     avatarLink: avatarLink,
     logOut,
     roll,
+    enabled,
   };
 
   return (

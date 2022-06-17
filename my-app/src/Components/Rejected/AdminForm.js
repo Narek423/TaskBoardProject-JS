@@ -6,13 +6,13 @@ import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { createUseStyles } from "react-jss";
 import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get } from "firebase/database";
-import { sharedStyles } from "../../styles/sharedStyles";
 import States from "../../constants/States";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
+import { useSharedStyles } from "../../styles/sharedStyles";
 
 function RejectedTasksAdmin(props) {
-  const classes = sharedStyles;
+  const classes = useSharedStyles();
   const [rowData, setRowData] = useState();
   const [data, setData] = useState();
   const [isOpen, setIsOpen] = useState(false);
@@ -109,10 +109,14 @@ function RejectedTasksAdmin(props) {
     };
   }, []);
 
+  const gridStyle = () => {
+    return { width: "100%", margin: "auto", flex: 10 };
+  };
+
   return (
-    <div style={classes.containerStyle}>
-      <span style={classes.formName}>Rejected tasks</span>
-      <div style={classes.gridStyle} className="ag-theme-alpine">
+    <div className={classes.containerStyle}>
+      <span className={classes.formName}>Rejected tasks</span>
+      <div style={gridStyle()} className="ag-theme-alpine">
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
