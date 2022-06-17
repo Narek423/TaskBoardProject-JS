@@ -90,6 +90,7 @@ const useStyles = createUseStyles({
 });
 
 function SignIn(props) {
+  console.log("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signInButtonHover] = useState(false);
