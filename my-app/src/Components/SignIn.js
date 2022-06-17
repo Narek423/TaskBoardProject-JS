@@ -1,4 +1,4 @@
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, Link, useNavigate, Navigate } from "react-router-dom";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
@@ -9,14 +9,14 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-// import { signin } from "../firebase";
 import { useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
-import NavMainBar from "./Nav-Bar/HomePageNavBar";
+import Card from "./Card";
+import { Button } from "@mui/material";
+import HomeIcon from "./Nav-Bar/HomeIcon";
 import paths from "../constants/Paths";
 import AdminRegister from "./ModalMessages/AdminRegister";
 import Rolls from "../constants/Rolls";
-import { CurtainsOutlined } from "@mui/icons-material";
 
 const useStyles = createUseStyles({
   header: {
@@ -38,7 +38,7 @@ const useStyles = createUseStyles({
       top: 0,
       left: 0,
       right: 0,
-      bottom: 10,
+      bottom: 13,
     },
   },
   fields: {
@@ -52,7 +52,7 @@ const useStyles = createUseStyles({
     right: 0,
   },
   useSpace: {
-    marginTop: 70,
+    marginTop: 0,
   },
   signInButton: {
     appearance: "none",
@@ -151,81 +151,113 @@ function SignIn(props) {
     }
   };
 
-  return user ? null : (
+  return user ? (
+    <Navigate to={"/profile"} />
+  ) : (
     <>
-      <NavMainBar />
-      <div className={classes.useSpace}>
-        <h1 className={classes.signIn}>Sign in</h1>
-        {error && (
-          <div style={{ color: "red", textAlign: "center" }}> {error} </div>
-        )}
-        <div className={classes.signIn}>
-          <TextField
-            className={classes.fields}
-            onChange={(e) => setEmail(e.target.value)}
-            type={"email"}
-            id="emailId"
-            label="eMail (Login)"
-            variant="outlined"
-          />
-        </div>
-        <div className={classes.signIn}>
-          <FormControl
-            className={classes.fields}
-            sx={{ m: 1, width: "25ch" }}
+      <HomeIcon />
+      <div
+        style={{
+          height: "70vh",
+          display: "flex",
+          marginTop: 20,
+          marginBottom: 30,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Link to="/signup">
+          <Button
+            style={{
+              position: "absolute",
+              right: 50,
+              top: 15,
+            }}
             variant="outlined"
           >
-            <InputLabel htmlFor="outlined-adornment-password">
-              Password
-            </InputLabel>
-            <OutlinedInput
-              id="passwordId"
-              type={values.showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
-            />
-          </FormControl>
-        </div>
+            Sing Up
+          </Button>
+        </Link>
+        <Card>
+          <div className={classes.useSpace}>
+            <h1 className={classes.signIn}>Sign in</h1>
+            {error && (
+              <div style={{ color: "red", textAlign: "center" }}> {error} </div>
+            )}
+            <br />
+            <div className={classes.signIn}>
+              <TextField
+                className={classes.fields}
+                onChange={(e) => setEmail(e.target.value)}
+                type={"email"}
+                id="emailId"
+                label="eMail (Login)"
+                variant="outlined"
+              />
+            </div>
+            <div className={classes.signIn}>
+              <FormControl
+                className={classes.fields}
+                sx={{ m: 1, width: "25ch" }}
+                variant="outlined"
+              >
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  id="passwordId"
+                  type={values.showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                />
+              </FormControl>
+            </div>
 
-        <div className={classes.signIn} id="buttons">
-          <button
-            className={
-              signInButtonHover
-                ? classes.signInButtOnHover
-                : signInButtonActive
-                ? classes.signInButtonActive
-                : classes.signInButton
-            }
-            onClick={handleSubmit}
-            id="buttonsignIn"
-            variant="contained"
-            color="secondary"
-          >
-            Sign in
-          </button>
-        </div>
+            <div className={classes.signIn} id="buttons">
+              <button
+                className={
+                  signInButtonHover
+                    ? classes.signInButtOnHover
+                    : signInButtonActive
+                    ? classes.signInButtonActive
+                    : classes.signInButton
+                }
+                onClick={handleSubmit}
+                id="buttonsignIn"
+                variant="contained"
+                color="secondary"
+              >
+                Sign in
+              </button>
+            </div>
+          </div>
+          <Outlet />
+        </Card>
+        {isOpen && (
+          <AdminRegister
+            title={title}
+            typography={typography}
+            setIsOpen={setIsOpen}
+          />
+        )}
       </div>
-      <Outlet />
-      {isOpen && (
-        <AdminRegister
-          title={title}
-          typography={typography}
-          setIsOpen={setIsOpen}
-        />
-      )}
     </>
   );
 }

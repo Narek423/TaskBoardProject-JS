@@ -39,7 +39,6 @@ export function UserAuthContextProvider({ children }) {
       (currentUser) => {
         console.log("user", currentUser);
         setUser(currentUser);
-        console.log("email disabled", enabled);
       }
     );
   }
@@ -56,7 +55,7 @@ export function UserAuthContextProvider({ children }) {
 
     return () => {
       unsubscribe();
-      setImgUrl("");
+      setImgUrl(""); //  urish kerpov datan poxel
     };
   }, [user]);
 
