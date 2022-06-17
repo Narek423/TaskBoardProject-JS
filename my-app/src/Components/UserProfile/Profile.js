@@ -68,9 +68,9 @@ function Profile({ children }) {
           path={`${INBOX_PATH}/*`}
           element={
             roll === Admin ? (
-              <UserWorkingTable open={toolsBarOpen} component={<Inbox />} />
+              <UserWorkingTable open={toolsBarOpen}  email={true} component={<Inbox/>} />
             ) : (
-              <UserWorkingTable open={toolsBarOpen} component={<Inbox />} />
+              <UserWorkingTable open={toolsBarOpen} email={true} component={<Inbox />} />
             )
           }
         />

@@ -2,9 +2,20 @@ import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { createUseStyles } from "react-jss";
 import {  useUserAuth } from "../../../context/UserAuthContext";
-import { writeUserTask } from "../../firebase";
-import FireBaseFileUpload from "./FireBaseFileUpload";
+import FileUploader from "./FileUploader";
 import HelperModal from "./HelperModal";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+  deleteObject,
+} from "firebase/storage";
+import { storage, writeUserTask } from "../../firebase";
+import { v4 as uuidv4 } from "uuid";
+import { async } from "@firebase/util";
+
+
+
 
 const useStyle = createUseStyles(() => {
   return {
@@ -87,24 +98,62 @@ function CreateNewTask() {
   const [nodesValue, setNodesValue] = useState("");
   const [descrpValue, setDescrpValue] = useState("");
   const { user } = useUserAuth();
-  const [fileData, setFileData] = useState([]);
-  const status = "Waiting";
+  // const [fileData, setFileData] = useState([]);
+  const [files,setFiles] = useState([]);
+  const [progress, setProgress] = useState(0);
+  // const fileData = [];
 
-  const writeData = () => {
+  async function writeData(){
     const createDate = new Date().toLocaleString();
+    const filesUID = uuidv4();
+    const urls = await uploadFiles(files,filesUID);
+    console.log(urls,"files")
     writeUserTask(
       user.uid,
-      fileData,
+      urls,
+      
       titleValue,
       nodesValue,
       descrpValue,
-      createDate
+      createDate,
+      filesUID
     );
-    setFileData([]);
     setNodesValue("");
     setDescrpValue("");
     setDescrpValue("");
     setTittleValue("");
+    setProgress(0);
+    setFiles([]);
+  };
+  async function  uploadFiles(files,filesUID){
+    if (!files) return;
+      const load = (files) => {
+        const fileData = [];
+       files.forEach(file => {
+      const storageRef =  ref(storage, `/${user.uid}/${filesUID}/${file.name}`);
+      const uploadProcent = uploadBytesResumable(storageRef, file);
+      uploadProcent.on(
+        "state_changed",
+        (snapshot) => {
+          const proc = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+        },
+        (err) => console.log(err),
+        () => 
+            getDownloadURL(uploadProcent.snapshot.ref).then((url) => {
+            // setFileData(fileData.push({url,name: file.name}));
+            fileData.push({url, file: file.name});
+            console.log(fileData,"fileConsole");
+            }
+          )
+      );
+    });
+    return new Promise(resolve => { resolve(fileData)})
+  }
+  const urls = await load(files);
+  console.log(urls,"urls")
+  return urls
   };
 
   return (
@@ -177,8 +226,7 @@ function CreateNewTask() {
             height: "20%",
           }}
         >
-          <FireBaseFileUpload fileData={fileData} setFileData={setFileData} />
-
+          <FileUploader  files={files} setFiles={setFiles} />
           <HelperModal
             inputName={"Files"}
             text={"If you have files you can upload that"}
@@ -198,7 +246,7 @@ function CreateNewTask() {
           <Button variant="contained" size="medium" onClick={writeData}>
             Create
           </Button>
-          <Button
+          {/* <Button
             style={{
               marginLeft: "2%",
               marginRight: "2%",
@@ -207,7 +255,7 @@ function CreateNewTask() {
             size="medium"
           >
             overview
-          </Button>
+          </Button> */}
           <Button variant="contained" size="medium">
             cencel
           </Button>

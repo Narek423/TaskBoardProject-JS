@@ -5,12 +5,15 @@ import {
   Container,
   CssBaseline,
   Typography,
+  useRadioGroup,
 } from "@mui/material";
-import React from "react";
+import { getDownloadURL,  listAll,  ref } from "firebase/storage";
+import React, { useEffect, useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { createUseStyles } from "react-jss";
 //import { ModalStyle } from "../../styles/modalStyle";
 import { sharedStyles } from "../../styles/sharedStyles";
+import { storage } from "../firebase";
 
 const useStyles = createUseStyles({
   darkBG: {
@@ -207,6 +210,38 @@ const AdminForm = ({ setIsOpen, data }) => {
   console.log("data", data);
   const ModalStyle = useStyles();
   const classes = useStyles();
+  const [files, setFiles] = useState([]);
+  const urls = [];
+  const [URLS,setURLS] = useState([])
+  // import { getStorage, ref, list } from "firebase/storage";
+
+  
+  //
+    console.log(data.clientId,data.filesUID,"true")
+    const storageRef = ref(storage,`${data.clientId}/${data.filesUID}`);
+
+    listAll(storageRef).then(function(result) {
+      console.log(result,"listAll")
+      result.items.forEach((imageRef) => {
+        console.log(true,"forEach")
+        displayImage(imageRef);
+      },
+      console.log(urls,'urls')
+      );
+    }).catch(function(error) {
+    });
+
+    function displayImage(imageRef) {
+      getDownloadURL(imageRef).then(function(url) {
+        console.log(url,"getDownload")
+        urls.push(url)
+      }).catch(function(error) {
+        // Handle any errors
+      });
+    }
+   
+  console.log(urls,'urls');
+
   return (
     <>
       <div className={ModalStyle.darkBG} onClick={() => setIsOpen(false)} />
@@ -335,6 +370,19 @@ const AdminForm = ({ setIsOpen, data }) => {
               </React.Fragment>
             </div>
           </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          {urls.map((e) => {
+            console.log(e,"e")
+            return 
+            <div>
+              <img src={e}></img>
+            </div>;
+          })}
         </div>
       </div>
     </>

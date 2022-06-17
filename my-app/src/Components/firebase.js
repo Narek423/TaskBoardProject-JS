@@ -93,22 +93,26 @@ export function writeUserData(
 
 export function writeUserTask(
 	userId,
-	imageUrls,
+	urls,
 	titleValue,
 	nodesValue,
 	descrpValue,
-	date
+	date,
+	filesUID
 ) {
 	const db = getDatabase();
+	// const data = JSON.stringify(fileData);
+	console.log(urls,"filedatafirebse")
 	set(ref(db, "tasks/" + uuidv4()), {
 		clientId: userId,
-		profile_picture: imageUrls,
+		files: urls,
 		title: titleValue,
 		nodes: nodesValue,
 		description: descrpValue,
 		creationDate: date,
 		state: States.evaluation,
 		status: Statuses[0],
+		filesUID: filesUID,
 		quantity: 0,
 		costForUnit: 0,
 	});
@@ -126,6 +130,8 @@ export async function editTasksData(title, description, id) {
 		description,
 	});
 }
+
+
 
 export async function signin(email, password) {
 	return signInWithEmailAndPassword(auth, email, password).then(

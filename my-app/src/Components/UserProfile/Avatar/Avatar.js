@@ -6,11 +6,11 @@ import { useUserAuth } from "../../../context/UserAuthContext";
 import avatar from "../../../Images/avatar/avatar.jpg"
 import { useNavigate } from "react-router-dom";
 import paths from "../../../constants/Paths"
+import { EmailAuthCredential } from "firebase/auth";
 
 const useStyle = createUseStyles(() => {
   return {
     avatar: {
-      // width: "100%",
       flex: 1,
       margin: 'auto',
       textAlign: "center",
@@ -62,11 +62,19 @@ function Avatar(props) {
   //     });
   //   }
   // }, [user]);
+  const emailCut = (email) => {
+    let newEmail = "";
+    const index = email.lastIndexOf('@');
+    for(let i = index;i < email.length;i++){
+      newEmail = newEmail + email[i]
+    }
+    return newEmail
+  }
 
   return (
     <div className={open ? classes.avatar : classes.avatarClose}>
       <img onClick={() => navigate(`${PROFILE_PATH}${USER_PROFILE_PATH}`)} className={open ? classes.img : classes.imgClose} alt="avatar" src={imgUrl ? imgUrl : avatar}></img>
-      <p className={classes.useremail}>{!!props.open ? email : null}</p>
+      <p className={classes.useremail}>{!!props.open ? email.length < 15 ? email : email : null}</p>
     </div>
   );
 }

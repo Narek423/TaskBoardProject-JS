@@ -10,6 +10,7 @@ const useStyle = createUseStyles(() => {
       flex: 1,
       margin: 'auto',
       // position: "relative",
+      justifyContent: 'center'
     },
     logOutIconClose: {
       flex: 5,
@@ -24,6 +25,7 @@ const useStyle = createUseStyles(() => {
     iconBtn: {
       position: 'absolute',
       bottom: '2%',
+      cursor: "pointer",
     }
   };
 });

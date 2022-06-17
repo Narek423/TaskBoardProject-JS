@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import paths from "../../../constants/Paths";
 import { useUserAuth } from "../../../context/UserAuthContext";
 import Rolls from "../../../constants/Rolls";
+import SentEmail from "../Inbox/SentEmail";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -17,7 +18,7 @@ const useStyle = createUseStyles(() => {
 });
 
 function WorkingTable(props) {
-  const { open, component, create } = props;
+  const { open, component, create ,email} = props;
   const classes = useStyle();
   const { roll } = useUserAuth();
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ function WorkingTable(props) {
     <div
       className={classes.UserWorkingTable}
       style={{
-        flex: open ? 4 : 25,
+        flex: open ? 5 : 25,
       }}
     >
       {component}
@@ -45,7 +46,10 @@ function WorkingTable(props) {
         >
           <EditIcon />
         </Fab>
-      ) : null}
+      ) : null} 
+      {!email ?
+        <SentEmail /> : null
+      }
     </div>
   );
 }
