@@ -3,9 +3,9 @@ import Rolls from "../../constants/Rolls";
 import { useUserAuth } from "../../context/UserAuthContext";
 import Form from "./Form";
 import { Route } from "react-router-dom";
-import UserWorkingTable from "../UserProfile/UserWorkingTable/UserWorkingTable";
 import GetProfile from "../UserProfile/ProfilePage/Main";
 import paths from "../../constants/Paths";
+import UserWorkingTable from "../UserProfile/WorkingTable/WorkingTable";
 
 function AdminUserRequests({ toolsBarOpen }) {
   const { Admin } = Rolls;
