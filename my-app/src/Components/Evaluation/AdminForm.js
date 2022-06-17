@@ -206,67 +206,35 @@ function PendingToEvaluationAdmin(props) {
           <Container>
             <Box>
               <div className={classes.groupingInputsEvaluation}>
-                <div className={classes.TextFieldLeftAvatar}>
-                  <div className={classes.groupingName}>
-                    <div className={classes.avatar}>{avatar}</div>
-                    <div className={classes.nameText}>{username}</div>
-                  </div>
-                </div>
-                <div className={classes.TextFieldRightTitle}>
-                  <div className={classes.grouping}>
-                    <div className={classes.headerValue}>
-                      Task title {title}
-                    </div>
-                  </div>
-                </div>
+                <div className={classes.leftDiv}>{username}</div>
+                <div className={classes.title}>Task title {title}</div>
               </div>
               <div className={classes.groupingInputsEvaluation}>
-                <div className={classes.TextFieldLeft}>
-                  <div className={classes.grouping}>
-                    <div className={classes.headerValue}>Email {email}</div>
-                  </div>
+                <div className={classes.leftDiv}>Email {email}</div>
+                <div className={classes.leftDiv}>
+                  Phone number {phoneNumber}
                 </div>
-                <div className={classes.TextFieldLeft}>
-                  <div className={classes.grouping}>
-                    <div className={classes.headerValue}>
-                      Phone number {phoneNumber}
-                    </div>
-                  </div>
-                </div>
-                <div className={classes.TextFieldRight}>
-                  <div className={classes.grouping}>
-                    <div className={classes.headerValue}>
-                      Tax code {taxCode}
-                    </div>
-                  </div>
-                </div>
+                <div className={classes.rightDiv}>Tax code {taxCode}</div>
               </div>
-              <div className={classes.groupingInputsCard}>
-                <div className={classes.TextFieldLeft}>
-                  <div className={classes.grouping}>
-                    <Card
-                      sx={{
-                        width: "100%",
-                        height: "20vh",
-                        overflowY: "scroll",
-                      }}
-                    >
-                      <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                          Task description
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {description}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-              </div>
+              <Card
+                sx={{
+                  width: "100%",
+                  height: "140px",
+                  overflowY: "scroll",
+                }}
+              >
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    Task description
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {description}
+                  </Typography>
+                </CardContent>
+              </Card>
               <div className={classes.groupingInputsFields}>
                 <div className={classes.TextFieldLeft}>
                   <TextField
-                    className={classes.fields}
                     type={"number"}
                     value={quantity}
                     onChange={(e) => {
@@ -280,7 +248,6 @@ function PendingToEvaluationAdmin(props) {
                 </div>
                 <div className={classes.TextFieldLeft}>
                   <TextField
-                    className={classes.fields}
                     type={"number"}
                     value={costForUnit}
                     onChange={(e) => {
@@ -293,7 +260,7 @@ function PendingToEvaluationAdmin(props) {
                   />
                 </div>
                 <div className={classes.TextFieldLeft}>
-                  <Box sx={{ minWidth: 120 }}>
+                  <Box>
                     <FormControl fullWidth>
                       <InputLabel id="unitLabelId">Unit</InputLabel>
                       <Select
@@ -321,7 +288,6 @@ function PendingToEvaluationAdmin(props) {
                 </div>
                 <div className={classes.TextFieldLeft}>
                   <TextField
-                    className={classes.fields}
                     type={"number"}
                     value={cost}
                     onChange={(e) => {
@@ -340,7 +306,6 @@ function PendingToEvaluationAdmin(props) {
                 </div>
                 <div className={classes.TextFieldLeft}>
                   <TextField
-                    className={classes.fields}
                     type={"date"}
                     InputLabelProps={{ shrink: true }}
                     onChange={(e) => setDueDate(e.target.value)}
