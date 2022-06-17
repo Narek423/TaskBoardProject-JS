@@ -4,7 +4,6 @@ import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
 import { useState } from "react";
 import { useUserAuth, UserAuthContext } from "../context/UserAuthContext";
-import NavMainBar from "./Nav-Bar/NavMainBar";
 import { writeUserData, storage, auth } from "./firebase";
 import {
   Button,
@@ -28,6 +27,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import AdminRegister from "./ModalMessages/AdminRegister";
 import Rolls from "../constants/Rolls";
 import { signOut } from "firebase/auth";
+import NavMainBar from "./Nav-Bar/HomePageNavBar";
 
 const useStyles = createUseStyles({
   header: {
