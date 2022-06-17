@@ -2,8 +2,16 @@ import { sharedStyles, useSharedStyles } from "../styles/sharedStyles";
 
 function adminApprovingGridPainting(props) {
   const classes = sharedStyles;
-  const { username, name, lastName, email, phoneNumber, taxCode, dateOfBirth } =
-    { ...props };
+  const {
+    username,
+    name,
+    lastName,
+    email,
+    phoneNumber,
+    taxCode,
+    dateOfBirth,
+    roll,
+  } = { ...props };
 
   const columns = [
     {
@@ -115,6 +123,18 @@ function adminApprovingGridPainting(props) {
       rowGroup: dateOfBirth.rowGroup,
       hide: dateOfBirth.hide,
       flex: dateOfBirth.flex,
+    },
+    {
+      headerClass: classes.header,
+      field: "roll",
+      headerName: "Roll",
+      columnGroupShow: "closed",
+      filter: "agTextColumnFilter",
+      editable: false,
+      suppressColumnsToolPanel: roll.panel,
+      rowGroup: roll.rowGroup,
+      hide: roll.hide,
+      flex: roll.flex,
     },
   ];
   return columns;

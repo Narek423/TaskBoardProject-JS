@@ -13,6 +13,7 @@ import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
 import Rolls from "../../constants/Rolls";
 import adminApprovingGridPainting from "../../utils/adminApprovingGrid";
+import { getAuth } from "firebase/auth";
 
 function ApprovingAdminProfile(props) {
   const classes = useSharedStyles();
@@ -25,12 +26,13 @@ function ApprovingAdminProfile(props) {
   const gridParams = {
     checkbox: true,
     username: { rowGroup: false, hide: false, flex: 2, panel: true },
-    name: { rowGroup: false, hide: false, flex: 1, panel: false },
-    lastName: { rowGroup: false, hide: false, flex: 1, panel: false },
-    email: { rowGroup: false, hide: false, flex: 2, panel: false },
-    phoneNumber: { rowGroup: false, hide: false, flex: 1, panel: false },
-    taxCode: { rowGroup: false, hide: false, flex: 1, panel: false },
-    dateOfBirth: { rowGroup: false, hide: false, flex: 1, panel: false },
+    name: { rowGroup: false, hide: false, flex: 1, panel: true },
+    lastName: { rowGroup: false, hide: false, flex: 1, panel: true },
+    email: { rowGroup: false, hide: false, flex: 2, panel: true },
+    phoneNumber: { rowGroup: false, hide: false, flex: 1, panel: true },
+    taxCode: { rowGroup: false, hide: false, flex: 1, panel: true },
+    dateOfBirth: { rowGroup: false, hide: false, flex: 1, panel: true },
+    roll: { rowGroup: false, hide: true, flex: 0, panel: false },
   };
   const columnDefs = adminApprovingGridPainting(gridParams);
   const defaultColDef = useMemo(() => {
@@ -54,11 +56,26 @@ function ApprovingAdminProfile(props) {
     };
   }, [defaultColDef]);
 
+  // const sendEmail = (email, subject, bodey) => {
+  //   RNSmtpMaile.sendMail({
+  //     mailhost: "smtp.gmail.com",
+  //     port: "465",
+  //     ssl: true,
+  //     username: "backforfirbase@gmail.com",
+  //     password: "backforfirbase2022",
+  //     fromName: "Task board", // optional
+  //     recipients: email,
+  //     subject: subject,
+  //     htmlBody: bodey,
+  //   })
+  //     .then((success) => console.log(success))
+  //     .catch((err) => console.log(err));
+  // };
+
   const onAcceptRejectBtnClick = function (param) {
     let selectedNodes = gridApi.getSelectedNodes();
     let selectedData = selectedNodes.map((node) => node.data);
     for (let selectedRow of selectedData) {
-      console.log(selectedRow);
       const db = getDatabase();
       const postData = {
         username: selectedRow.username,
@@ -67,14 +84,21 @@ function ApprovingAdminProfile(props) {
         phoneNumber: selectedRow.phoneNumber,
         taxCode: selectedRow.taxCode,
         dateOfBirth: selectedRow.dateOfBirth,
-        enabled: "true",
+        enabled: param.target.innerText === "Accept" ? "true" : "disabled",
+        email: selectedRow.email,
+        roll: selectedRow.roll,
       };
-      console.log(selectedRow.id);
+      // const subject = "Admin user request result";
+      // const bodey =
+      //   param.target.innerText === "Accept"
+      //     ? "Hi dear user. Our congretulations. Your request to become a syte admin approved. Now you can use your account."
+      //     : "Hi dear user. Unfortunately your request to become an admin user was rejected by syte administrator.";
+      // sendEmail(selectedRow.email, subject, bodey);
       const updates = {};
       updates["/users/" + selectedRow.id] = postData;
 
       update(ref(db), updates);
-      onGridReady();
+      onGridReady(selectedRow.id);
     }
   };
 

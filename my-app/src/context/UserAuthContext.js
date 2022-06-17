@@ -36,6 +36,7 @@ export function UserAuthContextProvider({ children }) {
       (currentUser) => {
         console.log("user", currentUser);
         setUser(currentUser);
+        console.log("email disabled", enabled);
       }
     );
   }

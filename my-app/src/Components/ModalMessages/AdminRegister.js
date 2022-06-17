@@ -24,7 +24,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 const BootstrapDialogTitle = (props) => {
   const { children, onClose, ...other } = props;
-  console.log(onClose);
   return (
     <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
       {children}
@@ -44,7 +43,6 @@ const BootstrapDialogTitle = (props) => {
       ) : null}
     </DialogTitle>
   );
-  signOut(auth);
 };
 
 BootstrapDialogTitle.propTypes = {
