@@ -56,8 +56,16 @@ function CreateMail(props) {
    function writeUserEmailTask(choosenEmails,emailTittle,emailText,date) {
   	const db = getDatabase();
     choosenEmails.forEach(email => {
-      const user =  emails.find((e) => email === e.email );
-      set(ref(db, `inbox/${user.clientId}/` + uuidv4()), {
+      const userGetter =  emails.find((e) => email === e.email );
+      console.log(user)
+        
+      set(ref(db, `inbox/${user.uid}/` + uuidv4()), {
+        emailTittle: emailTittle,
+        emailText: emailText,
+        state: false,
+        date: date
+      });
+      set(ref(db, `inbox/${userGetter.clientId}/` + uuidv4()), {
         emailTittle: emailTittle,
         emailText: emailText,
         state: false,
@@ -75,8 +83,9 @@ function CreateMail(props) {
       .then((snapshot) => {
         if (snapshot.exists()) {
           const data = snapshot.val();
+          console.log(data)
           for (let key in data) {
-            if (data[key].email && data[key].roll === Admin) {
+            if (data[key].email && data[key].roll === "Client") {
               usersData.push({email:data[key].email,clientId: key});
             }
           }
