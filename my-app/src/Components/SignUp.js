@@ -191,20 +191,21 @@ function SignUp(props) {
 
     try {
       let user = await signUp(email, password, roll);
-      await writeUserData(
-        user.user,
-        password,
-        username,
-        name,
-        lastName,
-        dateOfBirth,
-        phoneNumber,
-        taxCode,
-        roll,
-        email,
-        enabled,
-        phoneNumber
-      );
+      let UserData = {
+        user: user.user,
+        password: password,
+        username: username,
+        name: name,
+        lastName: lastName,
+        dateOfBirth: dateOfBirth,
+        phoneNumber: phoneNumber,
+        taxCode: taxCode,
+        roll: roll,
+        email: email,
+        enabled: enabled,
+        avatar: avatar,
+      };
+      await writeUserData(UserData);
       uploadFiles(avatar);
       navigate(`/${USER_PROFILE_PATH}`);
     } catch (err) {
