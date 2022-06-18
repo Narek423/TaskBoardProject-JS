@@ -222,7 +222,7 @@ function UserProfile({ children }) {
             )
           }
           */}
-        />
+
         <Route
           path={STATICS_PATH}
           element={
@@ -232,7 +232,6 @@ function UserProfile({ children }) {
               <UserWorkingTable open={toolsBarOpen} component={<Statics />} />
             )
           }
-        />
         />
       </Routes>
     </div>
