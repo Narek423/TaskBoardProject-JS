@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useUserAuth } from "../../context/UserAuthContext";
@@ -41,6 +41,7 @@ function Profile({ children }) {
   const classes = useStyle();
   const [toolsBarOpen, setToolsBaropen] = useState(true);
   const dbRef = getDatabase();
+  const [check,setCheck] = useState(true);
   const {
     PROFILE_PATH,
     INBOX_PATH,
@@ -60,7 +61,16 @@ function Profile({ children }) {
   }, [toolsBarOpen]);
 
   const { Admin } = Rolls;
-  console.log(user, "roll");
+
+
+//   useEffect(() => {
+//     alert(check);
+//     if(!!check){
+//       setCheck(false)
+//     } 
+// },[check])
+
+//   console.log(user, "roll");
 
   return !!roll ? (
     <div className={classes.UserProfile}>

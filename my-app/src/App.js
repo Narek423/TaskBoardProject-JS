@@ -8,7 +8,6 @@ import Profile from "./components/UserProfile/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import paths from "./constants/Paths";
 import HomePage from "./components/HomePage/HomePage";
-import UserProfile from "./components/UserProfile/Profile";
 
 function App() {
   const { USER_PROFILE_PATH, SIGN_IN_PATH, SIGN_UP_PATH } = paths;
@@ -21,7 +20,7 @@ function App() {
           path={`${USER_PROFILE_PATH}/*`}
           element={
             <ProtectedRoute>
-              <UserProfile />
+              <Profile />
             </ProtectedRoute>
           }
         />

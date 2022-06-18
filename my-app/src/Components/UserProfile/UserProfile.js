@@ -22,7 +22,6 @@ const useStyle = createUseStyles(() => {
   return {
     UserProfile: {
       display: "flex",
-      height: "100vh",
     },
   };
 });

@@ -28,7 +28,6 @@ const useStyle = createUseStyles(() => {
   return {
     icon: {
       flex: 1,
-      height: "auto",
     },
   };
 });
@@ -99,7 +98,7 @@ export function ClientTools() {
     {
       icon: <AssignmentIndIcon className={classes.icon} />,
       text: "Profile",
-      path: "",
+      path: PROFILE_PATH,
       id: 1,
     },
     {
