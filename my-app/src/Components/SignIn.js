@@ -17,6 +17,7 @@ import HomeIcon from "./Nav-Bar/HomeIcon";
 import paths from "../constants/Paths";
 import AdminRegister from "./ModalMessages/AdminRegister";
 import Rolls from "../constants/Rolls";
+import { get, getDatabase, ref } from "firebase/database";
 
 const useStyles = createUseStyles({
   header: {
@@ -89,8 +90,32 @@ const useStyles = createUseStyles({
   },
 });
 
+function resolveGetUserData(usr) {
+  const dbRef = getDatabase();
+  let clientData = {};
+  return new Promise(function (resolve, reject) {
+    if (!!usr) {
+      const uid = usr.uid || usr.user.uid;
+      get(ref(dbRef, "users/" + uid))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            clientData = snapshot.val();
+            resolve(clientData);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  });
+}
+function getUserData(usr) {
+  const userData = resolveGetUserData(usr);
+  console.log(userData);
+  return userData;
+}
+
 function SignIn(props) {
-  console.log("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signInButtonHover] = useState(false);
@@ -98,11 +123,13 @@ function SignIn(props) {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [newRoll, setNewRoll] = useState("");
+  const [newEnabled, setNewEnabled] = useState("");
   const { Admin } = Rolls;
   const { USER_PROFILE_PATH } = paths;
-  const { roll, enabled } = useUserAuth();
   const [title, setTitle] = useState("");
   const [typography, setTypography] = useState("");
+  const dbRef = getDatabase();
 
   const classes = useStyles();
   const [values, setValues] = useState({
@@ -130,26 +157,31 @@ function SignIn(props) {
     setError("");
     try {
       await signIn(email, password);
-      if (roll === Admin && enabled === "false") {
-        setTitle("Waiting for acception");
-        setTypography(
-          "Hi dear user. Please be informed that your condition as an admin user not approved yet. You can use your account as soon as it will be confirmed."
-        );
-        setIsOpen(true);
-      } else if (roll === Admin && enabled === "disabled") {
-        setTitle("Access denied");
-        setTypography(
-          "Hi dear user. Unfortunately your request to become an admin user was rejected by syte administrator."
-        );
-        setIsOpen(true);
-      } else {
-        setIsOpen(false);
-        navigate(`/${USER_PROFILE_PATH}`);
-      }
     } catch (err) {
       setError(err.message);
     }
   };
+
+  let cc = getUserData(user);
+
+  console.log("**********enabled", cc.val);
+  // if (roll === Admin && enabled === "false") {
+  //   setTitle("Waiting for acception");
+  //   setTypography(
+  //     "Hi dear user. Please be informed that your condition as an admin user not approved yet. You can use your account as soon as it will be confirmed."
+  //   );
+  //   setIsOpen(true);
+  // } else if (roll === Admin && enabled === "disabled") {
+  //   setTitle("Access denied");
+  //   setTypography(
+  //     "Hi dear user. Unfortunately your request to become an admin user was rejected by syte administrator."
+  //   );
+  //   setIsOpen(true);
+  //   console.log("-----------1", isOpen);
+  // } else {
+  //   setIsOpen(false);
+  //   Navigate(`/${USER_PROFILE_PATH}`);
+  // }
 
   return user ? (
     <Navigate to={"/home"} />

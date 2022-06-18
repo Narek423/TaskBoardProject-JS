@@ -16,6 +16,10 @@ import {
   ref as resstore,
   uploadBytesResumable,
 } from "firebase/storage";
+import Rolls from "../constants/Rolls";
+import { Navigate } from "react-router-dom";
+import paths from "../constants/Paths";
+import { RiContactsBookLine } from "react-icons/ri";
 
 export const UserAuthContext = createContext();
 
@@ -28,16 +32,19 @@ export function UserAuthContextProvider({ children }) {
   const [avatarLink, setAvatarLink] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [email, setEmail] = useState();
+  const [title, setTitle] = useState("");
+  const [typography, setTypography] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const { Admin } = Rolls;
+  const { USER_PROFILE_PATH } = paths;
 
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
 
   function signIn(email, password) {
-    console.log(email);
     return signInWithEmailAndPassword(auth, email, password).then(
       (currentUser) => {
-        console.log("user", currentUser);
         setUser(currentUser);
       }
     );
@@ -61,10 +68,8 @@ export function UserAuthContextProvider({ children }) {
 
   useEffect(() => {
     if (!!user?.accessToken) {
-      // console.log("User",user)
       get(ref(dbRef, "users/" + user.uid))
         .then((snapshot) => {
-          console.log("snapshot", snapshot.val().roll);
           setRoll(snapshot.val().roll);
           setEnabled(snapshot.val().enabled);
         })
@@ -80,7 +85,6 @@ export function UserAuthContextProvider({ children }) {
       getDownloadURL(resstore(storage, `${user.email}/avatar`))
         .then((url) => {
           setImgUrl(url);
-          console.log(url);
         })
         .catch((error) => {
           console.log(error);
