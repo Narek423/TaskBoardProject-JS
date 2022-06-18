@@ -1,139 +1,125 @@
 import React, { useEffect, useMemo, useState } from "react";
 // import { getInbox } from "../../firebase";
 import { useUserAuth } from "../../../context/UserAuthContext";
-import { ClassNames } from "@emotion/react";
 import { createUseStyles } from "react-jss";
+import Pagination from "@mui/material/Pagination";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
+import { child, get, ref, getDatabase } from "firebase/database";
 
 const useStyle = createUseStyles(() => {
-  return {
-    mail: {
-      fontFamily: "monospace",
-      fontSize: 20,
-      display: "flex",
-      paddingBottom: "1%",
-      "&:hover": {
-        //    backgroundColor: "#019CAD",
-        fontSize: 25,
-        boxShadow: "#1264F3 0 -6px 8px inset",
-        cursor: "pointer",
-      },
-    },
-  };
+	return {
+		mail: {
+			fontFamily: "monospace",
+			fontSize: 20,
+			display: "flex",
+			paddingBottom: "1%",
+			"&:hover": {
+				//    backgroundColor: "#019CAD",
+				fontSize: 25,
+				boxShadow: "#1264F3 0 -6px 8px inset",
+				cursor: "pointer",
+			},
+		},
+	};
 });
 
 function Income() {
-  const [inboxData, setInboxData] = useState([]);
-  const { user } = useUserAuth();
-  let page = 1;
-  const [pages,setPages] = useState(page);
-  const [listCountCheck, setListCountCheck] = useState([0, 10]);
-  const data = [];
-  const [start, end] = listCountCheck;
-  const classes = useStyle();
+	const [inboxData, setInboxData] = useState([]);
+	const { user, imgUrl } = useUserAuth();
+	const [listCountCheck, setListCountCheck] = useState([0, 10]);
+	const data = [];
+	const classes = useStyle();
+	const [emails, setEmails] = useState([]);
 
-  // useEffect(() => {
-  //   getInbox(user.uid, setInboxData);
-  // }, []);
-  for (let key in inboxData) {
-    data.push([key, inboxData[key]]);
-  }
-  const content = [];
-  for (let i = start; i < end; i++) {
-    content.push(data[i]);
-  }
-  return (
-    <div
-      style={{
-        marginLeft: "2%",
-        marginTop: "2%",
-      }}
-    >
-      {data.length > 0
-        ? content.map((e) => {
-            console.log(e);
-            if (e) {
-              return (
-                <div className={classes.mail} key={e[0]}>
-                  <span
-                    style={{
-                      flex: 4,
-                    }}
-                  >
-                    {e[1].emailText}
-                  </span>
-                  <span
-                    style={{
-                      flex: 3,
-                    }}
-                  >
-                    {e[1].emailTittle}
-                  </span>
-                  <span
-                    style={{
-                      flex: 1,
-                    }}
-                  >
-                    {e[1].date.slice(0, 10)}
-                  </span>
-                </div>
-              );
-            } else {
-              return;
-            }
-          })
-        : "no messegas"}
-      <div
-        style={{
-          position: "fixed",
-          bottom: 10,
-          right: "35%",
-        }}
-      >
-        <span
-          onClick={() => {
-            if (start !== 0) {
-              const newStart = start - 10;
-              const newEnd = end - 10;
-              setListCountCheck([newStart, newEnd]);
-              page = pages - 1;
-              setPages(page)
-            } else {
-              return;
-            }
-          }}
-        >
-          {pages !== 1 ? "<" : null}
-        </span>
-        <span>{pages}</span>
-        <span
-          onClick={() => {
-            if (end > data.length) {
-              return;
-            }
-            const newStart = start + 10;
-            const newEnd = end + 10;
-            setListCountCheck([newStart, newEnd]);
-            page = pages + 1;
-            setPages(page)
-          }}
-        >
-          {">"}
-        </span>
-      </div>
-    </div>
-  );
+	useEffect(() => {
+		const dbRef = getDatabase();
+		console.log(user.uid);
+		get(ref(dbRef, `inbox/${user.uid}`))
+			.then((snapshot) => {
+				if (snapshot.exists()) {
+					console.log(snapshot.val());
+					const data = [];
+					for (let key in snapshot.val()) {
+						data.push(snapshot.val()[key]);
+					}
+					return setEmails([...data]);
+				} else {
+					console.log("No data available");
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	}, [user]);
+
+	console.log(user);
+	// for (let key in inboxData) {
+	//   data.push([key, inboxData[key]]);
+	// }
+	// const content = [];
+	// for (let i = start; i < end; i++) {
+	//   content.push(data[i]);
+	// }
+
+	return (
+		<div
+			style={{
+				display: "flex",
+				flexDirection: "column",
+			}}
+		>
+			<div
+				style={{
+					flex: 10,
+				}}
+			>
+				<List
+					sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+				>
+					{emails.map((e) => {
+						console.log(e);
+						return (
+							<ListItem alignItems='flex-start'>
+								<ListItemAvatar>
+									<Avatar alt={user.email} src={imgUrl} />
+								</ListItemAvatar>
+								<ListItemText
+									primary={e.emailTittle}
+									secondary={
+										<React.Fragment>
+											<Typography
+												sx={{ display: "inline" }}
+												component='span'
+												variant='body2'
+												color='text.primary'
+											>
+												{e.emailText}
+											</Typography>
+											{e.emailText}
+										</React.Fragment>
+									}
+								/>
+							</ListItem>
+						);
+					})}
+				</List>
+			</div>
+			<div
+				style={{
+					flex: 1,
+					margin: "auto",
+				}}
+			>
+				<Pagination count={10} color='secondary' />
+			</div>
+		</div>
+	);
 }
-// export function getInbox(user,func){
-//     const dbRef = ref(getDatabase());
-//   get(child(dbRef, `inbox/${user}`)).then((snapshot) => {
-//     if (snapshot.exists()) {
-//       return (snapshot.val());
-//   } else {
-//       console.log("No data available");
-//     }
-//   }).catch((error) => {
-//     console.error(error);
-//   });
-//   }
 
 export default Income;
