@@ -20,7 +20,7 @@ function App() {
 					path={`${USER_PROFILE_PATH}/*`}
 					element={
 						<ProtectedRoute>
-							<UserProfile />
+							<Profile />
 						</ProtectedRoute>
 					}
 				/>
