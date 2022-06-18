@@ -9,6 +9,7 @@ import Spam from "./Spam";
 const useStyle = createUseStyles(() => {
   return {
     title: {
+      flex: 1,
       textAlign: "center",
       fontFamily: "cursive",
       fontSize: 50,
@@ -27,7 +28,9 @@ function Inbox(props) {
   const { create } = props;
   return (
     <div style={{
-      position: 'relative'
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
     }}>
       <div className={classes.title}>Inbox </div>
       <InboxLinks />

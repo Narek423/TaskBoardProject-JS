@@ -73,6 +73,7 @@ function Income() {
 
   return (
    <div style={{
+    flex: 5,
     display: 'flex',
     flexDirection: 'column'
    }}>
