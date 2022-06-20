@@ -206,7 +206,7 @@ function SignIn(props) {
     try {
       await signIn(email, password);
     } catch (err) {
-      setError(err.message);
+      setError("Invalid input! Please enter valid information");
     }
   };
 
@@ -218,9 +218,6 @@ function SignIn(props) {
     );
   }
 
-  // return user ? (
-  //   <Navigate to={`/${PROFILE_PATH}`} />
-  // ) :
   return !!user && !isOpen ? (
     <div>
       <CircularProgress className={classes.loader} />
@@ -259,12 +256,13 @@ function SignIn(props) {
             <br />
             <div className={classes.signIn}>
               <TextField
+                error={error}
                 className={classes.fields}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                 type={"email"}
                 id="emailId"
-                label="Email (Login)"
+                label="Email"
                 variant="outlined"
               />
             </div>
@@ -278,11 +276,13 @@ function SignIn(props) {
                   Password
                 </InputLabel>
                 <OutlinedInput
+                  style={{ lableColor: error || "red" }}
                   id="passwordId"
                   type={values.showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
+                  error={error}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
