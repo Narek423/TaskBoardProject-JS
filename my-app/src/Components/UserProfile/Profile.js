@@ -19,7 +19,6 @@ import Rolls from "../../constants/Rolls";
 import AdminUserRequests from "../AdminUserRequests/Main";
 import CircularProgress from "@mui/material/CircularProgress";
 import GetProfileForm from "../ProfileForm/Main";
-import GetProfile from "./ProfilePage/Main";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -71,8 +70,8 @@ function Profile({ children }) {
       navigate(PROFILE_PATH);
     }
   }, []);
-
-  return !!roll ? (
+  console.log("user in profile", user);
+  return !!user ? ( //!!roll
     <div className={classes.UserProfile}>
       <UserTools open={toolsBarOpen} userToolsClose={userToolsClose} />
       <Routes>
@@ -97,7 +96,10 @@ function Profile({ children }) {
         <Route
           path={PROFILE_PATH}
           element={
-            <UserWorkingTable open={toolsBarOpen} component={GetProfile()} />
+            <UserWorkingTable
+              open={toolsBarOpen}
+              component={GetProfileForm()}
+            />
           }
         />
         <Route

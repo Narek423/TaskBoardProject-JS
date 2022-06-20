@@ -2,11 +2,12 @@ import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserAuth, UserAuthContext } from "../context/UserAuthContext";
 import { writeUserData, storage, auth } from "./firebase";
 import {
   Button,
+  CircularProgress,
   IconButton,
   Input,
   InputAdornment,
@@ -112,6 +113,13 @@ const useStyles = createUseStyles({
     "&:active": {
       transform: "scale(1.025)",
     },
+  },
+  loader: {
+    position: "fixed",
+    left: "50%",
+    right: "50%",
+    top: "50%",
+    bottom: "50%",
   },
 });
 
@@ -219,16 +227,31 @@ function SignUp(props) {
       };
       await writeUserData(UserData);
       uploadFiles(avatar);
-      navigate(`/${USER_PROFILE_PATH}`);
+      if (roll === Admin) {
+        setIsOpen(true);
+      } else {
+        navigate(`/${USER_PROFILE_PATH}`);
+      }
     } catch (err) {
       setError(err.message);
     }
   };
   const { user } = useUserAuth();
-  if (user) navigate("/profile");
 
-  return user ? (
-    <Navigate to={`/${PROFILE_PATH}`} />
+  useEffect(() => {
+    if (!!user && !isOpen) {
+      navigate(`/${PROFILE_PATH}`);
+    }
+  }, [PROFILE_PATH, isOpen, navigate, user]);
+  // if (user) navigate("/profile");
+
+  // return user ? (
+  //   <Navigate to={`/${PROFILE_PATH}`} />
+  // ) :
+  return !!user && !isOpen ? (
+    <div>
+      <CircularProgress className={classes.loader} />
+    </div>
   ) : (
     <>
       <HomeIcon />

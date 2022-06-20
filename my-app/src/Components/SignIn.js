@@ -13,7 +13,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useState, useMemo } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
 import Card from "./Card";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import HomeIcon from "./Nav-Bar/HomeIcon";
 import paths from "../constants/Paths";
 import AdminRegister from "./ModalMessages/AdminRegister";
@@ -89,6 +89,13 @@ const useStyles = createUseStyles({
       transform: "scale(1.025)",
     },
   },
+  loader: {
+    position: "fixed",
+    left: "50%",
+    right: "50%",
+    top: "50%",
+    bottom: "50%",
+  },
 });
 
 function resolveGetUserData(usr) {
@@ -155,15 +162,6 @@ function SignIn(props) {
   };
 
   const { signIn, user } = useUserAuth();
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    try {
-      await signIn(email, password);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
 
   useEffect(() => {
     if (!!user && !isOpen) {
@@ -174,7 +172,7 @@ function SignIn(props) {
           setIsLoading(false);
           if (
             snapshot.val().roll === Admin &&
-            snapshot.val().enabled === "false"
+            snapshot.val().enabled === false
           ) {
             setTitle("Waiting for acception");
             setTypography(
@@ -202,12 +200,31 @@ function SignIn(props) {
     }
   }, [Admin, USER_PROFILE_PATH, data, isOpen, navigate, user]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      await signIn(email, password);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <CircularProgress className={classes.loader} />
+      </div>
+    );
   }
 
-  return user ? (
-    <Navigate to={`/${PROFILE_PATH}`} />
+  // return user ? (
+  //   <Navigate to={`/${PROFILE_PATH}`} />
+  // ) :
+  return !!user && !isOpen ? (
+    <div>
+      <CircularProgress className={classes.loader} />
+    </div>
   ) : (
     <>
       <HomeIcon />
