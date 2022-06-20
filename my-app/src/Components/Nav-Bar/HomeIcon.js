@@ -30,7 +30,7 @@ function HomeIcon(params) {
 				className={classes.icon}
 				style={{ width: 40 }}
 			>
-				HomeIcon
+				TaskBoard
 			</h3>
 		</div>
 	);

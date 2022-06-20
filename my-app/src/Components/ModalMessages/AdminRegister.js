@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import paths from "../../constants/Paths";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -51,11 +52,11 @@ BootstrapDialogTitle.propTypes = {
 };
 
 const AdminRegister = ({ title, typography, setIsOpen, open = true }) => {
+  const { SIGN_IN_PATH } = paths;
   const navigate = useNavigate();
   const handleClose = () => {
-    signOut(auth);
     setIsOpen(false);
-    navigate(`/`);
+    signOut(auth).then(() => navigate(SIGN_IN_PATH));
   };
 
   return (
