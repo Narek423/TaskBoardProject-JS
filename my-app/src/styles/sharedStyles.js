@@ -19,6 +19,12 @@ export const useSharedStyles = createUseStyles({
     borderRadius: 9,
     justifyContent: "center",
   },
+  margin: {
+    marginTop: 60,
+  },
+  margin2: {
+    marginTop: 20,
+  },
   groupingInputs: {
     display: "flex",
     marginTop: 0,
@@ -28,6 +34,13 @@ export const useSharedStyles = createUseStyles({
     justifyContent: "left",
   },
   groupingInputsView: {
+    display: "flex",
+    marginTop: 0,
+    marginBottom: 0,
+    width: "100%",
+    justifyContent: "left",
+  },
+  groupingInputsPr: {
     display: "flex",
     marginTop: 0,
     marginBottom: 0,
@@ -148,6 +161,25 @@ export const useSharedStyles = createUseStyles({
     justifyContent: "center",
     // height: "100vh",
   },
+  profileDiv: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    minWidth: "90%",
+  },
+  containerProfile: {
+    backgroundColor: "#f9fbff",
+    width: "95%",
+    height: "90vh",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: 0,
+    marginBottom: 10,
+    borderColor: "#FF3D00",
+    borderWidth: 2,
+    borderRadius: 9,
+    justifyContent: "center",
+  },
   containerEvaluation: {
     backgroundColor: "#f9fbff",
     width: "95%",
@@ -185,6 +217,9 @@ export const useSharedStyles = createUseStyles({
     fontFamily: "Palatino",
     fontSize: 15,
     backgroundColor: "red",
+  },
+  fields: {
+    flex: 1,
   },
   grouping: {
     display: "flex",
@@ -235,6 +270,7 @@ export const useSharedStyles = createUseStyles({
     justifyContent: "center",
     textAlign: "center",
     alignItems: "center",
+    flex: 1,
   },
   groupingInputsEvaluation: {
     display: "flex",
@@ -349,6 +385,10 @@ export const useSharedStyles = createUseStyles({
   },
   TextFieldLeftAvatar: {
     marginRight: 10,
+    marginTop: 7,
+    flex: 1,
+  },
+  TextFieldAvatar: {
     marginTop: 7,
     flex: 1,
   },

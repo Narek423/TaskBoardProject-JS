@@ -16,151 +16,230 @@ import GetDone from "../Done/Main";
 import GetRejected from "../Rejected/Main";
 import GetAllTasks from "../AllTasks/Main";
 import Rolls from "../../constants/Rolls";
-import AdminUserRequests from "../AdminUserRequests/Main";
-import CircularProgress from "@mui/material/CircularProgress";
+import GetProfileForm from "../ProfileForm/Main";
+import { getDatabase } from "firebase/database";
 
 const useStyle = createUseStyles(() => {
-	return {
-		UserProfile: {
-			display: "flex",
-			height: "100vh",
-		},
-		loader: {
-			position: "fixed",
-			left: "50%",
-			right: "50%",
-			top: "50%",
-			bottom: "50%",
-		},
-	};
+  return {
+    UserProfile: {
+      display: "flex",
+      height: "100vh",
+    },
+  };
 });
 
-function Profile() {
-	// const  { roll } = useUserAuth();
-    const roll = "Client";
-	const classes = useStyle();
-	const [toolsBarOpen, setToolsBaropen] = useState(true);
+function UserProfile({ children }) {
+  const { user, roll } = useUserAuth();
+  const classes = useStyle();
+  const [toolsBarOpen, setToolsBaropen] = useState(true);
+  const dbRef = getDatabase();
+  const {
+    PROFILE_PATH,
+    INBOX_PATH,
+    ACCEPTION_TASKS_PATH,
+    ALL_TASKS_PATH,
+    CREATE_TASK_PATH,
+    EVALUATION_TASKS_PATH,
+    REJECTED_TASKS_PATH,
+    IN_PROCCESS_TASKS_PATH,
+    DONE_TASKS_PATH,
+    STATICS_PATH,
+  } = paths;
 
-  console.log(roll,'userAuth');
+  const userToolsClose = useCallback(() => {
+    setToolsBaropen(!toolsBarOpen);
+  });
 
-	const {
-		PROFILE_PATH,
-		INBOX_PATH,
-		ACCEPTION_TASKS_PATH,
-		ALL_TASKS_PATH,
-		CREATE_TASK_PATH,
-		EVALUATION_TASKS_PATH,
-		REJECTED_TASKS_PATH,
-		IN_PROCCESS_TASKS_PATH,
-		DONE_TASKS_PATH,
-		STATICS_PATH,
-		ADMIN_USER_REQUESTS_PATH,
-	} = paths;
+  const { Admin } = Rolls;
 
-	const userToolsClose = useCallback(() => {
-		setToolsBaropen(!toolsBarOpen);
-	}, [toolsBarOpen]);
+  return (
+    <div className={classes.UserProfile}>
+      <UserTools open={toolsBarOpen} userToolsClose={userToolsClose} />
+      <Routes>
+        <Route
+          path={`${INBOX_PATH}/*`}
+          element={
+            roll === Admin ? (
+              <UserWorkingTable open={toolsBarOpen} component={<Inbox />} />
+            ) : (
+              <UserWorkingTable open={toolsBarOpen} component={<Inbox />} />
+            )
+          }
+        />
+        <Route
+          path={PROFILE_PATH}
+          element={
+            <UserWorkingTable
+              open={toolsBarOpen}
+              component={GetProfileForm()}
+            />
+          }
+        />
+        <Route
+          path={CREATE_TASK_PATH}
+          element={
+            <UserWorkingTable
+              open={toolsBarOpen}
+              component={<CreateNewTask />}
+            />
+          }
+        />
+        <Route
+          path={ALL_TASKS_PATH}
+          element={
+            <UserWorkingTable open={toolsBarOpen} component={GetAllTasks()} />
+          }
+        />
+        <Route
+          path={EVALUATION_TASKS_PATH}
+          element={
+            <UserWorkingTable open={toolsBarOpen} component={GetEvaluation()} />
+          }
+        />
+        <Route
+          path={ACCEPTION_TASKS_PATH}
+          element={
+            <UserWorkingTable open={toolsBarOpen} component={GetAcception()} />
+          }
+        />
+        <Route
+          path={IN_PROCCESS_TASKS_PATH}
+          element={
+            <UserWorkingTable open={toolsBarOpen} component={GetInProgress()} />
+          }
+        />
+        <Route
+          path={DONE_TASKS_PATH}
+          element={
+            <UserWorkingTable open={toolsBarOpen} component={GetDone()} />
+          }
+        />
+        <Route
+          path={REJECTED_TASKS_PATH}
+          element={
+            <UserWorkingTable open={toolsBarOpen} component={GetRejected()} />
+          }
+        />
+        {/* <Route
+          path={PROFILE_PATH}
+          element={
+            roll === Admin ? (
+              <UserWorkingTable
+                open={toolsBarOpen}
+                component={<ProfilePage />}
+              />
+            ) : (
+              <UserWorkingTable
+                open={toolsBarOpen}
+                component={<ProfilePage />}
+              />
+            )
+          }
+        />
+        <Route
+          path={ALL_TASKS_PATH}
+          element={
+            roll === "Admin" ? (
+              <UserWorkingTable
+                open={toolsBarOpen}
+                component={<AllTasksAdmin />}
+              />
+            ) : (
+              <UserWorkingTable open={toolsBarOpen} component={<AllTasks />} />
+            )
+          }
+        />
+        <Route
+          path={ACCEPTION_TASKS_PATH}
+          element={
+            roll === "Admin" ? (
+              <UserWorkingTable
+                open={toolsBarOpen}
+                component={<PendingToAcceptionAdmin />}
+              />
+            ) : (
+              <UserWorkingTable
+                open={toolsBarOpen}
+                component={<PendingToAcception />}
+              />
+            )
+          }
+        /> 
+         <Route
+          path={EVALUATION_TASKS_PATH}
+          element={
+            roll === "Admin" ? (
+              <UserWorkingTable
+                open={toolsBarOpen}
+                component={<PendingToEvaluationAdmin />}
+              />
+            ) : (
+              <UserWorkingTable
+                open={toolsBarOpen}
+                component={<PendingToEvaluation />}
+              />
+            )
+          }
+        />
+        <Route
+          path={REJECTED_TASKS_PATH}
+          element={
+            roll === "Admin" ? (
+              <UserWorkingTable
+                open={toolsBarOpen}
+                component={<RejectedTasksAdmin />}
+              />
+            ) : (
+              <UserWorkingTable
+                open={toolsBarOpen}
+                component={<RejectedTasks />}
+              />
+            )
+          }
+        />
+        <Route
+          path={IN_PROCCESS_TASKS_PATH}
+          element={
+            roll === "Admin" ? (
+              <UserWorkingTable
+                open={toolsBarOpen}
+                component={<InProgressTasksAdmin />}
+              />
+            ) : (
+              <UserWorkingTable
+                open={toolsBarOpen}
+                component={<InProgressTasks />}
+              />
+            )
+          }
+        />
+        <Route
+          path={DONE_TASKS_PATH}
+          element={
+            roll === "Admin" ? (
+              <UserWorkingTable
+                open={toolsBarOpen}
+                component={<DoneTasksAdmin />}
+              />
+            ) : (
+              <UserWorkingTable open={toolsBarOpen} component={<DoneTasks />} />
+            )
+          }
+          */}
 
-	const { Admin } = Rolls;
-
-	return !!roll ? (
-		<div className={classes.UserProfile}>
-			<UserTools open={toolsBarOpen} userToolsClose={userToolsClose} />
-			<Routes>
-				<Route
-					path={`${INBOX_PATH}/*`}
-					element={
-						roll === Admin ? (
-							<UserWorkingTable
-								open={toolsBarOpen}
-								email={true}
-								component={<Inbox />}
-							/>
-						) : (
-							<UserWorkingTable
-								open={toolsBarOpen}
-								email={true}
-								component={<Inbox />}
-							/>
-						)
-					}
-				/>
-				<Route
-					path={PROFILE_PATH}
-					element={
-						<UserWorkingTable open={toolsBarOpen} component={GetProfile()} />
-					}
-				/>
-				<Route
-					path={CREATE_TASK_PATH}
-					element={
-						<UserWorkingTable
-							open={toolsBarOpen}
-							component={<CreateNewTask />}
-							create={true}
-						/>
-					}
-				/>
-				<Route
-					path={ADMIN_USER_REQUESTS_PATH}
-					element={
-						<UserWorkingTable
-							open={toolsBarOpen}
-							component={AdminUserRequests(toolsBarOpen)}
-						/>
-					}
-				/>
-				<Route
-					path={ALL_TASKS_PATH}
-					element={
-						<UserWorkingTable open={toolsBarOpen} component={GetAllTasks()} />
-					}
-				/>
-				<Route
-					path={EVALUATION_TASKS_PATH}
-					element={
-						<UserWorkingTable open={toolsBarOpen} component={GetEvaluation()} />
-					}
-				/>
-				<Route
-					path={ACCEPTION_TASKS_PATH}
-					element={
-						<UserWorkingTable open={toolsBarOpen} component={GetAcception()} />
-					}
-				/>
-				<Route
-					path={IN_PROCCESS_TASKS_PATH}
-					element={
-						<UserWorkingTable open={toolsBarOpen} component={GetInProgress()} />
-					}
-				/>
-				<Route
-					path={DONE_TASKS_PATH}
-					element={
-						<UserWorkingTable open={toolsBarOpen} component={GetDone()} />
-					}
-				/>
-				<Route
-					path={REJECTED_TASKS_PATH}
-					element={
-						<UserWorkingTable open={toolsBarOpen} component={GetRejected()} />
-					}
-				/>
-				<Route
-					path={STATICS_PATH}
-					element={
-						roll === Admin ? (
-							<UserWorkingTable open={toolsBarOpen} component={<Statics />} />
-						) : (
-							<UserWorkingTable open={toolsBarOpen} component={<Statics />} />
-						)
-					}
-				/>
-			</Routes>
-		</div>
-	) : (
-		<CircularProgress className={classes.loader} />
-	);
+        <Route
+          path={STATICS_PATH}
+          element={
+            roll === Admin ? (
+              <UserWorkingTable open={toolsBarOpen} component={<Statics />} />
+            ) : (
+              <UserWorkingTable open={toolsBarOpen} component={<Statics />} />
+            )
+          }
+        />
+      </Routes>
+    </div>
+  );
 }
 
-export default Profile;
+export default UserProfile;

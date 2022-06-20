@@ -20,7 +20,7 @@ function InProgressTasks(props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const gridParams = {
-    checkbox: true,
+    checkbox: false,
     username: { rowGroup: false, hide: true, flex: 3, panel: true },
     title: { rowGroup: false, hide: false, flex: 3, panel: false },
     creationDate: { rowGroup: false, hide: true, flex: 1, panel: false },
