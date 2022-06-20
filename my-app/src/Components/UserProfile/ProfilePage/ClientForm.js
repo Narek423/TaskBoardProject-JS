@@ -9,7 +9,7 @@ const useStyle = createUseStyles(() => {
 });
 
 function ProfilePage() {
-  const { user,imgUrl} = useUserAuth();
+  const { user, imgUrl } = useUserAuth();
 
   return (
     <div
@@ -27,23 +27,77 @@ function ProfilePage() {
       </span>
       <div
         style={{
-          backgroundColor: "red",
           display: "flex",
-          flexDirection: "column",
         }}
       >
-        <div style={{
-            width: "50%",
-            flex: 1
-        }}>
-         
+        <div
+          style={{
+            backgroundColor: "yellow",
+            flex: 1,
+          }}
+        ></div>
+        <div
+          style={{
+            flex: 1,
+            backgroundColor: "red",
+            display: "flex",
+          }}
+        >
+          <img
+            src={imgUrl}
+            style={{
+              width: "40%",
+              height: "100%",
+            }}
+          ></img>
+          <div>
+            <span
+              style={{
+                textAlign: "center",
+              }}
+            >
+              Change Avatar
+            </span>
+          </div>
         </div>
-        <div style={{
-            width: '40%',
-            flex: 1
-        }}>
-          <img src={imgUrl}></img>
+        
+      </div>
+      <div
+        style={{
+          display: "flex",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "yellow",
+            flex: 1,
+          }}
+        ></div>
+        <div
+          style={{
+            flex: 1,
+            backgroundColor: "red",
+            display: "flex",
+          }}
+        >
+          <img
+            src={imgUrl}
+            style={{
+              width: "40%",
+              height: "100%",
+            }}
+          ></img>
+          <div>
+            <span
+              style={{
+                textAlign: "center",
+              }}
+            >
+              Change Avatar
+            </span>
+          </div>
         </div>
+        
       </div>
     </div>
   );

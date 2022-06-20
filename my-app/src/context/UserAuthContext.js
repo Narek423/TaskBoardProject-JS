@@ -34,6 +34,8 @@ export function UserAuthContextProvider({ children }) {
   const [isOpen, setIsOpen] = useState(false);
   const { Admin } = Rolls;
   const { USER_PROFILE_PATH } = paths;
+  const [userData,setUserData] = useState();
+
 
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -69,6 +71,7 @@ export function UserAuthContextProvider({ children }) {
         .then((snapshot) => {
           setRoll(snapshot.val().roll);
           setEnabled(snapshot.val().enabled);
+          setUserData(snapshot.val());
         })
         .catch((error) => {
           console.error(error);
@@ -99,6 +102,7 @@ export function UserAuthContextProvider({ children }) {
     logOut,
     roll,
     enabled,
+    userData
   };
 
   return (

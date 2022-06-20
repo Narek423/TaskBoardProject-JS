@@ -28,11 +28,10 @@ function Inbox(props) {
   const { create } = props;
   return (
     <div style={{
-      height: '100%',
       display: 'flex',
       flexDirection: 'column',
     }}>
-      <div className={classes.title}>Inbox </div>
+      <div className={classes.title}> Inbox </div>
       <InboxLinks />
      <Routes>
        <Route path="/" element={<Income />}/>

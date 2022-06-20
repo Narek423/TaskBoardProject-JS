@@ -44,7 +44,7 @@ const useStyle = createUseStyles(() => {
 });
 
 function Avatar(props) {
-  const { user,email,imgUrl} = useUserAuth();
+  const { user, email,imgUrl} = useUserAuth();
   const classes = useStyle();
   const navigate = useNavigate();
   const {open} = props;
@@ -62,19 +62,19 @@ function Avatar(props) {
   //     });
   //   }
   // }, [user]);
-  const emailCut = (email) => {
-    let newEmail = "";
-    const index = email.lastIndexOf('@');
-    for(let i = index;i < email.length;i++){
-      newEmail = newEmail + email[i]
-    }
-    return newEmail
-  }
+  // const emailCut = (email) => {
+  //   let newEmail = "";
+  //   const index = email.lastIndexOf('@');
+  //   for(let i = index;i < email.length;i++){
+  //     newEmail = newEmail + email[i]
+  //   }
+  //   return newEmail
+  // }
 
   return (
     <div className={open ? classes.avatar : classes.avatarClose}>
       <img onClick={() => navigate(`${PROFILE_PATH}${USER_PROFILE_PATH}`)} className={open ? classes.img : classes.imgClose} alt="avatar" src={imgUrl ? imgUrl : avatar}></img>
-      <p className={classes.useremail}>{!!props.open ? email.length < 15 ? email : email : null}</p>
+      <p className={classes.useremail}>{!!props.open ? email?.length < 15 ? email : email : null}</p>
     </div>
   );
 }
