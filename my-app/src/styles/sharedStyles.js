@@ -270,6 +270,7 @@ export const useSharedStyles = createUseStyles({
     justifyContent: "center",
     textAlign: "center",
     alignItems: "center",
+    flex: 1,
   },
   groupingInputsEvaluation: {
     display: "flex",
