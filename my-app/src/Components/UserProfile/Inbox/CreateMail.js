@@ -140,7 +140,7 @@ function CreateMail(props) {
     <Card style={{
       justifyContent: 'center',
       height: '100%',
-      width: '60%',
+      width: '40%',
       margin: 'auto',
       backgroundImage: "linear-gradient(to top, #ccdcff, #e6eeff)",
       marginTop: '2%',
