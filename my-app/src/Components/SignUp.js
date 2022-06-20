@@ -135,6 +135,10 @@ function SignUp(props) {
 	const navigate = useNavigate();
 	const classes = useStyles();
 	const [isOpen, setIsOpen] = useState(false);
+	const [userNameError, setuserNameError] = useState(false);
+	const [nameError, setNameError] = useState(false);
+	const [lastNameError, setlastNameError] = useState(false);
+	const [countError, setCountError] = useState("");
 	const { Admin } = Rolls;
 
 	const [values, setValues] = useState({
@@ -190,6 +194,37 @@ function SignUp(props) {
 		setError("");
 
 		try {
+			if (
+				(!values.showPassword && password !== repeatedPassword) ||
+				username.length < 4 ||
+				name.length < 4 ||
+				lastName.length < 4
+			) {
+				if (!values.showPassword) {
+					if (password !== repeatedPassword) {
+						setError("Invalid input! Please enter valid information.");
+					}
+				}
+				if (username.length < 4) {
+					setuserNameError(true);
+					setCountError("The input must be at least 3 character.");
+				}
+				if (name.length < 4) {
+					setNameError(true);
+					setCountError("The input must be at least 3 character.");
+				}
+				if (lastName.length < 4) {
+					setlastNameError(true);
+					setCountError("The input must be at least 3 character.");
+				}
+				if (password.length < 4) {
+					setError("Invalid input! Please enter valid information. ");
+				}
+				if (email.length < 4 && email.includes("@") && email.includes(".")) {
+					setError("Invalid input! Please enter valid information. ");
+				}
+				return;
+			}
 			let user = await signUp(email, password, roll);
 			let UserData = {
 				user: user.user,
@@ -209,11 +244,11 @@ function SignUp(props) {
 			uploadFiles(avatar);
 			navigate(`/${USER_PROFILE_PATH}`);
 		} catch (err) {
-			setError(err.message);
+			setError("Invalid input! Please enter valid information. ");
 		}
 	};
 	const { user } = useUserAuth();
-	if (user) navigate("/profile");
+	if (user) navigate(`/${PROFILE_PATH}`);
 
 	return user ? (
 		<Navigate to={`/${PROFILE_PATH}`} />
@@ -244,20 +279,22 @@ function SignUp(props) {
 					<div className={classes.useSpace}>
 						<h1 className={classes.signUp}>Sign up</h1>
 						{error && (
-							<div style={{ color: "red", textAlign: "center" }}> {error} </div>
+							<div style={{ color: "red", textAlign: "center" }}>
+								{error || countError}
+							</div>
 						)}
 						<br />
 
 						<div className={classes.signUp}>
 							<TextField
-								error={true}
+								error={error}
 								className={classes.fields}
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
 								onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
 								type={"email"}
 								id='emailId'
-								label='Email (Login)'
+								label='Email'
 								variant='outlined'
 							/>
 						</div>
@@ -267,6 +304,7 @@ function SignUp(props) {
 									Password
 								</InputLabel>
 								<OutlinedInput
+									error={error}
 									id='passwordId'
 									type={values.showPassword ? "text" : "password"}
 									value={password}
@@ -295,6 +333,7 @@ function SignUp(props) {
 						{!!values.showPassword || (
 							<div id='repeatedPasswordDivId' className={classes.signUp}>
 								<TextField
+									error={error}
 									className={classes.fields}
 									type='password'
 									value={repeatedPassword}
@@ -308,6 +347,7 @@ function SignUp(props) {
 						)}
 						<div className={classes.signUp}>
 							<TextField
+								error={userNameError}
 								className={classes.fields}
 								value={username}
 								onChange={(e) => setUsername(e.target.value)}
@@ -319,6 +359,7 @@ function SignUp(props) {
 						</div>
 						<div className={classes.signUp}>
 							<TextField
+								error={nameError}
 								className={classes.fields}
 								value={name}
 								onChange={(e) => setName(e.target.value)}
@@ -330,6 +371,7 @@ function SignUp(props) {
 						</div>
 						<div className={classes.signUp}>
 							<TextField
+								error={lastNameError}
 								className={classes.fields}
 								value={lastName}
 								onChange={(e) => setLastName(e.target.value)}
