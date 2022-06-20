@@ -126,7 +126,7 @@ function SignIn(props) {
 	const [newRoll, setNewRoll] = useState("");
 	const [newEnabled, setNewEnabled] = useState("");
 	const { Admin } = Rolls;
-	const { USER_PROFILE_PATH } = paths;
+	const { USER_PROFILE_PATH, PROFILE_PATH } = paths;
 	const [title, setTitle] = useState("");
 	const [typography, setTypography] = useState("");
 	const dbRef = getDatabase();
@@ -184,7 +184,7 @@ function SignIn(props) {
 	// }
 
 	return user ? (
-		<Navigate to={"/profile"} />
+		<Navigate to={`/${PROFILE_PATH}`} />
 	) : (
 		<>
 			<HomeIcon />
@@ -221,9 +221,10 @@ function SignIn(props) {
 							<TextField
 								className={classes.fields}
 								onChange={(e) => setEmail(e.target.value)}
+								onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
 								type={"email"}
 								id='emailId'
-								label='eMail (Login)'
+								label='Email (Login)'
 								variant='outlined'
 							/>
 						</div>
@@ -241,6 +242,7 @@ function SignIn(props) {
 									type={values.showPassword ? "text" : "password"}
 									value={password}
 									onChange={(e) => setPassword(e.target.value)}
+									onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
 									endAdornment={
 										<InputAdornment position='end'>
 											<IconButton
