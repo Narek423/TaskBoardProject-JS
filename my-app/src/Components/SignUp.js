@@ -242,7 +242,7 @@ function SignUp(props) {
         if (email.length < 4 && email.includes("@") && email.includes(".")) {
           setError("Invalid input! Please enter valid information. ");
         }
-        return;
+        throw "Invalid input! Please enter valid information.";
       }
       let user = await signUp(email, password, roll);
       let UserData = {
@@ -267,7 +267,7 @@ function SignUp(props) {
         navigate(`/${USER_PROFILE_PATH}`);
       }
     } catch (err) {
-      setError("Invalid input! Please enter valid information. ");
+      // setError("Invalid input! Please enter valid information. ");
     }
   };
   const { user } = useUserAuth();
