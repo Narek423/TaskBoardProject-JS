@@ -25,7 +25,11 @@ function HomeIcon(params) {
 
 	return (
 		<div className={classes.homeicon}>
-			<h3 onClick={() => navigate("/")} className={classes.icon}>
+			<h3
+				onClick={() => navigate("/")}
+				className={classes.icon}
+				style={{ width: 40 }}
+			>
 				HomeIcon
 			</h3>
 		</div>

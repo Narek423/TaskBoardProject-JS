@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useUserAuth } from "../../context/UserAuthContext";
@@ -19,6 +19,7 @@ import Rolls from "../../constants/Rolls";
 import AdminUserRequests from "../AdminUserRequests/Main";
 import CircularProgress from "@mui/material/CircularProgress";
 import GetProfileForm from "../ProfileForm/Main";
+import GetProfile from "./ProfilePage/Main";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -40,7 +41,8 @@ function Profile({ children }) {
   const { user, roll } = useUserAuth();
   const classes = useStyle();
   const [toolsBarOpen, setToolsBaropen] = useState(true);
-  const dbRef = getDatabase();
+  const navigate = useNavigate();
+
   const {
     PROFILE_PATH,
     INBOX_PATH,
@@ -53,6 +55,7 @@ function Profile({ children }) {
     DONE_TASKS_PATH,
     STATICS_PATH,
     ADMIN_USER_REQUESTS_PATH,
+    SIGN_IN_PATH,
   } = paths;
 
   const userToolsClose = useCallback(() => {
@@ -61,6 +64,13 @@ function Profile({ children }) {
 
   const { Admin } = Rolls;
   console.log(user, "roll");
+  useEffect(() => {
+    if (!user) {
+      navigate(SIGN_IN_PATH);
+    } else {
+      navigate(PROFILE_PATH);
+    }
+  }, []);
 
   return !!roll ? (
     <div className={classes.UserProfile}>
@@ -84,14 +94,10 @@ function Profile({ children }) {
             )
           }
         />
-        <Route path={`*`} element={<div>Page not found</div>} />
         <Route
           path={PROFILE_PATH}
           element={
-            <UserWorkingTable
-              open={toolsBarOpen}
-              component={GetProfileForm()}
-            />
+            <UserWorkingTable open={toolsBarOpen} component={GetProfile()} />
           }
         />
         <Route

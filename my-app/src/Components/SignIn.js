@@ -91,6 +91,31 @@ const useStyles = createUseStyles({
   },
 });
 
+function resolveGetUserData(usr) {
+  const dbRef = getDatabase();
+  let clientData = {};
+  return new Promise(function (resolve, reject) {
+    if (!!usr) {
+      const uid = usr.uid || usr.user.uid;
+      get(ref(dbRef, "users/" + uid))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            clientData = snapshot.val();
+            resolve(clientData);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  });
+}
+// function getUserData(usr) {
+//   const userData = resolveGetUserData(usr);
+//   console.log(userData);
+//   return userData;
+// }
+
 function SignIn(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -99,11 +124,13 @@ function SignIn(props) {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [newRoll, setNewRoll] = useState("");
+  const [newEnabled, setNewEnabled] = useState("");
   const { Admin } = Rolls;
-  const { USER_PROFILE_PATH } = paths;
-  const { roll, enabled } = useUserAuth();
+  const { USER_PROFILE_PATH, PROFILE_PATH } = paths;
   const [title, setTitle] = useState("");
   const [typography, setTypography] = useState("");
+  const dbRef = getDatabase();
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({});
 
@@ -128,8 +155,15 @@ function SignIn(props) {
   };
 
   const { signIn, user } = useUserAuth();
-
-  let notLoad = false;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      await signIn(email, password);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   useEffect(() => {
     if (!!user && !isOpen) {
@@ -158,7 +192,6 @@ function SignIn(props) {
             setIsOpen(true);
           } else {
             setIsOpen(false);
-            navigate("/profile");
             navigate(`/${USER_PROFILE_PATH}`);
           }
         })
@@ -173,20 +206,9 @@ function SignIn(props) {
     return <div>Loading...</div>;
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    try {
-      await signIn(email, password);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  // return user ? (
-  //   <Navigate to={"/profile"} />
-  // ) :
-  return (
+  return user ? (
+    <Navigate to={`/${PROFILE_PATH}`} />
+  ) : (
     <>
       <HomeIcon />
       <div
@@ -222,9 +244,10 @@ function SignIn(props) {
               <TextField
                 className={classes.fields}
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                 type={"email"}
                 id="emailId"
-                label="eMail (Login)"
+                label="Email (Login)"
                 variant="outlined"
               />
             </div>
@@ -242,6 +265,7 @@ function SignIn(props) {
                   type={values.showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton

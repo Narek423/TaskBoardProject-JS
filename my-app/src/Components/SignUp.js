@@ -203,26 +203,23 @@ function SignUp(props) {
 
     try {
       let user = await signUp(email, password, roll);
-      await writeUserData(
-        user.user,
-        password,
-        username,
-        name,
-        lastName,
-        dateOfBirth,
-        phoneNumber,
-        taxCode,
-        roll,
-        email,
-        enabled,
-        phoneNumber
-      );
+      let UserData = {
+        user: user.user,
+        password: password,
+        username: username,
+        name: name,
+        lastName: lastName,
+        dateOfBirth: dateOfBirth,
+        phoneNumber: phoneNumber,
+        taxCode: taxCode,
+        roll: roll,
+        email: email,
+        enabled: enabled,
+        avatar: avatar,
+      };
+      await writeUserData(UserData);
       uploadFiles(avatar);
-      if (roll === Admin) {
-        setIsOpen(true);
-      } else {
-        navigate(`/${USER_PROFILE_PATH}`);
-      }
+      navigate(`/${USER_PROFILE_PATH}`);
     } catch (err) {
       setError(err.message);
     }
@@ -231,7 +228,7 @@ function SignUp(props) {
   if (user) navigate("/profile");
 
   return user ? (
-    <Navigate to={"/profile"} />
+    <Navigate to={`/${PROFILE_PATH}`} />
   ) : (
     <>
       <HomeIcon />
@@ -269,6 +266,7 @@ function SignUp(props) {
                 className={classes.fields}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                 type={"email"}
                 id="emailId"
                 label="Email (Login)"
@@ -285,6 +283,7 @@ function SignUp(props) {
                   type={values.showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -312,6 +311,7 @@ function SignUp(props) {
                   type="password"
                   value={repeatedPassword}
                   onChange={(e) => setRepeatedPassword(e.target.value)}
+                  onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                   id="repeatedPassword"
                   label="Repeat password"
                   variant="outlined"
@@ -323,6 +323,7 @@ function SignUp(props) {
                 className={classes.fields}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                 id="usernameId"
                 label="Username"
                 variant="outlined"
@@ -333,6 +334,7 @@ function SignUp(props) {
                 className={classes.fields}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                 id="nameId"
                 label="Name"
                 variant="outlined"
@@ -343,6 +345,7 @@ function SignUp(props) {
                 className={classes.fields}
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                 id="lastNameId"
                 label="Last name"
                 variant="outlined"
@@ -352,10 +355,11 @@ function SignUp(props) {
               <TextField
                 // error={true}
                 className={classes.fields}
+                value={phoneNumber}
                 onChange={(e) => {
                   phoneHandleInput(e);
                 }}
-                value={phoneNumber}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                 id="phoneNumberId"
                 label="Phone number"
                 variant="outlined"
@@ -383,6 +387,7 @@ function SignUp(props) {
                 InputLabelProps={{ shrink: true }}
                 value={dateOfBirth}
                 onChange={(e) => setDateOfBirth(e.target.value)}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                 id="dateOfBirthId"
                 label="Date of birth"
                 variant="outlined"
@@ -392,7 +397,10 @@ function SignUp(props) {
               <TextField
                 className={classes.fields}
                 value={taxCode}
-                onChange={(e) => taxCodeHandleInput(e)}
+                onChange={(e) => {
+                  taxCodeHandleInput(e);
+                }}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                 id="taxCodeId"
                 label="Tax code"
                 variant="outlined"
