@@ -30,6 +30,8 @@ import AdminRegister from "./ModalMessages/AdminRegister";
 import Rolls from "../constants/Rolls";
 import { signOut } from "firebase/auth";
 import NavMainBar from "./Nav-Bar/HomePageNavBar";
+import formatPhoneNumber from "../utils/formatPhoneNumber";
+import formatTaxCode from "../utils/formatTaxCode";
 
 const useStyles = createUseStyles({
   header: {
@@ -164,6 +166,16 @@ function SignUp(props) {
     setProgress(0);
   };
 
+  const phoneHandleInput = (e) => {
+    const formattedPhoneNumber = formatPhoneNumber(e.target.value);
+    setPhoneNumber(formattedPhoneNumber);
+  };
+
+  const taxCodeHandleInput = (e) => {
+    const formattedTaxCode = formatTaxCode(e.target.value);
+    setTaxCode(formattedTaxCode);
+  };
+
   const uploadFiles = (file) => {
     if (!file) return;
     const storageRef = ref(storage, `/${email}/avatar`);
@@ -206,7 +218,11 @@ function SignUp(props) {
         phoneNumber
       );
       uploadFiles(avatar);
-      navigate(`/${USER_PROFILE_PATH}`);
+      if (roll === Admin) {
+        setIsOpen(true);
+      } else {
+        navigate(`/${USER_PROFILE_PATH}`);
+      }
     } catch (err) {
       setError(err.message);
     }
@@ -336,8 +352,10 @@ function SignUp(props) {
               <TextField
                 // error={true}
                 className={classes.fields}
+                onChange={(e) => {
+                  phoneHandleInput(e);
+                }}
                 value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
                 id="phoneNumberId"
                 label="Phone number"
                 variant="outlined"
@@ -374,7 +392,7 @@ function SignUp(props) {
               <TextField
                 className={classes.fields}
                 value={taxCode}
-                onChange={(e) => setTaxCode(e.target.value)}
+                onChange={(e) => taxCodeHandleInput(e)}
                 id="taxCodeId"
                 label="Tax code"
                 variant="outlined"

@@ -1,5 +1,6 @@
 import { Outlet, Link, useNavigate, Navigate } from "react-router-dom";
 import * as React from "react";
+import { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
 import FormControl from "@material-ui/core/FormControl";
@@ -9,7 +10,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
 import Card from "./Card";
 import { Button } from "@mui/material";
@@ -17,6 +18,7 @@ import HomeIcon from "./Nav-Bar/HomeIcon";
 import paths from "../constants/Paths";
 import AdminRegister from "./ModalMessages/AdminRegister";
 import Rolls from "../constants/Rolls";
+import { get, getDatabase, ref, update } from "firebase/database";
 
 const useStyles = createUseStyles({
   header: {
@@ -90,7 +92,6 @@ const useStyles = createUseStyles({
 });
 
 function SignIn(props) {
-  console.log("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signInButtonHover] = useState(false);
@@ -103,6 +104,8 @@ function SignIn(props) {
   const { roll, enabled } = useUserAuth();
   const [title, setTitle] = useState("");
   const [typography, setTypography] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState({});
 
   const classes = useStyles();
   const [values, setValues] = useState({
@@ -125,35 +128,65 @@ function SignIn(props) {
   };
 
   const { signIn, user } = useUserAuth();
+
+  let notLoad = false;
+
+  useEffect(() => {
+    if (!!user && !isOpen) {
+      const dbRef = getDatabase();
+      get(ref(dbRef, "users/" + user.uid || user.user.uid))
+        .then((snapshot) => {
+          setData(snapshot.val());
+          setIsLoading(false);
+          if (
+            snapshot.val().roll === Admin &&
+            snapshot.val().enabled === "false"
+          ) {
+            setTitle("Waiting for acception");
+            setTypography(
+              "Hi dear user. Please be informed that your condition as an admin user not approved yet. You can use your account as soon as it will be confirmed."
+            );
+            setIsOpen(true);
+          } else if (
+            snapshot.val().roll === Admin &&
+            snapshot.val().enabled === "disabled"
+          ) {
+            setTitle("Access denied");
+            setTypography(
+              "Hi dear user. Unfortunately your request to become an admin user was rejected by syte administrator."
+            );
+            setIsOpen(true);
+          } else {
+            setIsOpen(false);
+            navigate("/profile");
+            navigate(`/${USER_PROFILE_PATH}`);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          setIsLoading(true);
+        });
+    }
+  }, [Admin, USER_PROFILE_PATH, data, isOpen, navigate, user]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
       await signIn(email, password);
-      if (roll === Admin && enabled === "false") {
-        setTitle("Waiting for acception");
-        setTypography(
-          "Hi dear user. Please be informed that your condition as an admin user not approved yet. You can use your account as soon as it will be confirmed."
-        );
-        setIsOpen(true);
-      } else if (roll === Admin && enabled === "disabled") {
-        setTitle("Access denied");
-        setTypography(
-          "Hi dear user. Unfortunately your request to become an admin user was rejected by syte administrator."
-        );
-        setIsOpen(true);
-      } else {
-        setIsOpen(false);
-        navigate(`/${USER_PROFILE_PATH}`);
-      }
     } catch (err) {
       setError(err.message);
     }
   };
 
-  return user ? (
-    <Navigate to={"/home"} />
-  ) : (
+  // return user ? (
+  //   <Navigate to={"/profile"} />
+  // ) :
+  return (
     <>
       <HomeIcon />
       <div

@@ -9,7 +9,6 @@ import UserWorkingTable from "./WorkingTable/WorkingTable";
 import Statics from "./statics/Statics";
 import paths from "../../constants/Paths";
 import { getDatabase } from "firebase/database";
-import GetProfile from "./ProfilePage/Main";
 import GetEvaluation from "../Evaluation/Main";
 import GetAcception from "../Acception/Main";
 import GetInProgress from "../InProgress/Main";
@@ -19,6 +18,7 @@ import GetAllTasks from "../AllTasks/Main";
 import Rolls from "../../constants/Rolls";
 import AdminUserRequests from "../AdminUserRequests/Main";
 import CircularProgress from "@mui/material/CircularProgress";
+import GetProfileForm from "../ProfileForm/Main";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -88,7 +88,10 @@ function Profile({ children }) {
         <Route
           path={PROFILE_PATH}
           element={
-            <UserWorkingTable open={toolsBarOpen} component={GetProfile()} />
+            <UserWorkingTable
+              open={toolsBarOpen}
+              component={GetProfileForm()}
+            />
           }
         />
         <Route
