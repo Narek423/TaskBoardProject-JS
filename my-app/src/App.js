@@ -27,6 +27,7 @@ function App() {
 				/>
 				<Route path={SIGN_UP_PATH} element={<SignUp />} />
 				<Route path={SIGN_IN_PATH} element={<SignIn />} />
+				<Route path={"*"} element={<UserProfile />} />
 			</Routes>
 		</UserAuthContextProvider>
 	);
