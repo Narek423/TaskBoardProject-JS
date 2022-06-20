@@ -40,6 +40,7 @@ function Profile({ children }) {
 	const { user, roll } = useUserAuth();
 	const classes = useStyle();
 	const [toolsBarOpen, setToolsBaropen] = useState(true);
+	const navigate = useNavigate();
 
 	const {
 		PROFILE_PATH,
@@ -53,6 +54,7 @@ function Profile({ children }) {
 		DONE_TASKS_PATH,
 		STATICS_PATH,
 		ADMIN_USER_REQUESTS_PATH,
+		SIGN_IN_PATH,
 	} = paths;
 
 	const userToolsClose = useCallback(() => {
@@ -61,6 +63,13 @@ function Profile({ children }) {
 
 	const { Admin } = Rolls;
 	console.log(user, "roll");
+	useEffect(() => {
+		if (!user) {
+			navigate(SIGN_IN_PATH);
+		} else {
+			navigate(PROFILE_PATH);
+		}
+	}, []);
 
 	return !!roll ? (
 		<div className={classes.UserProfile}>
