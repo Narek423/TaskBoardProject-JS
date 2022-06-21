@@ -18,6 +18,7 @@ import GetAllTasks from "../AllTasks/Main";
 import Rolls from "../../constants/Rolls";
 import GetProfileForm from "../ProfileForm/Main";
 import { getDatabase } from "firebase/database";
+import ApprovingAdminProfile from "../AdminUserRequests/Form";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -44,6 +45,7 @@ function UserProfile({ children }) {
     IN_PROCCESS_TASKS_PATH,
     DONE_TASKS_PATH,
     STATICS_PATH,
+    ADMIN_USER_REQUESTS_PATH
   } = paths;
 
   const userToolsClose = useCallback(() => {
@@ -75,6 +77,16 @@ function UserProfile({ children }) {
             />
           }
         />
+         <Route
+          path={ADMIN_USER_REQUESTS_PATH}
+          element={
+            <UserWorkingTable
+              open={toolsBarOpen}
+              component={<ApprovingAdminProfile />}
+            />
+          }
+        />
+        
         <Route
           path={CREATE_TASK_PATH}
           element={

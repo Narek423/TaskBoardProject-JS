@@ -3,8 +3,6 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
-import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get, update } from "firebase/database";
 import States from "../../constants/States";
 import Statuses from "../../constants/Statuses";

@@ -18,11 +18,12 @@ import {
   limitToLast,
   limitToFirst,
   onChildAdded,
+  update,
+  push,
 } from "firebase/database";
 import { v4 as uuidv4 } from "uuid";
-import { deepOrange, deepPurple } from '@mui/material/colors';
-
-
+import { deepOrange, deepPurple } from "@mui/material/colors";
+import EmailModal from "./EmailModal";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -37,167 +38,180 @@ const useStyle = createUseStyles(() => {
         boxShadow: "#1264F3 0 -6px 8px inset",
         cursor: "pointer",
       },
+      email: {
+        fontStyle: 'italic',
+        backgroundColor: 'red'
+      }
     },
   };
 });
 
 function Income() {
-  const [inboxData, setInboxData] = useState([]);
+  const [inboxData, setInboxData] = useState(true);
   const { user } = useUserAuth();
   const data = [];
   const classes = useStyle();
   const [emails, setEmails] = useState([]);
   const dbRef = getDatabase();
+  const [page, setPage] = useState(1);
+  const [emailsData, setEmailsData] = useState([]);
+  const [pageQuantity, setPageQuantity] = useState(0);
+  const [email,setEmail] = useState();
+  const [open,setOpen] = useState(false);
+
 
   useEffect(() => {
-    const newMsg = query(ref(dbRef, `inbox/${user.uid}`), limitToFirst(5));
-    get(newMsg).then(snap => console.log(snap.val(),'querySnapshot')).catch(err => console.log(err))
+    get(ref(dbRef, `inbox/${user.uid}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const data = [];
+          for (let key in snapshot.val()) {
+            data.push({key: key,value: snapshot.val()[key]});
+          }
+          return setEmails([...data].reverse());
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [user]);
 
-   get(ref(dbRef, `inbox/${user.uid}`))
-	.then((snapshot) => {
-	  if (snapshot.exists()) {
-		const data = [];
-		for (let key in snapshot.val()) {
-		  data.push(snapshot.val()[key]);
-		}
-		return setEmails([...data].reverse());
-	  } else {
-		console.log("No data available");
-	  }
-	})
-	.catch((error) => {
-	  console.error(error);
-	});
-  }, []);
+    useEffect(() => {
+      const commentsRef = ref(dbRef, `inbox/${user.uid}`);
+      onChildAdded(commentsRef, (data) => {
+        get(ref(dbRef, `inbox/${user.uid}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const data = [];
+          for (let key in snapshot.val()) {
+            data.push({key: key,value: snapshot.val()[key]});
+          }
+          return setEmails([...data].reverse());
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+      setEmailsData([]);
+      setPageQuantity(Math.ceil(emails.length / 10));
+      const start = page * 10 - 10;
+      const end = page * 10;
+      const pageData = [];
+      for (let i = start; i < end; i++) {
+        if(!emails[i]) break; 
+        pageData.push({key: emails[i].key,value: emails[i].value});
+      }
+      setEmailsData(pageData);
+      });
+    }, []);
 
-//   useEffect(() => {
-//     const commentsRef = ref(dbRef, `inbox/${user.uid}`);
-//     onChildAdded(commentsRef, (data) => {
-//       //   addCommentElement(postElement, data.key, data.val().text, data.val().author);
-//       dataAdded();
-//     });
-//   }, []);
 
 
-  const dataAdded = () => {
-	get(ref(dbRef, `inbox/${user.uid}`))
-	.then((snapshot) => {
-	  if (snapshot.exists()) {
-		const data = [];
-		for (let key in snapshot.val()) {
-		  data.push(snapshot.val()[key]);
-		}
-    console.log(data,'start');
-    data.reverse();
-    console.log(data,'end');
-		return setEmails([...data]);
-	  } else {
-		console.log("No data available");
-	  }
-	})
-	.catch((error) => {
-	  console.error(error);
-	});
-  }
+  useEffect(() => {
+    setEmailsData([]);
+    setPageQuantity(Math.ceil(emails.length / 10));
+    const start = page * 10 - 10;
+    const end = page * 10;
+    const pageData = [];
+    for (let i = start; i < end; i++) {
+      if(!emails[i]) break; 
+      pageData.push({key: emails[i].key,value: emails[i].value});
+    }
+    setEmailsData(pageData);
+  }, [emails,page]);
 
- 
+  // const stateUpdate = (key,value) => {
+  //   console.log(key,'key')
+  //   const newPostKey = push(child(ref(dbRef),  `inbox/${user.uid}/${key}`)).state;
+  //   const updates = {};
+  //   updates[`inbox/${user.uid}/${key}` + newPostKey] = false;
+  //   updates['/inbox/' + user.uid + key + newPostKey] = value;
+  
+  //   return update(ref(dbRef), updates);
+  // }
   return (
     <div
       style={{
         flex: 5,
         display: "flex",
         flexDirection: "column",
+        border: "1px solid yellow",
       }}
     >
       <div
         style={{
-          backgroundColor: 'red',
           flex: 10,
         }}
       >
-        <div
-          style={{ flex: 1,width: "100%",  bgcolor: "background.paper",backgroundColor: 'yellow', display: 'flex',flexDirection: 'column' }}
-        >
-          {emails.map((e,index) => {
-            console.log(e.emailTittle)
-            if(index > 9) return;
-            return (
-              <div
-				        key={uuidv4()}
-                onClick={() => alert(e.emailText)}
-                style={{
-                  flex: 1,
-                  display: 'flex',
-                  marginTop: "1%", 
-                  marginRight: '"2%',
-                  alignItems: 'center'
-                }}
-                
-              >
-                <Avatar sx={{ bgcolor: deepOrange[500] }} alt={e?.from?.email} src={"img"} />
-                <p style={{
-                width: '10%',
-                maxWidth: 20
-               }}>{e?.emailTittle?.length > 15 ? e?.emailTittle?.substr(0,15) : e.emailTittle.length}
-               </p>
-               <p style={{
-                width: '10%',
-                maxWidth: 20
-               }}>{e.emailText.length > 15 ? e.emailText.substr(0,15) : e.emailText}
-               </p>
-              </div>
-            );
-          })}
-        </div>
-        {/* <List
+        <List
           sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
         >
-          {emails.map((e,index) => {
-            if(index > 8) return;
+          {emailsData.map((elem, index) => {
+            const e = elem.value;
+            const key = elem.key;
+            console.log(e)
+            if (index > 8) return;
             return (
               <ListItem
-				        key={uuidv4()}
+                key={index}
+                sx={e?.state ? null : { fontWeight: 'bold'}}
                 alignItems="flex-start"
-                onClick={() => alert(e.emailText)}
-                
+                onClick={(key) => {
+                setEmail(e);
+                // stateUpdate(elem.key,elem.value)
+                setOpen(true)
+              }}
               >
                 <ListItemAvatar>
-                  <Avatar alt={e?.from?.email} src={"img"} />
+                  <Avatar
+                    alt={e?.from?.email}
+                    sx={e?.state ? { bgcolor: deepOrange[500] } : { bgcolor: deepPurple[500]}}
+                    src={"img"}
+                  />  
                 </ListItemAvatar>
                 <ListItemText
-                  primary={e.emailTittle}
+                 sx={{fontWeight: "bold" }}
+                  primary={e?.from?.email}
                   secondary={
                     <React.Fragment>
                       <Typography
-                        
-                        sx={{ display: "inline"}}
+                        sx={e?.state ? { display: "inline",  fontWeight: "cursive" } : { display: "inline",fontWeight: "bold" }}
                         component="span"
                         variant="body2"
                         color="text.primary"
                       >
-                      
+                        {e?.emailText?.length > 30 ? e.emailText.substr(0,30) : e?.emailText}
                       </Typography>
-                      {e.emailText}
                     </React.Fragment>
                   }
                 />
               </ListItem>
             );
           })}
-        </List> */}
+        </List>
       </div>
       <div
         style={{
           flex: 1,
           // margin: "auto",
-          position: 'fixed',
+          position: "fixed",
           bottom: 5,
           // left: '50%',
-          right: '30%'
+          right: "30%",
         }}
       >
-        <Pagination count={Math.round(emails.length/10)} color="primary" />
+        <Pagination
+          count={pageQuantity}
+          page={page}
+          onChange={(event, num) => setPage(num)}
+          color="primary"
+        />
       </div>
+      {open ? <EmailModal component={email} setOpen={setOpen}/> : null}
     </div>
   );
 }

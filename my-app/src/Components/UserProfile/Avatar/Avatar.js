@@ -49,32 +49,26 @@ function Avatar(props) {
   const navigate = useNavigate();
   const {open} = props;
   const {PROFILE_PATH,USER_PROFILE_PATH} = paths;
-  // const [imgUrl, setImgUrl] = useState("");
 
-  // useEffect(() => {
-  //   if(user?.email){
-  //   getDownloadURL(ref(storage, `${props.email}/avatar`))
-  //     .then((url) => {
-  //       setImgUrl(url);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  //   }
-  // }, [user]);
-  // const emailCut = (email) => {
-  //   let newEmail = "";
-  //   const index = email.lastIndexOf('@');
-  //   for(let i = index;i < email.length;i++){
-  //     newEmail = newEmail + email[i]
-  //   }
-  //   return newEmail
-  // }
+  const emailCut = (email) => {
+    let newEmail = "";
+    let firstPart = "";
+    let lastPart = "";
+    const index = email.lastIndexOf('@');
+    for(let i = index;i < email.length;i++){
+      lastPart = lastPart + email[i]
+    }
+    for(let i = 0;i + firstPart.length < 15; i++ ){
+      firstPart = firstPart + email[i]
+    }
+    newEmail = firstPart + "..." + lastPart
+    return newEmail
+  }
 
   return (
     <div className={open ? classes.avatar : classes.avatarClose}>
       <img onClick={() => navigate(`${PROFILE_PATH}${USER_PROFILE_PATH}`)} className={open ? classes.img : classes.imgClose} alt="avatar" src={imgUrl ? imgUrl : avatar}></img>
-      <p className={classes.useremail}>{!!props.open ? email?.length < 15 ? email : email : null}</p>
+      <p className={classes.useremail}>{!!props.open && !!email ? email?.length  < 15 ? email : emailCut(email) : null}</p>
     </div>
   );
 }

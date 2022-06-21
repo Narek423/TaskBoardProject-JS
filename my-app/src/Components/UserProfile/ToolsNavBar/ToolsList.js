@@ -7,6 +7,7 @@ import { getDatabase, ref, get } from "firebase/database";
 import Rolls from "../../../constants/Rolls";
 import { AdminTools, ClientTools } from "./GetToolsList";
 
+
 const useStyle = createUseStyles(() => {
   return {
     usertoolslist: {
@@ -22,7 +23,6 @@ const useStyle = createUseStyles(() => {
     toolsspan: {
       color: "#B4C8EC",
       flex: 5,
-      fontSize: 18
     },
   
     div: {
@@ -63,7 +63,7 @@ function ToolsList(props) {
           <div
             className={classes.div}
             onClick={() => navigate(e.path)}
-            key={uuidv4()}
+            key={e.id}
           >
             {e.icon}
             {open ? <span className={classes.toolsspan}>{e.text}</span> : null}

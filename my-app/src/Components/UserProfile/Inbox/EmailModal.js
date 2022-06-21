@@ -3,70 +3,59 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
-import CreateMail from "./CreateMail";
-import { createUseStyles } from "react-jss";
-import { ClassNames } from "@emotion/react";
+import { DialogActions, TextField } from "@mui/material";
 
-const useStyle = createUseStyles(() => {
-    return {
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: '60%',
+  height: "50%",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
-        modal: {
-            position: "fixed",
-            width: '35%',
-            top: "46%",
-            left: "59%",
-            minHeight: '30%',
-            border: "4px solid #000",
-            borderRadius: 8,
-            backgroundColor: 'white',
-            textAlign: 'center',
-            overflowY: "scroll",
-            "&::-webkit-scrollbar": {
-              width: 10,
-            },
-            "&::-webkit-scrollbar-track": {
-              background: "white",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              background: "#019CAD",
-            },
-            "&::-webkit-scrollbar-thumb:hover": {
-              background: "#019CAD",
-            },
-          //   boxShadow: 24,
-          //   p: 4,
-          },
-          close: {
-            position: "absolute",
-            right: 15,
-            cursor: 'pointer'
-          },
-          title:  {
-            cursor: 'pointer',
-            fontFamily: 'bolt',
-            fontSize: 25
-          },
-        
-    }
-})
-
-function EmailModal(props) {
-  const { emailModal, sentEmailModal } = props;
-  const classes = useStyle();
-  const handleClose = () => sentEmailModal(false);
-
+export default function EmailModal({ component, setOpen }) {
+  const handleClose = () => setOpen(false);
   return (
-    <div
-      className={
-        emailModal
-          ? classes.modal
-          : null
-      }
-    >
-        <span className={classes.title}>SentEmail</span><span onClick={() => sentEmailModal(false)} className={classes.close}>X</span>
-      <CreateMail />
+    <div>
+      <Modal
+        open
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            {`from: ${component.from.email}`}
+          </Typography>
+          <TextField
+            value={component?.emailTittle}
+            style={{width: "100%",marginTop: '2%'}}
+            id="outlined-multiline-static"
+            multiline
+            label='tittle'
+            rows={4}
+          />
+          <TextField
+            value={component?.emailText}
+            style={{width: "100%",marginTop: '2%' }}
+            id="outlined-multiline-static"
+            multiline
+            label='text'
+            rows={6}
+          />
+           <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+        </Box>
+          
+      </Modal>
     </div>
   );
 }
-
-export default EmailModal;

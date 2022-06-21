@@ -107,15 +107,15 @@ function CreateMail(props) {
   useEffect(() => {
     const dbRef = getDatabase();
     let usersData = [];
-   
-
     get(ref(dbRef, "users"))
       .then((snapshot) => {
         if (snapshot.exists()) {
           const data = snapshot.val();
           for (let key in data) {
             if (data[key].email && data[key].roll === "Client") {
+              if(key === user.uid) continue;
               usersData.push({ email: data[key].email, clientId: key });
+              
             }
           }
         }

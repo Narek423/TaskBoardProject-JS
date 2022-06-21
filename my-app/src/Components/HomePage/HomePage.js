@@ -16,7 +16,6 @@ const useStyle = createUseStyles(() => {
 		container: {
 			flex: 10,
 			overflowY: "scroll",
-			backgroundColor: "#b3ffe6",
 
 			"&::-webkit-scrollbar": {
 				width: 14,
@@ -57,7 +56,6 @@ function HomePage(params) {
 					ref={contactUs}
 					style={{
 						height: 550,
-						backgroundColor: "#99ffdd",
 						marginTop: "4%",
 						alignItems: "center",
 						float: "right",
@@ -93,7 +91,6 @@ function HomePage(params) {
 				<div
 					style={{
 						height: 550,
-						backgroundColor: "#99ffdd",
 						marginTop: "4%",
 						alignItems: "center",
 						float: "right",
@@ -129,7 +126,6 @@ function HomePage(params) {
 				<div
 					style={{
 						height: 550,
-						backgroundColor: "#99ffdd",
 						marginTop: "4%",
 						alignItems: "center",
 						float: "right",
@@ -166,7 +162,6 @@ function HomePage(params) {
 				<div
 					style={{
 						textAlign: "center",
-						backgroundColor: "#99ffdd",
 						marginTop: "4%",
 					}}
 				>
