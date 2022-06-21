@@ -7,12 +7,12 @@ import { useUserAuth } from "../../context/UserAuthContext";
 import { Navigate } from "react-router-dom";
 import paths from "../../constants/Paths";
 import { Button, Card, CardContent, Typography } from "@mui/material";
-import {
-  Facebook,
-  Instagram,
-  Linkedin,
-  Telegram,
-} from "@trejgun/material-ui-icons-social-networks";
+// import {
+//   Facebook,
+//   Instagram,
+//   Linkedin,
+//   Telegram,
+// } from "@trejgun/material-ui-icons-social-networks";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -82,10 +82,10 @@ function HomePage(params) {
         >
           <div
             style={{
-              marginLeft: 20,
-              marginRight: 20,
-              height: "100%",
-              height: "90%",
+              marginLeft: 70,
+              marginRight: 70,
+              height: "75%",
+              width: "100%",
               backgroundImage: `url("${evaluationImg}")`,
               backgroundSize: "100% 100%",
               alignItems: "center",
@@ -182,10 +182,10 @@ function HomePage(params) {
           </div>
           <div
             style={{
-              marginLeft: 20,
-              marginRight: 20,
-              height: "100%",
-              height: "90%",
+              marginLeft: 70,
+              marginRight: 70,
+              height: "75%",
+              width: "100%",
               backgroundImage: `url("${profileImg}")`,
               backgroundSize: "100% 100%",
               alignItems: "center",
@@ -198,6 +198,7 @@ function HomePage(params) {
           ref={contactUs}
           style={{
             height: 550,
+            width: "100%",
             //  backgroundColor: "#99ffdd",
             marginTop: "4%",
             alignItems: "center",
@@ -208,10 +209,10 @@ function HomePage(params) {
         >
           <div
             style={{
-              marginLeft: 20,
-              marginRight: 20,
-              height: "100%",
-              height: "90%",
+              marginLeft: 70,
+              marginRight: 70,
+              height: "75%",
+              width: "100%",
               backgroundImage: `url("${evaluationImg}")`,
               backgroundSize: "100% 100%",
               alignItems: "center",
@@ -225,7 +226,7 @@ function HomePage(params) {
               marginRight: 20,
             }}
           >
-            <h1>About us</h1>
+            <h1>Contacts</h1>
             <hr
               style={{
                 height: "2px",
@@ -248,11 +249,11 @@ function HomePage(params) {
                   </div>
                   <div>Phone number: + (061) 46 613 13</div>
 
-                  <div>
+                  {/* <div>
                     <Button variant="outlined" className={classes.button}>
                       <Facebook className={classes.icon} /> Facebook
                     </Button>
-                  </div>
+                  </div> */}
                 </Typography>
               </CardContent>
             </Card>

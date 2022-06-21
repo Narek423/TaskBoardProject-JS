@@ -19,6 +19,7 @@ import paths from "../constants/Paths";
 import AdminRegister from "./ModalMessages/AdminRegister";
 import Rolls from "../constants/Rolls";
 import { get, getDatabase, ref, update } from "firebase/database";
+import { useSharedStyles } from "../styles/sharedStyles";
 
 const useStyles = createUseStyles({
   header: {
@@ -142,6 +143,7 @@ function SignIn(props) {
   const [data, setData] = useState({});
 
   const classes = useStyles();
+  const signupBtn = useSharedStyles();
   const [values, setValues] = useState({
     amount: "",
     password: "",
@@ -224,7 +226,7 @@ function SignIn(props) {
     </div>
   ) : (
     <>
-      <HomeIcon />
+      <HomeIcon signin={true} />
       <div
         style={{
           height: "70vh",
@@ -236,16 +238,16 @@ function SignIn(props) {
         }}
       >
         <Link to="/signup">
-          <Button
+          <button
             style={{
               position: "absolute",
               right: 50,
               top: 15,
             }}
-            variant="outlined"
+            className={signupBtn.signupBtn}
           >
-            Sing Up
-          </Button>
+            Sign up
+          </button>
         </Link>
         <Card>
           <div className={classes.useSpace}>

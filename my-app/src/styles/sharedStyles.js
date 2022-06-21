@@ -156,7 +156,7 @@ export const useSharedStyles = createUseStyles({
   signinBtn: {
     marginRight: 10,
     background: "#FFFFFF",
-    border: "1px solid black",
+    border: "1px solid #0099ff",
     borderRadius: "6px",
     boxShadow: "rgba(0, 0, 0, 0.1) 1px 2px 4px",
     boxSizing: "border-box",

@@ -284,7 +284,7 @@ function SignUp(props) {
     </div>
   ) : (
     <>
-      <HomeIcon />
+      <HomeIcon signin={true} />
       <div
         style={{
           display: "flex",

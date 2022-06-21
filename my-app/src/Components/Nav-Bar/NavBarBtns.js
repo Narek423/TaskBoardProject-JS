@@ -10,7 +10,7 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: "#0000e6",
+      main: "#0099ff",
       darker: "#053e85",
     },
   },
@@ -19,9 +19,10 @@ const theme = createTheme({
 const useStyle = createUseStyles(() => {
   return {
     navbarbtns: {
-      flex: 3,
+      flex: 4,
       fontSize: 17,
       margin: "auto",
+      marginRight: 5,
       justifyContent: "center",
       textAlign: "center",
     },

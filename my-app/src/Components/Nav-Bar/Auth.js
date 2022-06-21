@@ -31,7 +31,7 @@ function Auth() {
             <button className={classes.signinBtn}>Sign in</button>
           </Link>
           <Link to={`/${SIGN_UP_PATH}`}>
-            <button className={classes.signupBtn}>Signup</button>
+            <button className={classes.signupBtn}>Sign up</button>
           </Link>
         </ThemeProvider>
       </div>
