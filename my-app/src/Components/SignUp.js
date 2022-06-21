@@ -33,6 +33,7 @@ import { signOut } from "firebase/auth";
 import NavMainBar from "./Nav-Bar/HomePageNavBar";
 import formatPhoneNumber from "../utils/formatPhoneNumber";
 import formatTaxCode from "../utils/formatTaxCode";
+import { useSharedStyles } from "../styles/sharedStyles";
 
 const useStyles = createUseStyles({
   header: {
@@ -150,6 +151,7 @@ function SignUp(props) {
   const [lastNameError, setlastNameError] = useState(false);
   const [countError, setCountError] = useState("");
   const { Admin } = Rolls;
+  const signinBtn = useSharedStyles();
 
   const [values, setValues] = useState({
     amount: "",
@@ -294,16 +296,16 @@ function SignUp(props) {
         }}
       >
         <Link to="/signin">
-          <Button
+          <button
             style={{
               position: "absolute",
-              right: 50,
-              top: 15,
+              right: 25,
+              top: 22,
             }}
-            variant="outlined"
+            className={signinBtn.signinBtn}
           >
-            Sing In
-          </Button>
+            Signin
+          </button>
         </Link>
         <Card>
           <div className={classes.useSpace}>

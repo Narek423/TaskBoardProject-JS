@@ -241,8 +241,8 @@ function SignIn(props) {
           <button
             style={{
               position: "absolute",
-              right: 50,
-              top: 15,
+              right: 35,
+              top: 22,
             }}
             className={signupBtn.signupBtn}
           >

@@ -48,7 +48,6 @@ function Form({ data }) {
   };
 
   const onSaveBtnClick = async (e) => {
-    console.log("data is", data);
     if (data.clientId !== "") {
       const db = getDatabase();
       const postData = {
