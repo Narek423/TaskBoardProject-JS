@@ -213,13 +213,18 @@ function SignUp(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setCountError("");
+    setNameError(false);
+    setlastNameError(false);
+    setuserNameError(false);
 
     try {
       if (
         (!values.showPassword && password !== repeatedPassword) ||
         username.length < 4 ||
         name.length < 4 ||
-        lastName.length < 4
+        lastName.length < 4 ||
+        password.length < 6
       ) {
         if (!values.showPassword) {
           if (password !== repeatedPassword) {
@@ -228,20 +233,20 @@ function SignUp(props) {
         }
         if (username.length < 4) {
           setuserNameError(true);
-          setCountError("The input must be at least 3 character.");
+          setCountError("The input must be at least 4 character.");
         }
         if (name.length < 4) {
           setNameError(true);
-          setCountError("The input must be at least 3 character.");
+          setCountError("The input must be at least 4 character.");
         }
         if (lastName.length < 4) {
           setlastNameError(true);
-          setCountError("The input must be at least 3 character.");
+          setCountError("The input must be at least 4 character.");
         }
-        if (password.length < 4) {
-          setError("Invalid input! Please enter valid information. ");
+        if (password.length < 6) {
+          setError("Password should be at least 6 characters. ");
         }
-        if (email.length < 4 && email.includes("@") && email.includes(".")) {
+        if (email.length < 4 || !email.includes("@") || !email.includes(".")) {
           setError("Invalid input! Please enter valid information. ");
         }
         throw "Invalid input! Please enter valid information.";
@@ -269,7 +274,10 @@ function SignUp(props) {
         navigate(`/${USER_PROFILE_PATH}`);
       }
     } catch (err) {
-      // setError("Invalid input! Please enter valid information. ");
+      if ("Firebase: Error (auth/email-already-in-use)." === err.message) {
+        setError("Email-already-in-use");
+      }
+      console.log(err.message);
     }
   };
   const { user } = useUserAuth();

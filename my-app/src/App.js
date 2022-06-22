@@ -11,26 +11,25 @@ import HomePage from "./components/HomePage/HomePage";
 import UserProfile from "./components/UserProfile/Profile";
 
 function App() {
-  const { USER_PROFILE_PATH, SIGN_IN_PATH, SIGN_UP_PATH } = paths;
-  return (
-    <UserAuthContextProvider>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
+	const { USER_PROFILE_PATH, SIGN_IN_PATH, SIGN_UP_PATH } = paths;
+	return (
+		<UserAuthContextProvider>
+			<Routes>
+				<Route path='/' element={<HomePage />} />
 
-        <Route
-          path={`${USER_PROFILE_PATH}/*`}
-          element={
-            <ProtectedRoute>
-              <UserProfile />
-            </ProtectedRoute>
-          }
-        />
-        <Route path={SIGN_UP_PATH} element={<SignUp />} />
-        <Route path={SIGN_IN_PATH} element={<SignIn />} />
-        <Route path={"*"} element={<UserProfile />} />
-      </Routes>
-    </UserAuthContextProvider>
-  );
+				<Route
+					path={`${USER_PROFILE_PATH}/*`}
+					element={
+						<ProtectedRoute>
+							<UserProfile />
+						</ProtectedRoute>
+					}
+				/>
+				<Route path={SIGN_UP_PATH} element={<SignUp />} />
+				<Route path={SIGN_IN_PATH} element={<SignIn />} />
+			</Routes>
+		</UserAuthContextProvider>
+	);
 }
 
 export default App;
