@@ -31,6 +31,7 @@ import AdminRegister from "./ModalMessages/AdminRegister";
 import Rolls from "../constants/Rolls";
 import formatPhoneNumber from "../utils/formatPhoneNumber";
 import formatTaxCode from "../utils/formatTaxCode";
+import { useSharedStyles } from "../styles/sharedStyles";
 
 const useStyles = createUseStyles({
 	header: {
@@ -122,32 +123,33 @@ const useStyles = createUseStyles({
 });
 
 function SignUp(props) {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [repeatedPassword, setRepeatedPassword] = useState("");
-	const [username, setUsername] = useState("");
-	const [name, setName] = useState("");
-	const [lastName, setLastName] = useState("");
-	const [phoneNumber, setPhoneNumber] = useState("");
-	const [dateOfBirth, setDateOfBirth] = useState("");
-	const [taxCode, setTaxCode] = useState("");
-	const [roll, setRoll] = useState("Client");
-	const [enabled, setEnabled] = useState(false);
-	const [error, setError] = useState("");
-	const [avatar, setAvatar] = useState("");
-	const [avatarUrl, setAvatarUrl] = useState("");
-	const [progress, setProgress] = useState(0);
-	const { signUp } = useUserAuth();
-	const [signInButtonHover, setSigInButtonHover] = useState(false);
-	const [signInButtonActive, setSignInButtonActive] = useState(false);
-	const navigate = useNavigate();
-	const classes = useStyles();
-	const [isOpen, setIsOpen] = useState(false);
-	const [userNameError, setuserNameError] = useState(false);
-	const [nameError, setNameError] = useState(false);
-	const [lastNameError, setlastNameError] = useState(false);
-	const [countError, setCountError] = useState("");
-	const { Admin } = Rolls;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeatedPassword, setRepeatedPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [taxCode, setTaxCode] = useState("");
+  const [roll, setRoll] = useState("Client");
+  const [enabled, setEnabled] = useState(false);
+  const [error, setError] = useState("");
+  const [avatar, setAvatar] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [progress, setProgress] = useState(0);
+  const { signUp } = useUserAuth();
+  const [signInButtonHover, setSigInButtonHover] = useState(false);
+  const [signInButtonActive, setSignInButtonActive] = useState(false);
+  const navigate = useNavigate();
+  const classes = useStyles();
+  const [isOpen, setIsOpen] = useState(false);
+  const [userNameError, setuserNameError] = useState(false);
+  const [nameError, setNameError] = useState(false);
+  const [lastNameError, setlastNameError] = useState(false);
+  const [countError, setCountError] = useState("");
+  const { Admin } = Rolls;
+  const signinBtn = useSharedStyles();
 
 	const [values, setValues] = useState({
 		amount: "",
@@ -284,42 +286,42 @@ function SignUp(props) {
 		}
 	}, [PROFILE_PATH, isOpen, navigate, user]);
 
-	return !!user && !isOpen ? (
-		<div>
-			<CircularProgress className={classes.loader} />
-		</div>
-	) : (
-		<>
-			<HomeIcon />
-			<div
-				style={{
-					display: "flex",
-					marginTop: 20,
-					marginBottom: 30,
-					justifyContent: "center",
-				}}
-			>
-				<Link to='/signin'>
-					<Button
-						style={{
-							position: "absolute",
-							right: 50,
-							top: 15,
-						}}
-						variant='outlined'
-					>
-						Sing In
-					</Button>
-				</Link>
-				<Card>
-					<div className={classes.useSpace}>
-						<h1 className={classes.signUp}>Sign up</h1>
-						{
-							<div style={{ color: "red", textAlign: "center" }}>
-								{error || countError}
-							</div>
-						}
-						<br />
+  return !!user && !isOpen ? (
+    <div>
+      <CircularProgress className={classes.loader} />
+    </div>
+  ) : (
+    <>
+      <HomeIcon signin={true} />
+      <div
+        style={{
+          display: "flex",
+          marginTop: 20,
+          marginBottom: 30,
+          justifyContent: "center",
+        }}
+      >
+        <Link to="/signin">
+          <button
+            style={{
+              position: "absolute",
+              right: 25,
+              top: 22,
+            }}
+            className={signinBtn.signinBtn}
+          >
+            Signin
+          </button>
+        </Link>
+        <Card>
+          <div className={classes.useSpace}>
+            <h1 className={classes.signUp}>Sign up</h1>
+            {error && (
+              <div style={{ color: "red", textAlign: "center" }}>
+                {error || countError}
+              </div>
+            )}
+            <br />
 
 						<div className={classes.signUp}>
 							<TextField
