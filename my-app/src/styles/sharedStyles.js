@@ -119,14 +119,17 @@ export const useSharedStyles = createUseStyles({
 
   signupBtn: {
     background: "#FF4742",
-    border: "1px solid #FF4742",
+    border: "1px solid #fa6b2a",
     borderRadius: "6px",
     boxShadow: "rgba(0, 0, 0, 0.1) 1px 2px 4px",
     boxSizing: "border-box",
-    color: "#FFFFFF",
     cursor: "pointer",
     display: "inline-block",
     fontFamily: "nunito,roboto,proxima-nova,'proxima nova',sans-serif",
+    backgroundSize: "200% auto",
+    color: "white",
+    backgroundImage:
+      "linear-gradient(45deg, #FF512F 0%, #F09819  51%, #FF512F  100%)",
     fontSize: "16px",
     fontWeight: 800,
     lineHeight: "16px",
@@ -141,14 +144,20 @@ export const useSharedStyles = createUseStyles({
     touchAction: "manipulation",
     verticalAlign: "middle",
     "&:hover": {
+      border: "1px solid #fa6b2a",
+      backgroundImage:
+        "linear-gradient(45deg, white 0%, white  51%, white  100%)",
       backgroundColor: "white",
       backgroundPosition: "0 0",
-      color: "#FF4742",
+      color: "#fa6b2a",
     },
     "&:active": {
+      border: "1px solid #fa6b2a",
+      backgroundImage:
+        "linear-gradient(45deg, white 0%, white  51%, white  100%)",
       backgroundColor: "white",
       backgroundPosition: "0 0",
-      color: "#FF4742",
+      color: "#fa6b2a",
       opacity: ".5",
     },
   },
@@ -457,7 +466,7 @@ export const useSharedStyles = createUseStyles({
   },
   TextFieldLeft: {
     marginRight: 10,
-    flex: 1,
+    flex: 2,
   },
   TextFieldRight: {
     marginTop: 6,

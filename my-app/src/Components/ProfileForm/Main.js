@@ -9,7 +9,7 @@ function GetProfileForm() {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const getData = () => {
+  function getData() {
     const dbRef = getDatabase();
     get(ref(dbRef, "users/" + clientId))
       .then((snapshot) => {
@@ -20,7 +20,7 @@ function GetProfileForm() {
         console.error(error);
         setIsLoading(true);
       });
-  };
+  }
 
   useEffect(() => {
     getData();

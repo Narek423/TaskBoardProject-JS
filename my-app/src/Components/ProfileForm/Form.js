@@ -37,6 +37,17 @@ function Form({ data }) {
     setDateOfBirth(data.dateOfBirth);
   }, [data]);
 
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      setSuccess(false);
+      setError(false);
+    }, 1500);
+
+    return () => {
+      clearTimeout(timeId);
+    };
+  }, [success, error]);
+
   const phoneHandleInput = (e) => {
     const formattedPhoneNumber = formatPhoneNumber(e.target.value);
     setPhoneNumber(formattedPhoneNumber);

@@ -21,6 +21,17 @@ const useStyle = createUseStyles(() => {
       display: "flex",
       flexDirection: "column",
     },
+    icon: {
+      fontFamily: "monospace",
+      fontSize: 40,
+      padding: 0,
+      marginTop: 0,
+      marginBottom: 0,
+      color: "#054570",
+      cursor: "pointer",
+      marginLeft: "10%",
+      textShadow: "2px 3px 0 #c5c5c5",
+    },
     container: {
       flex: 10,
       marginTop: 0,
@@ -99,7 +110,7 @@ function HomePage(params) {
               marginRight: 20,
             }}
           >
-            <h1>About us</h1>
+            <h1 className={classes.icon}>About us</h1>
             <hr
               style={{
                 height: "2px",
@@ -111,7 +122,7 @@ function HomePage(params) {
             <Card
               sx={{
                 width: "100%",
-                height: "300px",
+                height: "320px",
                 boxShadow: "15px 15px 10px -15px #111",
               }}
             >
@@ -149,7 +160,7 @@ function HomePage(params) {
               marginRight: 20,
             }}
           >
-            <h1>Product</h1>
+            <h1 className={classes.icon}>Product</h1>
             <hr
               style={{
                 height: "2px",
@@ -226,7 +237,7 @@ function HomePage(params) {
               marginRight: 20,
             }}
           >
-            <h1>Contacts</h1>
+            <h1 className={classes.icon}>Contacts</h1>
             <hr
               style={{
                 height: "2px",

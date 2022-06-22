@@ -77,7 +77,7 @@ export function UserAuthContextProvider({ children }) {
           console.error(error);
         });
     }
-  }, [user]);
+  }, [dbRef, user]);
 
   useEffect(() => {
     if (user?.email) {
