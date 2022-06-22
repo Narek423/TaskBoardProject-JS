@@ -91,7 +91,7 @@ export function writeUserTask(
     clientId: userId,
     files: urls,
     title: titleValue,
-    nodes: nodesValue,
+    notes: nodesValue,
     description: descrpValue,
     creationDate: date,
     state: States.evaluation,
