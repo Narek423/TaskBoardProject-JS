@@ -38,7 +38,7 @@ function ApprovingAdminProfile(props) {
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: true,
+      editable: false,
       sortable: true,
       minWidth: 100,
       filter: true,
@@ -119,7 +119,7 @@ function ApprovingAdminProfile(props) {
         for (let key in clientData) {
           if (
             clientData[key].roll === Admin &&
-            clientData[key].enabled === "false"
+            clientData[key].enabled === false
           ) {
             clientData[key].id = key;
             clientData[key] = { ...clientData[key] };
@@ -140,7 +140,7 @@ function ApprovingAdminProfile(props) {
 
   return (
     <div className={classes.containerStyle}>
-      <span className={classes.formName}>Tasks for acception</span>
+      <span className={classes.formName}>Admin user requsts</span>
       <div className={classes.groupingInputs}>
         <button
           onClick={onAcceptRejectBtnClick}

@@ -1,10 +1,8 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
-import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get, update } from "firebase/database";
 import States from "../../constants/States";
 import Statuses from "../../constants/Statuses";
@@ -15,8 +13,10 @@ import { useSharedStyles } from "../../styles/sharedStyles";
 function InProgressTasksAdmin(props) {
   const classes = useSharedStyles();
   const [data, setData] = useState();
+  const [editMode, setEditMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const onCellEditingStopped = useCallback((event) => {
+    setEditMode(false);
     const selectedRow = event.data;
     const db = getDatabase();
     const postData = {
@@ -42,6 +42,7 @@ function InProgressTasksAdmin(props) {
   }, []);
 
   const cellEditorSelector = (params) => {
+    setEditMode(true);
     return {
       component: "agRichSelectCellEditor",
       params: {
@@ -79,7 +80,7 @@ function InProgressTasksAdmin(props) {
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: true,
+      editable: false,
       sortable: true,
       minWidth: 100,
       filter: true,
@@ -97,13 +98,16 @@ function InProgressTasksAdmin(props) {
     };
   }, [defaultColDef]);
 
-  const onRowDoubleClicked = useCallback((param) => {
-    const selectedRow = param.api.getSelectedRows();
-    if (selectedRow.length === 1) {
-      setData(selectedRow[0]);
-      setIsOpen(true);
-    }
-  }, []);
+  const onRowDoubleClicked = useCallback(
+    (param) => {
+      const selectedRow = param.api.getSelectedRows();
+      if (selectedRow.length === 1 && !editMode) {
+        setData(selectedRow[0]);
+        setIsOpen(true);
+      }
+    },
+    [editMode]
+  );
 
   const onGridReady = (params) => {
     const dbRef = getDatabase();

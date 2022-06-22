@@ -1,11 +1,5 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { useSharedStyles } from "../../styles/sharedStyles";
@@ -30,12 +24,15 @@ function Form({ data }) {
   const [lastName, setLastName] = useState(data.lastName);
 
   useEffect(() => {
-    setName(data.name);
-    setLastName(data.lastName);
-    setPhoneNumber(formatPhoneNumber(data.phoneNumber));
-    setTaxCode(formatTaxCode(data.taxCode));
-    setDateOfBirth(data.dateOfBirth);
-  }, [data]);
+    const timeId = setTimeout(() => {
+      setSuccess(false);
+      setError(false);
+    }, 1500);
+
+    return () => {
+      clearTimeout(timeId);
+    };
+  }, [success, error]);
 
   const phoneHandleInput = (e) => {
     const formattedPhoneNumber = formatPhoneNumber(e.target.value);
@@ -48,8 +45,12 @@ function Form({ data }) {
   };
 
   const onSaveBtnClick = async (e) => {
-    console.log("data is", data);
     if (data.clientId !== "") {
+      data.name = name;
+      data.lastName = lastName;
+      data.phoneNumber = phoneNumber;
+      data.dateOfBirth = dateOfBirth;
+      data.taxCode = taxCode;
       const db = getDatabase();
       const postData = {
         username: data.username,
@@ -107,7 +108,6 @@ function Form({ data }) {
                   <TextField
                     className={classes.fields}
                     type={"text"}
-                    defaultValue="value"
                     value={name}
                     onChange={(e) => {
                       setName(e.target.value);
@@ -120,7 +120,6 @@ function Form({ data }) {
                 <div className={classes.groupingViewLeft}>
                   <TextField
                     className={classes.fields}
-                    defaultValue="value"
                     type={"text"}
                     value={lastName}
                     onChange={(e) => {
@@ -134,7 +133,6 @@ function Form({ data }) {
                 <div className={classes.groupingViewRight}>
                   <TextField
                     className={classes.fields}
-                    defaultValue="value"
                     type={"text"}
                     onChange={(e) => {
                       phoneHandleInput(e);
@@ -163,7 +161,6 @@ function Form({ data }) {
                 <div className={classes.groupingViewRight}>
                   <TextField
                     className={classes.fields}
-                    defaultValue="value"
                     type={"text"}
                     onChange={(e) => {
                       taxCodeHandleInput(e);
