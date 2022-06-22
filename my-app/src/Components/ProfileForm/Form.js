@@ -17,6 +17,9 @@ function Form({ data }) {
   const [error, setError] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState(data.dateOfBirth);
   const [taxCode, setTaxCode] = useState(formatTaxCode(data.taxCode));
+  const [nameError, setNameError] = useState(false);
+  const [lastNameError, setlastNameError] = useState(false);
+  const [countError, setCountError] = useState("");
   const [phoneNumber, setPhoneNumber] = useState(
     formatPhoneNumber(data.phoneNumber)
   );
@@ -46,6 +49,22 @@ function Form({ data }) {
 
   const onSaveBtnClick = async (e) => {
     if (data.clientId !== "") {
+      setNameError(false);
+      setlastNameError(false);
+      setCountError("");
+      if (name.length < 4 || lastName.length < 4) {
+        if (lastName.length < 4) {
+          setlastNameError(true);
+          setCountError("Last name must be at least 4 character.");
+        }
+        if (name.length < 4) {
+          setNameError(true);
+          setCountError("Name must be at least 4 character.");
+        }
+        setSuccess(false);
+        setError(true);
+        throw "Invalid input! Please enter valid credential.";
+      }
       data.name = name;
       data.lastName = lastName;
       data.phoneNumber = phoneNumber;
@@ -106,6 +125,7 @@ function Form({ data }) {
               <div className={!smallScreen && classes.groupingInputsView}>
                 <div className={classes.groupingViewLeft}>
                   <TextField
+                    error={nameError}
                     className={classes.fields}
                     type={"text"}
                     value={name}
@@ -119,6 +139,7 @@ function Form({ data }) {
                 </div>
                 <div className={classes.groupingViewLeft}>
                   <TextField
+                    error={lastNameError}
                     className={classes.fields}
                     type={"text"}
                     value={lastName}
@@ -192,7 +213,8 @@ function Form({ data }) {
               {error && (
                 <Stack sx={{ width: "100%" }} spacing={2}>
                   <Alert variant="outlined" severity="error">
-                    An error occurred. Please try again later!
+                    {countError || "An error occurred. Please try again later!"}
+                    "
                   </Alert>
                 </Stack>
               )}

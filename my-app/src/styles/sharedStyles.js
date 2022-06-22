@@ -25,6 +25,9 @@ export const useSharedStyles = createUseStyles({
   margin2: {
     marginTop: 20,
   },
+  margin4: {
+    marginTop: 40,
+  },
   groupingInputs: {
     display: "flex",
     marginTop: 0,
@@ -161,7 +164,50 @@ export const useSharedStyles = createUseStyles({
       opacity: ".5",
     },
   },
-
+  createTaskBtn: {
+    alignItems: "center",
+    appearance: "none",
+    backgroundColor: "#FCFCFD",
+    borderRadius: "4px",
+    borderWidth: 0,
+    boxShadow:
+      "rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset",
+    boxSizing: "border-box",
+    color: "#36395A",
+    cursor: "pointer",
+    display: "inline-flex",
+    fontFamily: "'JetBrains Mono',monospace",
+    height: "48px",
+    justifyContent: "center",
+    lineHeight: 1,
+    listStyle: "none",
+    overflow: "hidden",
+    paddingLeft: "16px",
+    paddingRight: "16px",
+    position: "relative",
+    textAlign: "left",
+    textDecoration: "none",
+    transition: "box-shadow .15s,transform .15s",
+    userSelect: "none",
+    webkitUserSelect: "none",
+    touchAction: "manipulation",
+    whiteSpace: "nowrap",
+    willChange: "box-shadow,transform",
+    fontSize: "18px",
+    "&:focus": {
+      boxShadow:
+        "#D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset",
+    },
+    "&:hover": {
+      boxShadow:
+        "rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset",
+      transform: "translateY(-2px)",
+    },
+    "&:active": {
+      boxShadow: "#D6D6E7 0 3px 7px inset",
+      transform: "translateY(2px)",
+    },
+  },
   signinBtn: {
     marginRight: 10,
     background: "#FFFFFF",
