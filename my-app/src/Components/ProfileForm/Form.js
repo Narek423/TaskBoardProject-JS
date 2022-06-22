@@ -18,7 +18,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 function Form({ data }) {
   const theme = useTheme();
   const classes = useSharedStyles();
-  const smallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  // const smallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState(data.dateOfBirth);
@@ -90,8 +90,8 @@ function Form({ data }) {
               <div className={classes.groupingInputsEvaluation}>
                 <div className={classes.avatar}>{data.avatar}</div>
               </div>
-              <div className={!smallScreen && classes.groupingInputsEvaluation}>
-                <div className={!smallScreen && classes.groupingName}>
+              <div className={ classes.groupingInputsEvaluation}>
+                <div className={classes.groupingName}>
                   <div className={classes.groupingViewLeft}>
                     {data.username}
                   </div>
@@ -101,8 +101,8 @@ function Form({ data }) {
                 </div>
               </div>
 
-              <div className={!smallScreen && classes.margin}></div>
-              <div className={!smallScreen && classes.groupingInputsView}>
+              <div className={classes.margin}></div>
+              <div className={classes.groupingInputsView}>
                 <div className={classes.groupingViewLeft}>
                   <TextField
                     className={classes.fields}
@@ -146,8 +146,8 @@ function Form({ data }) {
                   />
                 </div>
               </div>
-              <div className={!smallScreen && classes.margin2}></div>
-              <div className={!smallScreen && classes.groupingInputsView}>
+              <div className={ classes.margin2}></div>
+              <div className={ classes.groupingInputsView}>
                 <div className={classes.groupingViewLeft}>
                   <TextField
                     className={classes.fields}
@@ -175,7 +175,7 @@ function Form({ data }) {
                   />
                 </div>
               </div>
-              <div className={!smallScreen && classes.groupingInputsView}>
+              <div className={ classes.groupingInputsView}>
                 <div className={classes.groupingViewRigth}>
                   <button
                     className={classes.saveButton}
