@@ -265,7 +265,7 @@ export const useSharedStyles = createUseStyles({
     marginTop: 0,
     marginBottom: 10,
     borderColor: "#FF3D00",
-    borderWidth: 2,
+    // borderWidth: 2,
     borderRadius: 9,
     justifyContent: "center",
   },

@@ -23,12 +23,13 @@ const useStyle = createUseStyles(() => {
   return {
     imgList: {
       height: "100%",
+      width: "80%",
       flex: 5,
       display: "flex",
       marginLeft: "5%",
       overflowX: "scroll",
       "&::-webkit-scrollbar": {
-        height: 10,
+        width: 10,
       },
       "&::-webkit-scrollbar-track": {
         background: "white",
@@ -42,7 +43,6 @@ const useStyle = createUseStyles(() => {
     },
     imgBlock: {
       height: "100%",
-      width: 140,
       textAlign: "center",
       flexDirection: "column",
       "&:hover": {
@@ -72,38 +72,19 @@ function FileUploader(props) {
 
   const handleChange = (e) => {
     e.preventDefault();
+    if(files.length > 4) return;
     setFile(e.target.files[0]);
     setFiles([...files.concat(e.target.files[0])]);
   };
+  const delFile = (index) => {
+    setFiles(files.filter((e,ind) => index !== ind ))
+  }
   return (
     <div className={classes.imgList}>
-      {files.map((e,) => {
+      {files.map((e,ind) => {
         return (
           <div className={classes.imgBlock} key={uuidv4()}>
-            {e.type === "image/jpeg" ? 
             <div style={{
-              backgroundImage: `url(${e.url})`,
-              backgroundSize: 'cover',
-             height: "100%",
-             width: 140,
-             position: 'relative'
-            }}
-            >    
-            <div  style={{
-                  position: "absolute",
-                  right: 0,
-                  width: '20%',
-                  height: "20%",
-                  borderBottomLeftRadius: "100%",
-                  backgroundColor: 'red',
-                  color: "white"
-                }} 
-                // onClick={(event) => delFile(e.url,event)}
-                >
-                  x
-            </div>
-
-            </div> :  <div style={{
               backgroundImage: `url(${defaultImg})`,
               backgroundSize: 'cover',
              height: "100%",
@@ -121,12 +102,12 @@ function FileUploader(props) {
                   backgroundColor: 'red',
                   color: "white"
                 }} 
-                // onClick={(event) => delFile(e.url,event)}
+                onClick={() => delFile(ind)}
                 >
                   x
             </div>
             {e.name}
-            </div> }
+            </div> 
           </div>
         );
       })}

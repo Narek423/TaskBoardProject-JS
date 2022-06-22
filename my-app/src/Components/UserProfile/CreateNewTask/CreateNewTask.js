@@ -239,7 +239,7 @@ function CreateNewTask() {
             display: "flex",
             position: "absolute",
             bottom: 20,
-            right: 40,
+            right: 60,
             height: "6%",
           }}
         >

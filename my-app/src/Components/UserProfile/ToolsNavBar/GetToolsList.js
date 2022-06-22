@@ -8,6 +8,7 @@ import EqualizerIcon from "@mui/icons-material/Equalizer";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import EditIcon from "@mui/icons-material/Edit";
 import MailIcon from "@mui/icons-material/Mail";
+import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import paths from "../../../constants/Paths";
 
 const {
@@ -84,11 +85,18 @@ export function AdminTools() {
 			id: 9,
 		},
 		{
+			icon: <NewReleasesIcon className={classes.icon} />,
+			text: "Requests",
+			id: 12,
+			path: ADMIN_USER_REQUESTS_PATH
+		},
+		{
 			icon: <MailIcon className={classes.icon} />,
 			text: "Inbox",
 			id: 11,
 			path: INBOX_PATH,
 		},
+	
 	];
 }
 
@@ -146,15 +154,9 @@ export function ClientTools() {
 		{
 			icon: <EqualizerIcon className={classes.icon} />,
 			text: "Statics",
-			path: "/",
+			path: STATICS_PATH,
 			id: 9,
 		},
-		// {
-		//     icon: <PaymentIcon className={classes.icon} />,
-		//     text: "Payment History",
-		//     path: "Profile",
-		//     id: 10,
-		// },
 		{
 			icon: <MailIcon className={classes.icon} />,
 			text: "Inbox",

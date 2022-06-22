@@ -1,10 +1,10 @@
-import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Link,  Outlet, useNavigate } from "react-router-dom";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
 import { useState, useEffect } from "react";
-import { useUserAuth, UserAuthContext } from "../context/UserAuthContext";
-import { writeUserData, storage, auth } from "./firebase";
+import { useUserAuth } from "../context/UserAuthContext";
+import { writeUserData, storage,  } from "./firebase";
 import {
   Button,
   CircularProgress,
@@ -29,8 +29,6 @@ import Card from "./Card";
 import HomeIcon from "./Nav-Bar/HomeIcon";
 import AdminRegister from "./ModalMessages/AdminRegister";
 import Rolls from "../constants/Rolls";
-import { signOut } from "firebase/auth";
-import NavMainBar from "./Nav-Bar/HomePageNavBar";
 import formatPhoneNumber from "../utils/formatPhoneNumber";
 import formatTaxCode from "../utils/formatTaxCode";
 import { useSharedStyles } from "../styles/sharedStyles";

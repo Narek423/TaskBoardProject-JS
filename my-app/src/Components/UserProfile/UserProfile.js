@@ -1,15 +1,14 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
+import {  useUserAuth } from "../../context/UserAuthContext";
 import CreateNewTask from "./CreateNewTask/CreateNewTask";
 import Inbox from "./Inbox/Inbox";
-import UserTools from "./UserToolsBar/UserTools";
-import UserWorkingTable from "./UserWorkingTable/UserWorkingTable";
+import UserTools from "./ToolsNavBar/Tools";
+import UserWorkingTable from "./WorkingTable/WorkingTable";
 import Statics from "./statics/Statics";
 import paths from "../../constants/Paths";
-import { getDatabase } from "firebase/database";
-import GetProfile from "../UserProfile/ProfilePage/Main";
+import GetProfile from "./ProfilePage/Main";
 import GetEvaluation from "../Evaluation/Main";
 import GetAcception from "../Acception/Main";
 import GetInProgress from "../InProgress/Main";
@@ -18,6 +17,8 @@ import GetRejected from "../Rejected/Main";
 import GetAllTasks from "../AllTasks/Main";
 import Rolls from "../../constants/Rolls";
 import GetProfileForm from "../ProfileForm/Main";
+import { getDatabase } from "firebase/database";
+import ApprovingAdminProfile from "../AdminUserRequests/Form";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -29,7 +30,7 @@ const useStyle = createUseStyles(() => {
 });
 
 function UserProfile({ children }) {
-  const { user, roll } = useUserAuth(UserAuthContext);
+  const { user, roll } = useUserAuth();
   const classes = useStyle();
   const [toolsBarOpen, setToolsBaropen] = useState(true);
   const dbRef = getDatabase();
@@ -44,6 +45,7 @@ function UserProfile({ children }) {
     IN_PROCCESS_TASKS_PATH,
     DONE_TASKS_PATH,
     STATICS_PATH,
+    ADMIN_USER_REQUESTS_PATH
   } = paths;
 
   const userToolsClose = useCallback(() => {
@@ -75,6 +77,16 @@ function UserProfile({ children }) {
             />
           }
         />
+         <Route
+          path={ADMIN_USER_REQUESTS_PATH}
+          element={
+            <UserWorkingTable
+              open={toolsBarOpen}
+              component={<ApprovingAdminProfile />}
+            />
+          }
+        />
+        
         <Route
           path={CREATE_TASK_PATH}
           element={

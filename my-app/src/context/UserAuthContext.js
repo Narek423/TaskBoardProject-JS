@@ -5,12 +5,9 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth, database, storage } from "../components/firebase";
+import { auth, database, storage } from "../Components/firebase";
 import { getDatabase, ref, set, get, child } from "firebase/database";
-import {
-  AdminTools,
-  ClientTools,
-} from "../components/UserProfile/ToolsNavBar/GetToolsList";
+import { AdminTools, ClientTools } from "../Components/UserProfile/ToolsNavBar/GetToolsList";
 import {
   getDownloadURL,
   ref as resstore,
@@ -37,6 +34,8 @@ export function UserAuthContextProvider({ children }) {
   const [isOpen, setIsOpen] = useState(false);
   const { Admin } = Rolls;
   const { USER_PROFILE_PATH } = paths;
+  const [userData,setUserData] = useState();
+
 
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -72,6 +71,7 @@ export function UserAuthContextProvider({ children }) {
         .then((snapshot) => {
           setRoll(snapshot.val().roll);
           setEnabled(snapshot.val().enabled);
+          setUserData(snapshot.val());
         })
         .catch((error) => {
           console.error(error);
@@ -102,6 +102,7 @@ export function UserAuthContextProvider({ children }) {
     logOut,
     roll,
     enabled,
+    userData
   };
 
   return (

@@ -42,7 +42,7 @@ function WorkingTable(props) {
             bottom: 10,
             right: 10,
           }}
-          onClick={() => navigate(`/${USER_PROFILE_PATH}/${CREATE_TASK_PATH}`)}
+          onClick={() => navigate(`/${CREATE_TASK_PATH}`)}
         >
           <EditIcon />
         </Fab>
