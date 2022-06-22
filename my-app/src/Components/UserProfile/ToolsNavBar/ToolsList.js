@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,6 @@ import { useUserAuth } from "../../../context/UserAuthContext";
 import { getDatabase, ref, get } from "firebase/database";
 import Rolls from "../../../constants/Rolls";
 import { AdminTools, ClientTools } from "./GetToolsList";
-
 
 const useStyle = createUseStyles(() => {
   return {
@@ -24,26 +23,36 @@ const useStyle = createUseStyles(() => {
       color: "#B4C8EC",
       flex: 5,
     },
-  
+    selectedToolsspan: {
+      color: "#ff9800",
+      flex: 5,
+    },
+
     div: {
-      alignItems: 'center',
-      height: '9%',
+      alignItems: "center",
+      height: "9%",
       display: "flex",
       "&:hover": {
         backgroundColor: "#1264F3",
-        // boxShadow: "blue 0 -6px 18px inset",
-        // transform: "scale(1.11)",
         cursor: "pointer",
       },
-      // "&:active": {
-      //   transform: "scale(1.085)",
-      // },
+    },
+    selectedDiv: {
+      alignItems: "center",
+      height: "9%",
+      display: "flex",
+      color: "#ff9800",
+      "&:hover": {
+        backgroundColor: "#1264F3",
+        cursor: "pointer",
+      },
     },
   };
 });
 function ToolsList(props) {
   const navigate = useNavigate();
   const classes = useStyle();
+  const [selectedItem, setSelectedItem] = useState(1);
   const { user, roll } = useUserAuth();
   const { open } = props;
   const { Admin } = Rolls;
@@ -54,19 +63,34 @@ function ToolsList(props) {
     <div
       className={open ? classes.usertoolslist : classes.usertoolslistClose}
       style={{
-        justifyContent: open ? null : 'center',
-        margin: open ? null : 'auto',
+        justifyContent: open ? null : "center",
+        margin: open ? null : "auto",
       }}
     >
       {arrTools.map((e) => {
         return (
           <div
-            className={classes.div}
-            onClick={() => navigate(e.path)}
+            className={
+              selectedItem === e.id ? classes.selectedDiv : classes.div
+            }
+            onClick={() => {
+              setSelectedItem(e.id);
+              navigate(e.path);
+            }}
             key={e.id}
           >
             {e.icon}
-            {open ? <span className={classes.toolsspan}>{e.text}</span> : null}
+            {open ? (
+              <span
+                className={
+                  selectedItem === e.id
+                    ? classes.selectedToolsspan
+                    : classes.toolsspan
+                }
+              >
+                {e.text}
+              </span>
+            ) : null}
           </div>
         );
       })}
