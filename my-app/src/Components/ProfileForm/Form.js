@@ -30,14 +30,6 @@ function Form({ data }) {
   const [lastName, setLastName] = useState(data.lastName);
 
   useEffect(() => {
-    setName(data.name);
-    setLastName(data.lastName);
-    setPhoneNumber(formatPhoneNumber(data.phoneNumber));
-    setTaxCode(formatTaxCode(data.taxCode));
-    setDateOfBirth(data.dateOfBirth);
-  }, [data]);
-
-  useEffect(() => {
     const timeId = setTimeout(() => {
       setSuccess(false);
       setError(false);
@@ -60,6 +52,11 @@ function Form({ data }) {
 
   const onSaveBtnClick = async (e) => {
     if (data.clientId !== "") {
+      data.name = name;
+      data.lastName = lastName;
+      data.phoneNumber = phoneNumber;
+      data.dateOfBirth = dateOfBirth;
+      data.taxCode = taxCode;
       const db = getDatabase();
       const postData = {
         username: data.username,
