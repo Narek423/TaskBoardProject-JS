@@ -34,6 +34,7 @@ const useStyle = createUseStyles(() => {
 function UserProfile({ children }) {
   const { user, roll } = useUserAuth();
   const classes = useStyle();
+  const [firstRender, setFirstRender] = useState(true);
   const [toolsBarOpen, setToolsBaropen] = useState(true);
   const theme = useTheme();
   const smallScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -56,9 +57,11 @@ function UserProfile({ children }) {
     if (smallScreen) {
       setToolsBaropen(false);
       return;
+    } else if (!firstRender) {
+      setToolsBaropen(!toolsBarOpen);
     }
-    setToolsBaropen(!toolsBarOpen);
-  }, [smallScreen, toolsBarOpen]);
+    setFirstRender(false);
+  }, [smallScreen, toolsBarOpen, firstRender]);
 
   useEffect(() => {
     userToolsClose();

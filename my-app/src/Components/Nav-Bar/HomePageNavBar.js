@@ -3,6 +3,8 @@ import HomeIcon from "./HomeIcon";
 import { createUseStyles } from "react-jss";
 import Auth from "./Auth";
 import NavBarBtns from "./NavBarBtns";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -28,12 +30,14 @@ const useStyle = createUseStyles(() => {
 
 function NavMainBar(props) {
   const classes = useStyle();
+  const theme = useTheme();
+  const smallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <div className={classes.wrapper}>
       <div className={classes.nav_bar}>
         <HomeIcon />
-        <NavBarBtns refs={props} />
+        {!smallScreen && <NavBarBtns refs={props} />}
         <Auth />
       </div>
     </div>

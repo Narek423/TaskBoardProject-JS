@@ -198,9 +198,9 @@ function PendingToEvaluationAdmin(props) {
   }, []);
 
   return (
-    <div className={null}>
-      <span className={null}>Evaluation tasks</span>
-      <div className={null}>
+    <div className={classes.containerStyle}>
+      <span className={classes.formName}>Evaluation tasks</span>
+      <div className={classes.containerEvaluation}>
         <React.Fragment>
           <CssBaseline />
           <Container>

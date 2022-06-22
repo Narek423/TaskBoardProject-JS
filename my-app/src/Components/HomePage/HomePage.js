@@ -7,6 +7,10 @@ import { useUserAuth } from "../../context/UserAuthContext";
 import { Navigate } from "react-router-dom";
 import paths from "../../constants/Paths";
 import { Button, Card, CardContent, Typography } from "@mui/material";
+import { SocialIcon } from "react-social-icons";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+
 // import {
 //   Facebook,
 //   Instagram,
@@ -54,6 +58,8 @@ const useStyle = createUseStyles(() => {
   };
 });
 function HomePage(params) {
+  const theme = useTheme();
+  const smallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const classes = useStyle();
   const about = useRef();
   const product = useRef();
@@ -91,18 +97,20 @@ function HomePage(params) {
             textAlign: "center",
           }}
         >
-          <div
-            style={{
-              marginLeft: 70,
-              marginRight: 70,
-              height: "75%",
-              width: "100%",
-              backgroundImage: `url("${evaluationImg}")`,
-              backgroundSize: "100% 100%",
-              alignItems: "center",
-              flex: 5,
-            }}
-          ></div>
+          {!smallScreen && (
+            <div
+              style={{
+                marginLeft: 70,
+                marginRight: 70,
+                height: "75%",
+                width: "100%",
+                backgroundImage: `url("${evaluationImg}")`,
+                backgroundSize: "100% 100%",
+                alignItems: "center",
+                flex: 5,
+              }}
+            ></div>
+          )}
           <div
             style={{
               flex: 4,
@@ -123,6 +131,7 @@ function HomePage(params) {
               sx={{
                 width: "100%",
                 height: "320px",
+                minWidth: "550px",
                 boxShadow: "15px 15px 10px -15px #111",
               }}
             >
@@ -173,6 +182,7 @@ function HomePage(params) {
               sx={{
                 width: "100%",
                 height: "400px",
+                minWidth: "550px",
                 boxShadow: "15px 15px 10px -15px #111",
               }}
             >
@@ -191,18 +201,20 @@ function HomePage(params) {
               </CardContent>
             </Card>
           </div>
-          <div
-            style={{
-              marginLeft: 70,
-              marginRight: 70,
-              height: "75%",
-              width: "100%",
-              backgroundImage: `url("${profileImg}")`,
-              backgroundSize: "100% 100%",
-              alignItems: "center",
-              flex: 5,
-            }}
-          ></div>
+          {!smallScreen && (
+            <div
+              style={{
+                marginLeft: 70,
+                marginRight: 70,
+                height: "75%",
+                width: "100%",
+                backgroundImage: `url("${profileImg}")`,
+                backgroundSize: "100% 100%",
+                alignItems: "center",
+                flex: 5,
+              }}
+            ></div>
+          )}
         </div>
 
         <div
@@ -218,18 +230,20 @@ function HomePage(params) {
             textAlign: "center",
           }}
         >
-          <div
-            style={{
-              marginLeft: 70,
-              marginRight: 70,
-              height: "75%",
-              width: "100%",
-              backgroundImage: `url("${evaluationImg}")`,
-              backgroundSize: "100% 100%",
-              alignItems: "center",
-              flex: 5,
-            }}
-          ></div>
+          {!smallScreen && (
+            <div
+              style={{
+                marginLeft: 70,
+                marginRight: 70,
+                height: "75%",
+                width: "100%",
+                backgroundImage: `url("${evaluationImg}")`,
+                backgroundSize: "100% 100%",
+                alignItems: "center",
+                flex: 5,
+              }}
+            ></div>
+          )}
           <div
             style={{
               flex: 4,
@@ -249,16 +263,38 @@ function HomePage(params) {
             <Card
               sx={{
                 width: "100%",
-                height: "400px",
+                height: "300px",
+                minWidth: "550px",
                 boxShadow: "15px 15px 10px -15px #111",
               }}
             >
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">
+                  <div style={{ marginBottom: 20, fontWeight: "bold" }}>
+                    Company: BoardTask GMBH
+                  </div>
                   <div>
                     Address: Weiherstrasse 13, Hochheim am Main, 65239, Germany
                   </div>
                   <div>Phone number: + (061) 46 613 13</div>
+                  <div style={{ marginTop: 60 }}>
+                    <SocialIcon
+                      style={{ marginRight: 10 }}
+                      url="https://www.facebook.com/levon.kirakosyan.14/"
+                    />
+                    <SocialIcon
+                      style={{ marginRight: 10 }}
+                      url="https://www.linkedin.com/in/levon-kirakosyan-61083463/"
+                    />
+                    <SocialIcon
+                      style={{ marginRight: 10 }}
+                      url="https://web.telegram.org/z/"
+                    />
+                    <SocialIcon
+                      style={{ marginRight: 10 }}
+                      url="https://github.com/Narek423/TaskBoardProject-JS"
+                    />
+                  </div>
 
                   {/* <div>
                     <Button variant="outlined" className={classes.button}>
@@ -269,6 +305,9 @@ function HomePage(params) {
               </CardContent>
             </Card>
           </div>
+        </div>
+        <div style={{ textAlign: "center", marginTop: 0, marginBottom: 0 }}>
+          © 2022 TaskBoard GMBH. All Rights Reserved. (Gr)
         </div>
       </div>
     </div>
