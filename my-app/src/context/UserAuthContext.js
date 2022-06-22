@@ -5,12 +5,12 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth, database, storage } from "../components/firebase";
+import { auth, database, storage } from "../Components/firebase";
 import { getDatabase, ref, set, get, child } from "firebase/database";
 import {
   AdminTools,
   ClientTools,
-} from "../components/UserProfile/ToolsNavBar/GetToolsList";
+} from "../Components/UserProfile/ToolsNavBar/GetToolsList";
 import {
   getDownloadURL,
   ref as resstore,
