@@ -189,15 +189,15 @@ export const useSharedStyles = createUseStyles({
     "&:hover": {
       backgroundColor: "white",
       backgroundPosition: "0 0",
-      color: "#FF4742",
-      border: "1px solid #FF4742",
+      color: "#fa6b2a",
+      border: "1px solid #fa6b2a",
     },
     "&:active": {
       backgroundColor: "white",
       backgroundPosition: "0 0",
-      color: "#FF4742",
+      color: "#fa6b2a",
       opacity: ".5",
-      border: "1px solid #FF4742",
+      border: "1px solid #fa6b2a",
     },
   },
 

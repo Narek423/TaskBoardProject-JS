@@ -228,20 +228,21 @@ function SignUp(props) {
       ) {
         if (!values.showPassword) {
           if (password !== repeatedPassword) {
-            setError("Invalid input! Please enter valid information.");
+            setError("Invalid input! Confirmation password doesn't match.");
           }
-        }
-        if (username.length < 4) {
-          setuserNameError(true);
-          setCountError("The input must be at least 4 character.");
-        }
-        if (name.length < 4) {
-          setNameError(true);
-          setCountError("The input must be at least 4 character.");
         }
         if (lastName.length < 4) {
           setlastNameError(true);
-          setCountError("The input must be at least 4 character.");
+          setCountError("Last name must be at least 4 character.");
+        }
+        if (name.length < 4) {
+          setNameError(true);
+          setCountError("Name must be at least 4 character.");
+        }
+
+        if (username.length < 4) {
+          setuserNameError(true);
+          setCountError("Username must be at least 4 character.");
         }
         if (password.length < 6) {
           setError("Password should be at least 6 characters. ");
@@ -274,10 +275,10 @@ function SignUp(props) {
         navigate(`/${USER_PROFILE_PATH}`);
       }
     } catch (err) {
-      if ("Firebase: Error (auth/email-already-in-use)." === err.message) {
+      if ("Firebase: Error (auth/email-already-in-use)." === err?.message) {
         setError("Email-already-in-use");
       }
-      console.log(err.message);
+      console.log(err?.message);
     }
   };
   const { user } = useUserAuth();
@@ -312,17 +313,17 @@ function SignUp(props) {
             }}
             className={signinBtn.signinBtn}
           >
-            Signin
+            Sign in
           </button>
         </Link>
         <Card>
           <div className={classes.useSpace}>
             <h1 className={classes.signUp}>Sign up</h1>
-            {error && (
+            {
               <div style={{ color: "red", textAlign: "center" }}>
                 {error || countError}
               </div>
-            )}
+            }
             <br />
 
             <div className={classes.signUp}>
