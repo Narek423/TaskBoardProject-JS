@@ -107,7 +107,7 @@ function InProgressTasks(props) {
 
   return (
     <div className={classes.containerStyle}>
-      <span className={classes.formName}>In progress tasks</span>
+      <span className={classes.formName}>Rejected tasks</span>
       <div style={gridStyle()} className="ag-theme-alpine">
         <AgGridReact
           rowData={rowData}
