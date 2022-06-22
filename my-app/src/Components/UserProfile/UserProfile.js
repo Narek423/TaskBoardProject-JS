@@ -71,7 +71,7 @@ function UserProfile({ children }) {
           element={
             <UserWorkingTable
               open={toolsBarOpen}
-              component={GetProfileForm()}
+              component={<GetProfileForm />}
             />
           }
         />

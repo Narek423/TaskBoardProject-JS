@@ -117,7 +117,6 @@ function Form({ data }) {
                   <TextField
                     className={classes.fields}
                     type={"text"}
-                    defaultValue="value"
                     value={name}
                     onChange={(e) => {
                       setName(e.target.value);
@@ -130,7 +129,6 @@ function Form({ data }) {
                 <div className={classes.groupingViewLeft}>
                   <TextField
                     className={classes.fields}
-                    defaultValue="value"
                     type={"text"}
                     value={lastName}
                     onChange={(e) => {
@@ -144,7 +142,6 @@ function Form({ data }) {
                 <div className={classes.groupingViewRight}>
                   <TextField
                     className={classes.fields}
-                    defaultValue="value"
                     type={"text"}
                     onChange={(e) => {
                       phoneHandleInput(e);
@@ -173,7 +170,6 @@ function Form({ data }) {
                 <div className={classes.groupingViewRight}>
                   <TextField
                     className={classes.fields}
-                    defaultValue="value"
                     type={"text"}
                     onChange={(e) => {
                       taxCodeHandleInput(e);
