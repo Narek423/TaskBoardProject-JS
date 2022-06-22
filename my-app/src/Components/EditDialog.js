@@ -12,33 +12,50 @@ export default function EditDialog(props) {
 	const { edit, setEdit, editData, rowData, setRowData } = props;
 	const [title, setTitle] = useState();
 	const [description, setDescription] = useState();
-	console.log(title);
+	const [notes, setNotes] = useState();
 
 	const handleClose = () => {
 		setEdit(false);
 		setTitle(null);
 		setDescription(null);
+		setNotes(null);
 	};
 	const handleEdit = () => {
 		setEdit(false);
-		editTasksData(title, description, editData.data.id);
+		editTasksData(
+			title === "" ? "" : title || editData?.data.title,
+			description === "" ? "" : description || editData?.data.description,
+			notes === "" ? "" : notes || editData?.data.notes,
+			editData.data.id
+		);
 		setTitle(null);
 		setDescription(null);
+		setNotes(null);
 	};
 	const currentEditRowData = () => {
 		setRowData(
 			rowData.map((elem) =>
-				elem.id !== editData.data.id ? elem : { ...elem, title, description }
+				elem.id !== editData.data.id
+					? elem
+					: {
+							...elem,
+							title: title === "" ? "" : title || editData?.data.title,
+							description:
+								description === ""
+									? ""
+									: description || editData?.data.description,
+							notes: notes === "" ? "" : notes || editData?.data.notes,
+					  }
 			)
 		);
 	};
 	return (
 		<div>
 			<Dialog open={edit} onClose={handleClose}>
-				<DialogTitle>Editing Dialog</DialogTitle>
+				<DialogTitle> Change task information</DialogTitle>
 				<DialogContent>
 					<DialogContentText>
-						Do you really want to edit the following inputs ?
+						Do you really want to change the following information ?
 					</DialogContentText>
 					<TextField
 						value={title === "" ? "" : title || editData?.data.title}
@@ -66,16 +83,27 @@ export default function EditDialog(props) {
 						fullWidth
 						variant='outlined'
 					/>
+					<TextField
+						value={notes === "" ? "" : notes || editData?.data.notes}
+						onChange={(e) => setNotes(e.target.value)}
+						autoFocus
+						margin='dense'
+						id='name'
+						label='Task Notes'
+						type='email'
+						fullWidth
+						variant='outlined'
+					/>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleClose}>No</Button>
+					<Button onClick={handleClose}>Cancel</Button>
 					<Button
 						onClick={() => {
 							handleEdit();
 							currentEditRowData();
 						}}
 					>
-						Yes
+						Save
 					</Button>
 				</DialogActions>
 			</Dialog>

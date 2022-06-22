@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import {  useUserAuth } from "../../context/UserAuthContext";
+import { useUserAuth } from "../../context/UserAuthContext";
 import CreateNewTask from "./CreateNewTask/CreateNewTask";
 import Inbox from "./Inbox/Inbox";
 import UserTools from "./ToolsNavBar/Tools";
@@ -19,6 +19,8 @@ import Rolls from "../../constants/Rolls";
 import GetProfileForm from "../ProfileForm/Main";
 import { getDatabase } from "firebase/database";
 import ApprovingAdminProfile from "../AdminUserRequests/Form";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -33,6 +35,8 @@ function UserProfile({ children }) {
   const { user, roll } = useUserAuth();
   const classes = useStyle();
   const [toolsBarOpen, setToolsBaropen] = useState(true);
+  const theme = useTheme();
+  const smallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const dbRef = getDatabase();
   const {
     PROFILE_PATH,
@@ -45,12 +49,20 @@ function UserProfile({ children }) {
     IN_PROCCESS_TASKS_PATH,
     DONE_TASKS_PATH,
     STATICS_PATH,
-    ADMIN_USER_REQUESTS_PATH
+    ADMIN_USER_REQUESTS_PATH,
   } = paths;
 
   const userToolsClose = useCallback(() => {
+    if (smallScreen) {
+      setToolsBaropen(false);
+      return;
+    }
     setToolsBaropen(!toolsBarOpen);
-  });
+  }, [smallScreen, toolsBarOpen]);
+
+  useEffect(() => {
+    userToolsClose();
+  }, [smallScreen]);
 
   const { Admin } = Rolls;
 
@@ -77,7 +89,7 @@ function UserProfile({ children }) {
             />
           }
         />
-         <Route
+        <Route
           path={ADMIN_USER_REQUESTS_PATH}
           element={
             <UserWorkingTable
@@ -86,7 +98,7 @@ function UserProfile({ children }) {
             />
           }
         />
-        
+
         <Route
           path={CREATE_TASK_PATH}
           element={

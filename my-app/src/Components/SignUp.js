@@ -1,10 +1,10 @@
-import { Link,  Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
 import { useState, useEffect } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
-import { writeUserData, storage,  } from "./firebase";
+import { writeUserData, storage } from "./firebase";
 import {
   Button,
   CircularProgress,
@@ -246,9 +246,9 @@ function SignUp(props) {
           setError("Password should be at least 6 characters. ");
         }
         if (email.length < 4 || !email.includes("@") || !email.includes(".")) {
-          setError("Invalid input! Please enter valid information. ");
+          setError("Invalid input! Please enter valid credential. ");
         }
-        throw "Invalid input! Please enter valid information.";
+        throw "Invalid input! Please enter valid credential.";
       }
       let user = await signUp(email, password, roll);
       let UserData = {
