@@ -13,6 +13,7 @@ const useStyle = createUseStyles(() => {
       textAlign: "center",
       fontFamily: "cursive",
       fontSize: 50,
+      color:  "#1264F3"
     },
     emailTable: {
        backgroundColor:' grey',
@@ -30,6 +31,7 @@ function Inbox(props) {
     <div style={{
       display: 'flex',
       flexDirection: 'column',
+      width: '100%'
     }}>
       <div className={classes.title}> Inbox </div>
       <InboxLinks />

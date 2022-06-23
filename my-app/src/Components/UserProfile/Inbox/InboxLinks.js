@@ -11,14 +11,13 @@ const useStyle = createUseStyles(() => {
   return {
     links: {
       display: "flex",
-      
+      color:  "#1264F3"
     },
     div: {
       display :'flex',
       alignItems: "center",
       marginLeft: "2%",
       "&:hover": {
-        // boxShadow: "blue 0 -6px 18px inset",
         transform: "scale(1.21)",
         cursor: "pointer",
       },
@@ -39,7 +38,7 @@ function InboxLinks() {
         <SendIcon />
         Sent
       </div>
-      <div className={classes.div}>
+      {/* <div className={classes.div}>
         <AssignmentIcon />
         Drafts
       </div>
@@ -50,7 +49,7 @@ function InboxLinks() {
       <div className={classes.div}>
         <DeleteOutlineIcon />
         Trash
-      </div>
+      </div> */}
     </div>
   );
 }
