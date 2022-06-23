@@ -4,7 +4,15 @@ import { createUseStyles } from "react-jss";
 import { useUserAuth } from "../../../context/UserAuthContext";
 import Autocomplete from "@mui/material/Autocomplete";
 import Chip from "@mui/material/Chip";
-import { getDatabase, ref, get, set, push, query, limitToFirst } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  get,
+  set,
+  push,
+  query,
+  limitToFirst,
+} from "firebase/database";
 import Rolls from "../../../constants/Rolls";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
@@ -15,8 +23,8 @@ const useStyle = createUseStyles(() => {
       display: "flex",
       flexDirection: "column",
       marginTop: "5%",
-      width: '90%',
-      margin: 'auto'
+      width: "90%",
+      margin: "auto",
     },
     sentMailModal: {
       display: "flex",
@@ -111,10 +119,9 @@ function CreateMail(props) {
         if (snapshot.exists()) {
           const data = snapshot.val();
           for (let key in data) {
-            if (data[key].email && data[key].roll === "Client") {
-              if(key === user.uid) continue;
+            if (data[key].email) {
+              if (key === user.uid) continue;
               usersData.push({ email: data[key].email, clientId: key });
-              
             }
           }
         }
@@ -136,20 +143,24 @@ function CreateMail(props) {
   // };
 
   return (
-    <Card style={{
-      justifyContent: 'center',
-      height: '100%',
-      width: '60%',
-      margin: 'auto',
-      // backgroundImage: "linear-gradient(to Top,#e6eeff, #1264F3 )",
-      marginTop: '2%',
-      textAlign: 'center',
-      border: '4px solid #1264F3'
-    }}>
-    <div
-      className={inPage === "inPage" ? classes.sentMail : classes.sentMailModal}
+    <Card
+      style={{
+        justifyContent: "center",
+        height: "100%",
+        width: "60%",
+        margin: "auto",
+        // backgroundImage: "linear-gradient(to Top,#e6eeff, #1264F3 )",
+        marginTop: "2%",
+        textAlign: "center",
+        border: "4px solid #1264F3",
+      }}
     >
-      {/* <Autocomplete
+      <div
+        className={
+          inPage === "inPage" ? classes.sentMail : classes.sentMailModal
+        }
+      >
+        {/* <Autocomplete
         multiple
         id="tags-filled"
         options={emails.map((option) => option.email)}
@@ -184,50 +195,50 @@ function CreateMail(props) {
           />
         )}
       /> */}
-      <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        options={emails.map((option) => option.email)}
-        style={{marginBottom: "2%", flex: 5 }}
-        value={value}
-        onChange={(event, value) => {
-          setValue(value);
-        }}
-        renderInput={(options) => {
-          setChoosenEmail(options?.inputProps?.value);
-          return <TextField {...options} label="User" />;
-        }}
-      />
-      <TextField
-        style={{marginBottom: "2%", flex: 5 }}
-        id="outlined-basic"
-        value={mailValue}
-        label="Tittle"
-        onChange={(event) => setMailValue(event.target.value)}
-        variant="outlined"
-      />
-      <TextField
-        value={mailContentValue}
-        style={{  marginTop: "2%",flex: 4}}
-        onChange={(event) => setMailContentValue(event.target.value)}
-        id="outlined-multiline-static"
-        multiline
-        label='Text'
-        rows={6}
-      />
-      <Button
-        variant="contained"
-        size="medium"
-        onClick={mailSent}
-        style={{
-          margin: "auto",
-          marginTop: "1%",
-          marginBottom: "1%",
-        }}
-      >
-        Sent
-      </Button>
-    </div>
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={emails.map((option) => option.email)}
+          style={{ marginBottom: "2%", flex: 5 }}
+          value={value}
+          onChange={(event, value) => {
+            setValue(value);
+          }}
+          renderInput={(options) => {
+            setChoosenEmail(options?.inputProps?.value);
+            return <TextField {...options} label="User" />;
+          }}
+        />
+        <TextField
+          style={{ marginBottom: "2%", flex: 5 }}
+          id="outlined-basic"
+          value={mailValue}
+          label="Tittle"
+          onChange={(event) => setMailValue(event.target.value)}
+          variant="outlined"
+        />
+        <TextField
+          value={mailContentValue}
+          style={{ marginTop: "2%", flex: 4 }}
+          onChange={(event) => setMailContentValue(event.target.value)}
+          id="outlined-multiline-static"
+          multiline
+          label="Text"
+          rows={6}
+        />
+        <Button
+          variant="contained"
+          size="medium"
+          onClick={mailSent}
+          style={{
+            margin: "auto",
+            marginTop: "1%",
+            marginBottom: "1%",
+          }}
+        >
+          Sent
+        </Button>
+      </div>
     </Card>
   );
 }

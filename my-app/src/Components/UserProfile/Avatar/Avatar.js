@@ -75,7 +75,7 @@ function Avatar(props) {
       ></img>
       <p className={classes.useremail}>
         {!!props.open && !!email
-          ? email?.length < 15
+          ? email?.length < 25
             ? email
             : emailCut(email)
           : null}

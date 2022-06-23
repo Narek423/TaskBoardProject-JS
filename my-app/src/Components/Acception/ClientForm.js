@@ -69,7 +69,7 @@ function PendingToAcception(props) {
         costForUnit: selectedRow.costForUnit,
         unit: selectedRow.unit,
         cost: selectedRow.cost,
-        status: Statuses[1],
+        status: Statuses[0],
         state:
           param.target.innerText === "Accept"
             ? States.inProgress
