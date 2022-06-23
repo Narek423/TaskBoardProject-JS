@@ -8,25 +8,25 @@ const useStyle = createUseStyles(() => {
   return {
     LogoutIcon: {
       flex: 1,
-      margin: 'auto',
-      // position: "relative",
-      justifyContent: 'center'
+      margin: "auto",
     },
     logOutIconClose: {
       flex: 5,
-      position: 'relative'
+      position: "relative",
     },
     iconBtnClose: {
-      marginLeft: '30%', ////esi chi @nlum mechtex qcelu pah@
-      position: 'absolute',
-      bottom: "2%",
       cursor: "pointer",
     },
     iconBtn: {
-      position: 'absolute',
-      bottom: '2%',
+      position: "absolute",
+      bottom: "2%",
       cursor: "pointer",
-    }
+    },
+    block: {
+      position: 'absolute',
+      bottom: "2%",
+      textAlign: 'center'
+    },
   };
 });
 function LogOutBtn(props) {
@@ -44,10 +44,12 @@ function LogOutBtn(props) {
 
   return (
     <div className={open ? classes.LogoutIcon : classes.logOutIconClose}>
-      <LogoutIcon
-        onClick={handleLogOut}
-        className={open ? classes.iconBtn : classes.iconBtnClose}
-      />
+      <div className={open ? null : classes.block}>
+        <LogoutIcon
+          onClick={handleLogOut}
+          className={open ? classes.iconBtn : classes.iconBtnClose}
+        />
+      </div>
     </div>
   );
 }

@@ -15,9 +15,8 @@ const useStyle = createUseStyles(() => {
       display: "flex",
       flexDirection: "column",
       marginTop: "5%",
-      marginLeft: '1%',
-      marginRight: '1%',
-      
+      width: '90%',
+      margin: 'auto'
     },
     sentMailModal: {
       display: "flex",
@@ -140,11 +139,12 @@ function CreateMail(props) {
     <Card style={{
       justifyContent: 'center',
       height: '100%',
-      width: '40%',
+      width: '60%',
       margin: 'auto',
-      backgroundImage: "linear-gradient(to top, #ccdcff, #e6eeff)",
+      // backgroundImage: "linear-gradient(to Top,#e6eeff, #1264F3 )",
       marginTop: '2%',
       textAlign: 'center',
+      border: '4px solid #1264F3'
     }}>
     <div
       className={inPage === "inPage" ? classes.sentMail : classes.sentMailModal}
@@ -188,29 +188,31 @@ function CreateMail(props) {
         disablePortal
         id="combo-box-demo"
         options={emails.map((option) => option.email)}
-        sx={{ width: '100%' , marginBottom: "1%" }}
+        style={{marginBottom: "2%", flex: 5 }}
         value={value}
         onChange={(event, value) => {
           setValue(value);
         }}
         renderInput={(options) => {
           setChoosenEmail(options?.inputProps?.value);
-          return <TextField {...options} label="email" />;
+          return <TextField {...options} label="User" />;
         }}
       />
       <TextField
-        style={{marginBottom: "1%", flex: 5 }}
+        style={{marginBottom: "2%", flex: 5 }}
         id="outlined-basic"
         value={mailValue}
+        label="Tittle"
         onChange={(event) => setMailValue(event.target.value)}
         variant="outlined"
       />
       <TextField
         value={mailContentValue}
-        style={{  marginBottom: "1%", flex: 4}}
+        style={{  marginTop: "2%",flex: 4}}
         onChange={(event) => setMailContentValue(event.target.value)}
         id="outlined-multiline-static"
         multiline
+        label='Text'
         rows={6}
       />
       <Button

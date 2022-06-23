@@ -32,6 +32,7 @@ const useStyle = createUseStyles(() => {
       fontSize: 20,
       display: "flex",
       paddingBottom: "1%",
+      height: '100%',
       "&:hover": {
         //    backgroundColor: "#019CAD",
         fontSize: 25,
@@ -139,7 +140,6 @@ function Income() {
         flex: 5,
         display: "flex",
         flexDirection: "column",
-        border: "1px solid yellow",
       }}
     >
       <div
@@ -148,7 +148,7 @@ function Income() {
         }}
       >
         <List
-          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+          sx={{ width: "80%", maxHeight: "5%", bgcolor: "background.paper" }}
         >
           {emailsData.map((elem, index) => {
             const e = elem.value;
