@@ -10,6 +10,7 @@ import { useSharedStyles } from "../../styles/sharedStyles";
 import States from "../../constants/States";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
+import editingGridPainting from "../../utils/gridForEdit";
 
 function DoneTasks(props) {
   const classes = useSharedStyles();

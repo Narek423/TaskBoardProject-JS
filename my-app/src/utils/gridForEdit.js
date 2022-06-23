@@ -3,7 +3,7 @@ import EditIcon from "@mui/icons-material/Edit";
 
 export let gridDialogSwitcher = [false];
 
-function gridPainting(props) {
+function editingGridPainting(props) {
   const classes = sharedStyles;
   const {
     checkbox,
@@ -18,6 +18,7 @@ function gridPainting(props) {
     totalCost,
     state,
     status,
+    pen,
   } = { ...props };
 
   const columns = [
@@ -108,6 +109,29 @@ function gridPainting(props) {
       flex: notes.flex,
     },
     {
+      hide: pen.hide,
+      flex: pen.flex,
+      rowGroup: pen.rowGroup,
+      suppressColumnsToolPanel: pen.panel,
+      headerName: "",
+      editable: false,
+      sortable: false,
+      filter: false,
+      cellRenderer: () => (
+        <span>
+          <EditIcon
+            style={{
+              position: "absolute",
+              marginTop: 10,
+              marginLeft: 0,
+              cursor: "pointer",
+            }}
+            onClick={() => (gridDialogSwitcher[0] = true)}
+          />
+        </span>
+      ),
+    },
+    {
       headerClass: classes.header,
       field: "quantity",
       headerName: "Due date",
@@ -184,4 +208,4 @@ function gridPainting(props) {
   return columns;
 }
 
-export default gridPainting;
+export default editingGridPainting;
