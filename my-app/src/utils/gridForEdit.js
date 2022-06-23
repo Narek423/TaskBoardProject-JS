@@ -126,7 +126,9 @@ function editingGridPainting(props) {
               marginLeft: 0,
               cursor: "pointer",
             }}
-            onClick={() => (gridDialogSwitcher[0] = true)}
+            onClick={() => {
+              gridDialogSwitcher[0] = true;
+            }}
           />
         </span>
       ),

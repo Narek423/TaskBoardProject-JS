@@ -7,10 +7,11 @@ import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get } from "firebase/database";
 import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
 import ViewTask from "../ViewTask/Main";
-import gridPainting, { gridDialogSwitcher } from "../../utils/grid";
 import { useSharedStyles } from "../../styles/sharedStyles";
 import EditDialog from "../EditDialog";
-import editingGridPainting from "../../utils/gridForEdit";
+import editingGridPainting, {
+  gridDialogSwitcher,
+} from "../../utils/gridForEdit";
 
 function PendingToEvaluation(props) {
   const classes = useSharedStyles();
@@ -110,6 +111,7 @@ function PendingToEvaluation(props) {
   };
   const editData = [];
   const dialogOpeningFunction = (e) => {
+    console.log(gridDialogSwitcher[0]);
     if (gridDialogSwitcher[0]) {
       setPassEvent(e);
       setEdit(true);
