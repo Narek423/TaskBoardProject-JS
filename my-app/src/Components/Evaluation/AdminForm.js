@@ -7,7 +7,6 @@ import { createUseStyles } from "react-jss";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
-import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get, update } from "firebase/database";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
