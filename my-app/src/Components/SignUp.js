@@ -1,13 +1,12 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
-import { useState } from "react";
-import { useUserAuth, UserAuthContext } from "../context/UserAuthContext";
-import NavMainBar from "./Nav-Bar/NavMainBar";
+import { useState, useEffect } from "react";
+import { useUserAuth } from "../context/UserAuthContext";
 import { writeUserData, storage } from "./firebase";
 import {
-  Button,
+  CircularProgress,
   IconButton,
   Input,
   InputAdornment,
@@ -17,14 +16,16 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import {
-  getDownloadURL,
-  ref,
-  uploadBytesResumable,
-  deleteObject,
-} from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import paths from "../constants/Paths";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { PhotoCamera, Visibility, VisibilityOff } from "@mui/icons-material";
+import Card from "./Card";
+import HomeIcon from "./Nav-Bar/HomeIcon";
+import AdminRegister from "./ModalMessages/AdminRegister";
+import Rolls from "../constants/Rolls";
+import formatPhoneNumber from "../utils/formatPhoneNumber";
+import formatTaxCode from "../utils/formatTaxCode";
+import { useSharedStyles } from "../styles/sharedStyles";
 
 const useStyles = createUseStyles({
   header: {
@@ -46,10 +47,19 @@ const useStyles = createUseStyles({
       top: 0,
       left: 0,
       right: 0,
-      bottom: 10,
+      bottom: 12,
     },
     width: "100%",
     height: "100%",
+  },
+  signUp1: {
+    display: "flex",
+    margin: {
+      top: 0,
+      left: 85,
+      right: 0,
+      bottom: 12,
+    },
   },
   fields: {
     width: 300,
@@ -62,7 +72,7 @@ const useStyles = createUseStyles({
     right: 0,
   },
   useSpace: {
-    marginTop: 70,
+    marginTop: 10,
   },
   signInButton: {
     appearance: "none",
@@ -97,6 +107,13 @@ const useStyles = createUseStyles({
       transform: "scale(1.025)",
     },
   },
+  loader: {
+    position: "fixed",
+    left: "50%",
+    right: "50%",
+    top: "50%",
+    bottom: "50%",
+  },
 });
 
 function SignUp(props) {
@@ -116,10 +133,19 @@ function SignUp(props) {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [progress, setProgress] = useState(0);
   const { signUp } = useUserAuth();
-  const [signInButtonHover, setSigInButtonHover] = useState(false);
-  const [signInButtonActive, setSignInButtonActive] = useState(false);
   const navigate = useNavigate();
   const classes = useStyles();
+  const [isOpen, setIsOpen] = useState(false);
+  const [userNameError, setuserNameError] = useState(false);
+  const [nameError, setNameError] = useState(false);
+  const [lastNameError, setlastNameError] = useState(false);
+  const [countError, setCountError] = useState("");
+  const { Admin } = Rolls;
+  const signinBtn = useSharedStyles();
+  const errorMessage = {
+    code: 403,
+    message: "Invalid input! Please enter valid credential.",
+  };
 
   const [values, setValues] = useState({
     amount: "",
@@ -129,7 +155,7 @@ function SignUp(props) {
     showPassword: false,
   });
 
-  const { USER_PROFILE_PATH } = paths;
+  const { USER_PROFILE_PATH, PROFILE_PATH } = paths;
 
   const handleClickShowPassword = () => {
     setValues({
@@ -148,11 +174,20 @@ function SignUp(props) {
     setProgress(0);
   };
 
+  const phoneHandleInput = (e) => {
+    const formattedPhoneNumber = formatPhoneNumber(e.target.value);
+    setPhoneNumber(formattedPhoneNumber);
+  };
+
+  const taxCodeHandleInput = (e) => {
+    const formattedTaxCode = formatTaxCode(e.target.value);
+    setTaxCode(formattedTaxCode);
+  };
+
   const uploadFiles = (file) => {
     if (!file) return;
     const storageRef = ref(storage, `/${email}/avatar`);
     const uploadProcent = uploadBytesResumable(storageRef, file);
-
     uploadProcent.on(
       "state_changed",
       (snapshot) => {
@@ -172,257 +207,327 @@ function SignUp(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setCountError("");
+    setNameError(false);
+    setlastNameError(false);
+    setuserNameError(false);
+
     try {
+      if (
+        (!values.showPassword && password !== repeatedPassword) ||
+        username.length < 4 ||
+        name.length < 4 ||
+        lastName.length < 4 ||
+        password.length < 6
+      ) {
+        if (!values.showPassword) {
+          if (password !== repeatedPassword) {
+            setError("Invalid input! Confirmation password doesn't match.");
+          }
+        }
+        if (lastName.length < 4) {
+          setlastNameError(true);
+          setCountError("Last name must be at least 4 character.");
+        }
+        if (name.length < 4) {
+          setNameError(true);
+          setCountError("Name must be at least 4 character.");
+        }
+
+        if (username.length < 4) {
+          setuserNameError(true);
+          setCountError("Username must be at least 4 character.");
+        }
+        if (password.length < 6) {
+          setError("Password should be at least 6 characters. ");
+        }
+        if (email.length < 4 || !email.includes("@") || !email.includes(".")) {
+          setError("Invalid input! Please enter valid credential. ");
+        }
+        throw errorMessage;
+      }
       let user = await signUp(email, password, roll);
-      await writeUserData(
-        user.user,
-        password,
-        username,
-        name,
-        lastName,
-        dateOfBirth,
-        phoneNumber,
-        taxCode,
-        roll,
-        email,
-        enabled,
-        phoneNumber
-      );
+      let UserData = {
+        user: user.user,
+        password: password,
+        username: username,
+        name: name,
+        lastName: lastName,
+        dateOfBirth: dateOfBirth,
+        phoneNumber: phoneNumber,
+        taxCode: taxCode,
+        roll: roll,
+        email: email,
+        enabled: enabled,
+        avatar: avatar,
+      };
+      await writeUserData(UserData);
       uploadFiles(avatar);
-      navigate(`/${USER_PROFILE_PATH}`);
+      if (roll === Admin) {
+        setIsOpen(true);
+      } else {
+        navigate(`/${USER_PROFILE_PATH}`);
+      }
     } catch (err) {
-      setError(err.message);
+      if ("Firebase: Error (auth/email-already-in-use)." === err?.message) {
+        setError("Email-already-in-use");
+      }
+      console.log(err?.message);
     }
   };
+  const { user } = useUserAuth();
 
-  // async function () {
-  // 	try {
-  // 		await signup(
-  // 			email,
-  // 			password,
-  // 			name,
-  // 			lastName,
-  // 			dateOfBirth,
-  // 			phoneNumber,
-  // 			taxCode,
-  // 			roll,
-  // 			enabled
-  // 		);
-  // 		console.log(signin(email, password));
-  // 		let currentUserData = await signin(email, password).then((data) => data);
-  // 		props.updateUser(currentUserData);
-  // 		setEmail("");
-  // 		setPassword("");
-  // 		setRepeatedPassword("");
-  // 		setName("");
-  // 		setLastName("");
-  // 		setPhoneNumber("");
-  // 		setDateOfBirth("");
-  // 		setTaxCode("");
-  // 		setRoll("");
-  // 		setEnabled("");
-  // 	} catch (e) {
-  // 		console.log("Error");
-  // 	}
-  // }
-  return (
+  useEffect(() => {
+    if (!!user && !isOpen) {
+      navigate(`/${PROFILE_PATH}`);
+    }
+  }, [PROFILE_PATH, isOpen, navigate, user]);
+
+  return !!user && !isOpen ? (
+    <div>
+      <CircularProgress className={classes.loader} />
+    </div>
+  ) : (
     <>
-      <NavMainBar />
-      <div className={classes.useSpace}>
-        <h1 className={classes.signUp}>Sign up</h1>
-        {error && (
-          <div style={{ color: "red", textAlign: "center" }}> {error} </div>
-        )}
-        <div className={classes.signUp}>
-          <TextField
-            className={classes.fields}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            type={"email"}
-            id="emailId"
-            label="Email (Login)"
-            variant="outlined"
-          />
-        </div>
-        <div className={classes.signUp}>
-          <FormControl
-            className={classes.fields}
-            sx={{ m: 1, width: "25ch" }}
-            variant="outlined"
-          >
-            <InputLabel htmlFor="outlined-adornment-password">
-              Password
-            </InputLabel>
-            <OutlinedInput
-              id="passwordId"
-              type={values.showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
-            />
-          </FormControl>
-        </div>
-        {!!values.showPassword || (
-          <div id="repeatedPasswordDivId" className={classes.signUp}>
-            <TextField
-              className={classes.fields}
-              type="password"
-              value={repeatedPassword}
-              onChange={(e) => setRepeatedPassword(e.target.value)}
-              id="repeatedPassword"
-              label="Repeat password"
-              variant="outlined"
-            />
-          </div>
-        )}
-        <div className={classes.signUp}>
-          <TextField
-            className={classes.fields}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            id="usernameId"
-            label="Username"
-            variant="outlined"
-          />
-        </div>
-        <div className={classes.signUp}>
-          <TextField
-            className={classes.fields}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            id="nameId"
-            label="Name"
-            variant="outlined"
-          />
-        </div>
-        <div className={classes.signUp}>
-          <TextField
-            className={classes.fields}
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            id="lastNameId"
-            label="Last name"
-            variant="outlined"
-          />
-        </div>
-        <div className={classes.signUp}>
-          <TextField
-            className={classes.fields}
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            id="phoneNumberId"
-            label="Phone number"
-            variant="outlined"
-          />
-        </div>
-        <div className={classes.signUp}>
-          {!avatarUrl ? null : <img alt="" src={avatarUrl}></img>}
-          <div
-            style={{
-              display: "flex",
-              margin: {
-                top: 0,
-                left: "auto",
-                right: "auto",
-                bottom: 10,
-              },
-              width: 300,
-            }}
-          >
-            <label htmlFor="contained-button-file" style={{}}>
-              <Input
-                style={{
-                  display: "none",
-                }}
-                accept="image/*"
-                id="contained-button-file"
-                onChange={handleChange}
-                multiple
-                type="file"
-              />
-              <Button
-                variant="contained"
-                component="span"
-                style={{
-                  fontSize: 40,
-                }}
-              >
-                +
-              </Button>
-            </label>
-          </div>
-        </div>
-        <div className={classes.signUp}>
-          <TextField
-            className={classes.fields}
-            type={"date"}
-            InputLabelProps={{ shrink: true }}
-            value={dateOfBirth}
-            onChange={(e) => setDateOfBirth(e.target.value)}
-            id="dateOfBirthId"
-            label="Date of birth"
-            variant="outlined"
-          />
-        </div>
-        <div className={classes.signUp}>
-          <TextField
-            className={classes.fields}
-            value={taxCode}
-            onChange={(e) => setTaxCode(e.target.value)}
-            id="taxCodeId"
-            label="Tax code"
-            variant="outlined"
-          />
-        </div>
-        <div className={classes.signUp}>
-          <FormControl className={classes.fields} sx={{ m: 1, width: "25ch" }}>
-            <InputLabel id="inputRollId">Roll</InputLabel>
-            <Select
-              labelId="inputRollId"
-              id="RollId"
-              value={roll}
-              label="Roll"
-              onChange={(e) => {
-                setRoll(e.target.value);
-                setEnabled(e.target.value === "Admin" ? false : true);
-              }}
-            >
-              <MenuItem value={"Client"}>Client</MenuItem>
-              <MenuItem value={"Admin"}>Admin</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-        <div className={classes.signUp} id="buttons">
+      <HomeIcon signin={true} />
+      <div
+        style={{
+          display: "flex",
+          marginTop: 20,
+          marginBottom: 30,
+          justifyContent: "center",
+        }}
+      >
+        <Link to="/signin">
           <button
-            className={
-              signInButtonHover
-                ? classes.signInButtOnHover
-                : signInButtonActive
-                ? classes.signInButtonActive
-                : classes.signInButton
-            }
-            onClick={handleSubmit}
-            id="buttonSignUp"
-            variant="contained"
-            color="secondary"
+            style={{
+              position: "absolute",
+              right: 25,
+              top: 22,
+            }}
+            className={signinBtn.signinBtn}
           >
-            Sign up
+            Sign in
           </button>
-        </div>
+        </Link>
+        <Card>
+          <div className={classes.useSpace}>
+            <h1 className={classes.signUp}>Sign up</h1>
+            {
+              <div style={{ color: "red", textAlign: "center" }}>
+                {error || countError}
+              </div>
+            }
+            <br />
+
+            <div className={classes.signUp}>
+              <TextField
+                error={error}
+                className={classes.fields}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
+                type={"email"}
+                id="emailId"
+                label="Email"
+                variant="outlined"
+              />
+            </div>
+            <div className={classes.signUp}>
+              <FormControl className={classes.fields} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  error={error}
+                  id="passwordId"
+                  type={values.showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                />
+              </FormControl>
+            </div>
+            {!!values.showPassword || (
+              <div id="repeatedPasswordDivId" className={classes.signUp}>
+                <TextField
+                  error={error}
+                  className={classes.fields}
+                  type="password"
+                  value={repeatedPassword}
+                  onChange={(e) => setRepeatedPassword(e.target.value)}
+                  onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
+                  id="repeatedPassword"
+                  label="Repeat password"
+                  variant="outlined"
+                />
+              </div>
+            )}
+            <div className={classes.signUp}>
+              <TextField
+                error={userNameError}
+                className={classes.fields}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
+                id="usernameId"
+                label="Username"
+                variant="outlined"
+              />
+            </div>
+            <div className={classes.signUp}>
+              <TextField
+                error={nameError}
+                className={classes.fields}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
+                id="nameId"
+                label="Name"
+                variant="outlined"
+              />
+            </div>
+            <div className={classes.signUp}>
+              <TextField
+                error={lastNameError}
+                className={classes.fields}
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
+                id="lastNameId"
+                label="Last name"
+                variant="outlined"
+              />
+            </div>
+            <div className={classes.signUp}>
+              <TextField
+                className={classes.fields}
+                value={phoneNumber}
+                onChange={(e) => {
+                  phoneHandleInput(e);
+                }}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
+                id="phoneNumberId"
+                label="Phone number"
+                variant="outlined"
+              />
+            </div>
+            <div className={classes.signUp}>
+              {!avatarUrl ? null : <img alt="" src={avatarUrl}></img>}
+              <div
+                style={{
+                  display: "flex",
+                  margin: {
+                    top: 0,
+                    left: "auto",
+                    right: "auto",
+                    bottom: 10,
+                  },
+                  width: 300,
+                }}
+              ></div>
+            </div>
+            <div className={classes.signUp}>
+              <TextField
+                className={classes.fields}
+                type={"date"}
+                InputLabelProps={{ shrink: true }}
+                value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
+                id="dateOfBirthId"
+                label="Date of birth"
+                variant="outlined"
+              />
+            </div>
+            <div className={classes.signUp}>
+              <TextField
+                className={classes.fields}
+                value={taxCode}
+                onChange={(e) => {
+                  taxCodeHandleInput(e);
+                }}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
+                id="taxCodeId"
+                label="Tax code"
+                variant="outlined"
+              />
+            </div>
+            <div className={classes.signUp}>
+              <FormControl className={classes.fields}>
+                <InputLabel id="inputRollId">Roll</InputLabel>
+                <Select
+                  labelId="inputRollId"
+                  id="RollId"
+                  value={roll}
+                  label="Roll"
+                  onChange={(e) => {
+                    setRoll(e.target.value);
+                    setEnabled(e.target.value === "Admin" ? false : true);
+                  }}
+                >
+                  <MenuItem value={"Client"}>Client</MenuItem>
+                  <MenuItem value={"Admin"}>Admin</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <div className={classes.signUp1}>
+              <label htmlFor="contained-button-file">
+                <Input
+                  style={{
+                    display: "none",
+                  }}
+                  accept="image/*"
+                  id="contained-button-file"
+                  onChange={handleChange}
+                  multiple
+                  type="file"
+                />
+                <PhotoCamera style={{ cursor: "pointer" }} />
+              </label>
+              <span>&nbsp; Upload avatar</span>
+            </div>
+            <div className={classes.signUp} id="buttons">
+              <button
+                className={classes.signInButton}
+                onClick={handleSubmit}
+                id="buttonSignUp"
+                variant="contained"
+                color="secondary"
+              >
+                Sign up
+              </button>
+            </div>
+          </div>
+          <Outlet />
+        </Card>
+        {isOpen && (
+          <AdminRegister
+            title={"Wait for acception"}
+            typography={
+              "Thank you for registration. Please wait until site administrators will approve or reject your conditian as site administrator."
+            }
+            setIsOpen={setIsOpen}
+          />
+        )}
       </div>
-      <Outlet />
     </>
   );
 }

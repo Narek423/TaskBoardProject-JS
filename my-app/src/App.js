@@ -2,12 +2,11 @@ import "./App.css";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
 import { Route, Routes } from "react-router-dom";
-import NavMainBar from "./components/Nav-Bar/NavMainBar";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
-import UserProfile from "./components/UserProfile/UserProfile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import paths from "./constants/Paths";
 import HomePage from "./components/HomePage/HomePage";
+import UserProfile from "./components/UserProfile/UserProfile";
 
 function App() {
   const { USER_PROFILE_PATH, SIGN_IN_PATH, SIGN_UP_PATH } = paths;
@@ -24,8 +23,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path={SIGN_IN_PATH} element={<SignUp />} />
-        <Route path={SIGN_UP_PATH} element={<SignIn />} />
+        <Route path={SIGN_UP_PATH} element={<SignUp />} />
+        <Route path={SIGN_IN_PATH} element={<SignIn />} />
       </Routes>
     </UserAuthContextProvider>
   );

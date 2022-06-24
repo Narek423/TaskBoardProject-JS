@@ -1,28 +1,21 @@
 import { Paper } from "@mui/material";
 import React from "react";
 import { createUseStyles } from "react-jss";
-
+import { useUserAuth } from "../../../context/UserAuthContext";
+import BasicCard from "../../Card";
 
 const useStyle = createUseStyles(() => {
-    return {
-
-    }
-})
+  return {};
+});
 
 function ProfilePage() {
-    
-    return <div style={{
-        textAlign: "center",
-    }}>
+  const { user, imgUrl } = useUserAuth();
 
-<span style={{
-        
-        fontFamily: "cursive",
-        fontSize: 50,
-    }}>Profile</span>
-
+  return (
+    <div>
+    Profile
     </div>
+  );
 }
 
-
-export default ProfilePage
+export default ProfilePage;

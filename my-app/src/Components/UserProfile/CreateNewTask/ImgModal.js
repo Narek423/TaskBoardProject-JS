@@ -30,11 +30,10 @@ const useStyle = createUseStyles(() => {
       cursor: "zoom-out",
     },
     arrowLeftClick: {
-        position: "fixed",
-        marginTop: "15%",
-        marginLeft: "60%",
+      position: "fixed",
+      marginTop: "15%",
+      marginLeft: "60%",
       "&:hover": {
-        // boxShadow: "#1264F3 0 -6px 8px inset",
         transform: "scale(1.425)",
         cursor: "pointer",
       },
@@ -47,7 +46,6 @@ const useStyle = createUseStyles(() => {
       marginTop: "15%",
       marginRight: "60%",
       "&:hover": {
-        // boxShadow: "#1264F3 0 -6px 8px inset",
         transform: "scale(1.425)",
         cursor: "pointer",
       },

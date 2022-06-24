@@ -12,9 +12,8 @@ import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
 import ImgModal from "./ImgModal";
 import { Button, CircularProgress, Input } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import  defaultImg  from "../../img/images.png"
+import defaultImg from "../../img/images.png";
 export let avatarUrl = "";
-
 
 const theme = createTheme({
   status: {
@@ -54,24 +53,21 @@ const useStyle = createUseStyles(() => {
       flexDirection: "column",
       "&:hover": {
         backgroundColor: "white",
-        // boxShadow: "blue 0 -6px 8px inset",
         cursor: "pointer",
         opacity: 0.8,
       },
-      
     },
     img: {
       width: "100%",
       height: "100%",
-      // cursor: "zoom-in",
       justifyContent: "center",
     },
   };
 });
 
 function FireBaseFileUpload(props) {
-  const [file,setFile] = useState('');
-  const [fileSize,setFileSize] = useState(0);
+  const [file, setFile] = useState("");
+  const [fileSize, setFileSize] = useState(0);
   const [progress, setProgress] = useState(0);
   const [imgModalopen, setImgModalOpen] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
@@ -80,7 +76,6 @@ function FireBaseFileUpload(props) {
   const classes = useStyle();
   const { user } = useUserAuth(UserAuthContext);
 
-
   const handleChange = (e) => {
     e.preventDefault();
     setFile(e.target.files[0]);
@@ -88,13 +83,7 @@ function FireBaseFileUpload(props) {
     setProgress(0);
   };
 
-  // useEffect(() => {
-  //   if(file.type === "image/jpeg"){
-  //     setFileType("image")
-  //   }
-  // },[file])
   const uploadFiles = (file) => {
-    //upload-a anum firebas-i storage
     if (!file) return;
     const storageRef = ref(storage, `/${user.email}/${file.name}`);
     const uploadProcent = uploadBytesResumable(storageRef, file);
@@ -110,13 +99,14 @@ function FireBaseFileUpload(props) {
       (err) => console.log(err),
       () =>
         getDownloadURL(uploadProcent.snapshot.ref).then((url) =>
-          setFileData([...fileData.concat({url,name: file.name,type: file.type})])
+          setFileData([
+            ...fileData.concat({ url, name: file.name, type: file.type }),
+          ])
         )
     );
   };
 
-  const delFile = (url,event) => {
-    //Firebas-i storage-ic u localic  jnjuma fil@
+  const delFile = (url, event) => {
     event.stopPropagation();
     const imageRef = ref(storage, url);
     deleteObject(imageRef)
@@ -136,64 +126,69 @@ function FireBaseFileUpload(props) {
 
   return (
     <div className={classes.imgList}>
-      {fileData.map((e,index,) => {
-              console.log(file)
-
+      {fileData.map((e, index) => {
         return (
           <div className={classes.imgBlock} key={uuidv4()}>
-            {e.type === "image/jpeg" ? 
-            <div style={{
-              backgroundImage: `url(${e.url})`,
-              backgroundSize: 'cover',
-             height: "100%",
-             width: 140,
-             position: 'relative'
-            }}
-            onClick={() => {
-              setImgModalOpen(!imgModalopen);
-              setModalImg(fileData[index].url);
-            }}>    
-            <div  style={{
-                  position: "absolute",
-                  right: 0,
-                  width: '20%',
-                  height: "20%",
-                  borderBottomLeftRadius: "100%",
-                  backgroundColor: 'red',
-                  color: "white"
-                }} 
-                onClick={(event) => delFile(e.url,event)}
+            {e.type === "image/jpeg" ? (
+              <div
+                style={{
+                  backgroundImage: `url(${e.url})`,
+                  backgroundSize: "cover",
+                  height: "100%",
+                  width: 140,
+                  position: "relative",
+                }}
+                onClick={() => {
+                  setImgModalOpen(!imgModalopen);
+                  setModalImg(fileData[index].url);
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    width: "20%",
+                    height: "20%",
+                    borderBottomLeftRadius: "100%",
+                    backgroundColor: "red",
+                    color: "white",
+                  }}
+                  onClick={(event) => delFile(e.url, event)}
                 >
                   x
-            </div>
-
-            </div> :  <div style={{
-              backgroundImage: `url(${defaultImg})`,
-              backgroundSize: 'cover',
-             height: "100%",
-             width: 140,
-             position: 'relative'
-            }}
-            onClick={() => {
-              setImgModalOpen(!imgModalopen);
-              setModalImg(fileData[index].url);
-            }}>
-             
-            <div  style={{
-                  position: "absolute",
-                  right: 0,
-                  width: '20%',
-                  height: "20%",
-                  borderBottomLeftRadius: "100%",
-                  backgroundColor: 'red',
-                  color: "white"
-                }} 
-                onClick={(event) => delFile(e.url,event)}
+                </div>
+              </div>
+            ) : (
+              <div
+                style={{
+                  backgroundImage: `url(${defaultImg})`,
+                  backgroundSize: "cover",
+                  height: "100%",
+                  width: 140,
+                  position: "relative",
+                }}
+                onClick={() => {
+                  setImgModalOpen(!imgModalopen);
+                  setModalImg(fileData[index].url);
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    width: "20%",
+                    height: "20%",
+                    borderBottomLeftRadius: "100%",
+                    backgroundColor: "red",
+                    color: "white",
+                  }}
+                  onClick={(event) => delFile(e.url, event)}
                 >
                   x
-            </div>
-            {e.name}
-            </div> }
+                </div>
+                {e.name}
+              </div>
+            )}
           </div>
         );
       })}

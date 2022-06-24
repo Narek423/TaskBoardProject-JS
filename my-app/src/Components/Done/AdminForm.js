@@ -3,8 +3,6 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
-import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get } from "firebase/database";
 import States from "../../constants/States";
 import ViewTask from "../ViewTask/Main";
@@ -36,7 +34,7 @@ function DoneTasksAdmin(props) {
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: true,
+      editable: false,
       sortable: true,
       minWidth: 100,
       filter: true,

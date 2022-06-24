@@ -3,17 +3,15 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
-import Avatar from "@mui/material/Avatar";
 import { getDatabase, ref, get } from "firebase/database";
-import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
+import { useUserAuth } from "../../context/UserAuthContext";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
 import { useSharedStyles } from "../../styles/sharedStyles";
 
 function AllTasks(props) {
   const classes = useSharedStyles();
-  const { user } = useUserAuth(UserAuthContext);
+  const { user } = useUserAuth();
   const clientId = user.uid;
   const [data, setData] = useState();
   const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +37,7 @@ function AllTasks(props) {
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: true,
+      editable: false,
       sortable: true,
       minWidth: 100,
       filter: true,

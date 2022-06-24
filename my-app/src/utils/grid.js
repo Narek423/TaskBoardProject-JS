@@ -1,4 +1,6 @@
-import { sharedStyles, useSharedStyles } from "../styles/sharedStyles";
+import { sharedStyles } from "../styles/sharedStyles";
+
+export let gridDialogSwitcher = [false];
 
 function gridPainting(props) {
   const classes = sharedStyles;

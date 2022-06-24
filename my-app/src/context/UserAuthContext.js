@@ -1,18 +1,13 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth, database, storage } from "../components/firebase";
-import { getDatabase, ref, set, get, child } from "firebase/database";
-import { ArrAdminTools, ArrClientTools } from "../constants/Tools";
-import {
-  getDownloadURL,
-  ref as resstore,
-  uploadBytesResumable,
-} from "firebase/storage";
+import { auth, storage } from "../components/firebase";
+import { getDatabase, ref, get } from "firebase/database";
+import { getDownloadURL, ref as resstore } from "firebase/storage";
 
 export const UserAuthContext = createContext();
 
@@ -20,20 +15,20 @@ export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [roll, setRoll] = useState(null);
+  const [enabled, setEnabled] = useState(null);
   const dbRef = getDatabase();
   const [avatarLink, setAvatarLink] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [email, setEmail] = useState();
+  const [userData, setUserData] = useState();
 
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
 
   function signIn(email, password) {
-    console.log(email);
     return signInWithEmailAndPassword(auth, email, password).then(
       (currentUser) => {
-        console.log("user", currentUser);
         setUser(currentUser);
       }
     );
@@ -51,23 +46,23 @@ export function UserAuthContextProvider({ children }) {
 
     return () => {
       unsubscribe();
-      setImgUrl("");
+      setImgUrl(""); //  urish kerpov datan poxel
     };
   }, [user]);
 
   useEffect(() => {
     if (!!user?.accessToken) {
-      // console.log("User",user)
       get(ref(dbRef, "users/" + user.uid))
         .then((snapshot) => {
-          console.log("snapshot", snapshot.val().roll);
           setRoll(snapshot.val().roll);
+          setEnabled(snapshot.val().enabled);
+          setUserData(snapshot.val());
         })
         .catch((error) => {
           console.error(error);
         });
     }
-  }, [user]);
+  }, [dbRef, user]);
 
   useEffect(() => {
     if (user?.email) {
@@ -75,7 +70,6 @@ export function UserAuthContextProvider({ children }) {
       getDownloadURL(resstore(storage, `${user.email}/avatar`))
         .then((url) => {
           setImgUrl(url);
-          console.log(url);
         })
         .catch((error) => {
           console.log(error);
@@ -91,8 +85,9 @@ export function UserAuthContextProvider({ children }) {
     signIn,
     avatarLink: avatarLink,
     logOut,
-    toolsList: roll && roll === "Admin" ? ArrAdminTools : ArrClientTools,
     roll,
+    enabled,
+    userData,
   };
 
   return (

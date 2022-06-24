@@ -1,5 +1,6 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import * as React from "react";
+import { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { createUseStyles } from "react-jss";
 import FormControl from "@material-ui/core/FormControl";
@@ -9,11 +10,16 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-// import { signin } from "../firebase";
 import { useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
-import NavMainBar from "./Nav-Bar/NavMainBar";
+import Card from "./Card";
+import { CircularProgress } from "@mui/material";
+import HomeIcon from "./Nav-Bar/HomeIcon";
 import paths from "../constants/Paths";
+import AdminRegister from "./ModalMessages/AdminRegister";
+import Rolls from "../constants/Rolls";
+import { get, getDatabase, ref } from "firebase/database";
+import { useSharedStyles } from "../styles/sharedStyles";
 
 const useStyles = createUseStyles({
   header: {
@@ -35,7 +41,7 @@ const useStyles = createUseStyles({
       top: 0,
       left: 0,
       right: 0,
-      bottom: 10,
+      bottom: 13,
     },
   },
   fields: {
@@ -49,7 +55,7 @@ const useStyles = createUseStyles({
     right: 0,
   },
   useSpace: {
-    marginTop: 70,
+    marginTop: 0,
   },
   signInButton: {
     appearance: "none",
@@ -84,7 +90,34 @@ const useStyles = createUseStyles({
       transform: "scale(1.025)",
     },
   },
+  loader: {
+    position: "fixed",
+    left: "50%",
+    right: "50%",
+    top: "50%",
+    bottom: "50%",
+  },
 });
+
+function resolveGetUserData(usr) {
+  const dbRef = getDatabase();
+  let clientData = {};
+  return new Promise(function (resolve, reject) {
+    if (!!usr) {
+      const uid = usr.uid || usr.user.uid;
+      get(ref(dbRef, "users/" + uid))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            clientData = snapshot.val();
+            resolve(clientData);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  });
+}
 
 function SignIn(props) {
   const [email, setEmail] = useState("");
@@ -93,8 +126,16 @@ function SignIn(props) {
   const [signInButtonActive] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const { Admin } = Rolls;
+  const { USER_PROFILE_PATH } = paths;
+  const [title, setTitle] = useState("");
+  const [typography, setTypography] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState({});
 
   const classes = useStyles();
+  const signupBtn = useSharedStyles();
   const [values, setValues] = useState({
     amount: "",
     password: "",
@@ -114,86 +155,177 @@ function SignIn(props) {
     event.preventDefault();
   };
 
-  const { signIn } = useUserAuth();
+  const { signIn, user } = useUserAuth();
+
+  useEffect(() => {
+    if (!!user && !isOpen) {
+      const dbRef = getDatabase();
+      get(ref(dbRef, "users/" + user.uid || user.user.uid))
+        .then((snapshot) => {
+          setData(snapshot.val());
+          setIsLoading(false);
+          if (
+            snapshot.val().roll === Admin &&
+            snapshot.val().enabled === false
+          ) {
+            setTitle("Waiting for acception");
+            setTypography(
+              "Hi dear user. Please be informed that your condition as an admin user not approved yet. You can use your account as soon as it will be confirmed."
+            );
+            setIsOpen(true);
+          } else if (
+            snapshot.val().roll === Admin &&
+            snapshot.val().enabled === "disabled"
+          ) {
+            setTitle("Access denied");
+            setTypography(
+              "Hi dear user. Unfortunately your request to become an admin user was rejected by syte administrator."
+            );
+            setIsOpen(true);
+          } else {
+            setIsOpen(false);
+            navigate(`/${USER_PROFILE_PATH}`);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          setIsLoading(true);
+        });
+    }
+  }, [Admin, USER_PROFILE_PATH, data, isOpen, navigate, user]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
       await signIn(email, password);
-      navigate("/profile");
     } catch (err) {
-      setError(err.message);
+      setError("Invalid input! Please enter valid information");
     }
   };
 
-  return (
-    <>
-      <NavMainBar />
-      <div className={classes.useSpace}>
-        <h1 className={classes.signIn}>Sign in</h1>
-        {error && (
-          <div style={{ color: "red", textAlign: "center" }}> {error} </div>
-        )}
-        <div className={classes.signIn}>
-          <TextField
-            className={classes.fields}
-            onChange={(e) => setEmail(e.target.value)}
-            type={"email"}
-            id="emailId"
-            label="eMail (Login)"
-            variant="outlined"
-          />
-        </div>
-        <div className={classes.signIn}>
-          <FormControl
-            className={classes.fields}
-            sx={{ m: 1, width: "25ch" }}
-            variant="outlined"
-          >
-            <InputLabel htmlFor="outlined-adornment-password">
-              Password
-            </InputLabel>
-            <OutlinedInput
-              id="passwordId"
-              type={values.showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
-            />
-          </FormControl>
-        </div>
-
-        <div className={classes.signIn} id="buttons">
-          <button
-            className={
-              signInButtonHover
-                ? classes.signInButtOnHover
-                : signInButtonActive
-                ? classes.signInButtonActive
-                : classes.signInButton
-            }
-            onClick={handleSubmit}
-            id="buttonsignIn"
-            variant="contained"
-            color="secondary"
-          >
-            Sign in
-          </button>
-        </div>
+  if (isLoading) {
+    return (
+      <div>
+        <CircularProgress className={classes.loader} />
       </div>
-      <Outlet />
+    );
+  }
+
+  return !!user && !isOpen ? (
+    <div>
+      <CircularProgress className={classes.loader} />
+    </div>
+  ) : (
+    <>
+      <HomeIcon signin={true} />
+      <div
+        style={{
+          height: "70vh",
+          display: "flex",
+          marginTop: 20,
+          marginBottom: 30,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Link to="/signup">
+          <button
+            style={{
+              position: "absolute",
+              right: 35,
+              top: 22,
+            }}
+            className={signupBtn.signupBtn}
+          >
+            Sign up
+          </button>
+        </Link>
+        <Card>
+          <div className={classes.useSpace}>
+            <h1 className={classes.signIn}>Sign in</h1>
+            {error && (
+              <div style={{ color: "red", textAlign: "center" }}> {error} </div>
+            )}
+            <br />
+            <div className={classes.signIn}>
+              <TextField
+                error={error}
+                className={classes.fields}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
+                type={"email"}
+                id="emailId"
+                label="Email"
+                variant="outlined"
+              />
+            </div>
+            <div className={classes.signIn}>
+              <FormControl
+                className={classes.fields}
+                sx={{ m: 1, width: "25ch" }}
+                variant="outlined"
+              >
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  style={{ lableColor: error || "red" }}
+                  id="passwordId"
+                  type={values.showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
+                  error={error}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                />
+              </FormControl>
+            </div>
+
+            <div className={classes.signIn} id="buttons">
+              <button
+                className={
+                  signInButtonHover
+                    ? classes.signInButtOnHover
+                    : signInButtonActive
+                    ? classes.signInButtonActive
+                    : classes.signInButton
+                }
+                onClick={handleSubmit}
+                id="buttonsignIn"
+                variant="contained"
+                color="secondary"
+              >
+                Sign in
+              </button>
+            </div>
+          </div>
+          <Outlet />
+        </Card>
+        {isOpen && (
+          <AdminRegister
+            title={title}
+            typography={typography}
+            setIsOpen={setIsOpen}
+          />
+        )}
+      </div>
     </>
   );
 }

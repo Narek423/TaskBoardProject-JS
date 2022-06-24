@@ -3,7 +3,6 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get, update } from "firebase/database";
 import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
 import { useSharedStyles } from "../../styles/sharedStyles";
@@ -38,7 +37,7 @@ function PendingToAcception(props) {
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: true,
+      editable: false,
       sortable: true,
       minWidth: 100,
       filter: true,
@@ -69,7 +68,7 @@ function PendingToAcception(props) {
         costForUnit: selectedRow.costForUnit,
         unit: selectedRow.unit,
         cost: selectedRow.cost,
-        status: Statuses[1],
+        status: Statuses[0],
         state:
           param.target.innerText === "Accept"
             ? States.inProgress

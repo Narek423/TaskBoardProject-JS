@@ -1,22 +1,26 @@
-import React, { useCallback, useMemo, useState, useRef } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get } from "firebase/database";
-import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
+import { useUserAuth } from "../../context/UserAuthContext";
 import ViewTask from "../ViewTask/Main";
-import gridPainting from "../../utils/grid";
 import { useSharedStyles } from "../../styles/sharedStyles";
+import EditDialog from "../EditDialog";
+import editingGridPainting, {
+  gridDialogSwitcher,
+} from "../../utils/gridForEdit";
 
 function PendingToEvaluation(props) {
   const classes = useSharedStyles();
-  const { user } = useUserAuth(UserAuthContext);
+  const { user } = useUserAuth();
   const clientId = user.uid;
   const [rowData, setRowData] = useState();
   const [data, setData] = useState();
   const [isOpen, setIsOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [passEvent, setPassEvent] = useState();
 
   const gridParams = {
     checkbox: false,
@@ -31,13 +35,14 @@ function PendingToEvaluation(props) {
     totalCost: { rowGroup: false, hide: true, flex: 1, panel: true },
     state: { rowGroup: false, hide: true, flex: 2, panel: true },
     status: { rowGroup: false, hide: true, flex: 2, panel: true },
+    pen: { rowGroup: false, hide: false, flex: 1, panel: false },
   };
-  const columnDefs = gridPainting(gridParams);
+  const columnDefs = editingGridPainting(gridParams);
 
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: true,
+      editable: false,
       sortable: true,
       minWidth: 100,
       filter: true,
@@ -103,6 +108,13 @@ function PendingToEvaluation(props) {
   const gridStyle = () => {
     return { width: "100%", margin: "auto", flex: 10 };
   };
+  const dialogOpeningFunction = (e) => {
+    if (gridDialogSwitcher[0]) {
+      setPassEvent(e);
+      setEdit(true);
+      gridDialogSwitcher[0] = false;
+    }
+  };
 
   return (
     <div className={classes.containerStyle}>
@@ -117,8 +129,16 @@ function PendingToEvaluation(props) {
           sideBar={sideBar}
           onGridReady={onGridReady}
           onRowDoubleClicked={onRowDoubleClicked}
+          onRowClicked={dialogOpeningFunction}
         ></AgGridReact>
         {isOpen && <ViewTask data={data} setIsOpen={setIsOpen} />}
+        <EditDialog
+          edit={edit}
+          setEdit={setEdit}
+          editData={passEvent}
+          rowData={rowData}
+          setRowData={setRowData}
+        />
       </div>
     </div>
   );

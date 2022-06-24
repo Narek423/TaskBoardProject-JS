@@ -3,17 +3,16 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get } from "firebase/database";
-import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
+import { useUserAuth } from "../../context/UserAuthContext";
 import States from "../../constants/States";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
 import { useSharedStyles } from "../../styles/sharedStyles";
 
-function RejectedTasks(props) {
+function InProgressTasks(props) {
   const classes = useSharedStyles();
-  const { user } = useUserAuth(UserAuthContext);
+  const { user } = useUserAuth();
   const clientId = user.uid;
   const [rowData, setRowData] = useState();
   const [data, setData] = useState();
@@ -23,22 +22,22 @@ function RejectedTasks(props) {
     checkbox: false,
     username: { rowGroup: false, hide: true, flex: 3, panel: true },
     title: { rowGroup: false, hide: false, flex: 3, panel: false },
-    creationDate: { rowGroup: false, hide: false, flex: 1, panel: false },
+    creationDate: { rowGroup: false, hide: true, flex: 1, panel: false },
     description: { rowGroup: false, hide: true, flex: 5, panel: false },
     notes: { rowGroup: false, hide: true, flex: 4, panel: false },
-    quantity: { rowGroup: false, hide: true, flex: 1, panel: false },
+    quantity: { rowGroup: false, hide: false, flex: 1, panel: false },
     unit: { rowGroup: false, hide: true, flex: 1, panel: false },
     costForUnit: { rowGroup: false, hide: true, flex: 1, panel: false },
     totalCost: { rowGroup: false, hide: false, flex: 1, panel: false },
     state: { rowGroup: false, hide: true, flex: 2, panel: true },
-    status: { rowGroup: false, hide: true, flex: 2, panel: true },
+    status: { rowGroup: true, hide: false, flex: 2, panel: true },
   };
   const columnDefs = gridPainting(gridParams);
 
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: true,
+      editable: false,
       sortable: true,
       minWidth: 100,
       filter: true,
@@ -86,7 +85,7 @@ function RejectedTasks(props) {
           for (let key in data) {
             if (
               data[key].clientId === clientId &&
-              data[key].state === States.rejected
+              data[key].state === States.inProgress
             ) {
               data[key].id = key;
               data[key] = { ...data[key], ...clientData };
@@ -125,4 +124,4 @@ function RejectedTasks(props) {
   );
 }
 
-export default RejectedTasks;
+export default InProgressTasks;

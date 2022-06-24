@@ -1,11 +1,13 @@
-import { Button, Input, TextField } from "@mui/material";
-import React, { useState } from "react";
+import { Alert, Box, Container, Stack, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
-import { UserAuthContext, useUserAuth } from "../../../context/UserAuthContext";
-import { writeUserTask } from "../../firebase";
-import FireBaseFileUpload from "./FireBaseFileUpload";
+import { useUserAuth } from "../../../context/UserAuthContext";
+import FileUploader from "./FileUploader";
 import HelperModal from "./HelperModal";
-import img from "../../img/subtle.png";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage, writeUserTask } from "../../firebase";
+import { v4 as uuidv4 } from "uuid";
+import { useSharedStyles } from "../../../styles/sharedStyles";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -23,6 +25,11 @@ const useStyle = createUseStyles(() => {
       display: "flex",
       flexDirection: "column",
       position: "relative",
+    },
+    formName: {
+      fontFamily: "cursive",
+      fontSize: 40,
+      flex: 1,
     },
     tittle: {
       flex: 1,
@@ -67,14 +74,14 @@ const useStyle = createUseStyles(() => {
     },
     inputTittle: {
       margin: {
-        bottom: "2%",
+        bottom: "1%",
         left: "5%",
       },
       display: "flex",
     },
     descr: {
       margin: {
-        top: "2%",
+        top: "1%",
         left: "5%",
       },
       display: "flex",
@@ -84,134 +91,190 @@ const useStyle = createUseStyles(() => {
 
 function CreateNewTask() {
   const classes = useStyle();
+  const classes1 = useSharedStyles();
   const [titleValue, setTittleValue] = useState("");
   const [nodesValue, setNodesValue] = useState("");
   const [descrpValue, setDescrpValue] = useState("");
+  const [error, setError] = useState("");
   const { user } = useUserAuth();
-  const [fileData, setFileData] = useState([]);
-  const status = "Waiting";
+  const [files, setFiles] = useState([]);
 
-  const writeData = () => {
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      setError(false);
+    }, 1500);
+
+    return () => {
+      clearTimeout(timeId);
+    };
+  }, [error]);
+
+  async function writeData() {
     const createDate = new Date().toLocaleString();
+    const filesUID = uuidv4();
+    const urls = await uploadFiles(files, filesUID);
+    const errorMsg = {
+      code: 403,
+      message: "Title must be at least 4 character.",
+    };
+
+    if (titleValue.length < 4) {
+      setError("Title must be at least 4 character.");
+      throw errorMsg;
+    }
+
     writeUserTask(
       user.uid,
-      fileData,
+      urls,
+
       titleValue,
       nodesValue,
       descrpValue,
-      createDate
+      createDate,
+      filesUID
     );
-    setFileData([]);
     setNodesValue("");
     setDescrpValue("");
     setDescrpValue("");
     setTittleValue("");
-  };
+    setFiles([]);
+  }
+  async function uploadFiles(files, filesUID) {
+    if (!files) return;
+    const load = (files) => {
+      const fileData = [];
+      files.forEach((file) => {
+        const storageRef = ref(
+          storage,
+          `/${user.uid}/${filesUID}/${file.name}`
+        );
+        const uploadProcent = uploadBytesResumable(storageRef, file);
+        uploadProcent.on(
+          "state_changed",
+          (snapshot) => {
+            const proc = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+          },
+          (err) => console.log(err),
+          () =>
+            getDownloadURL(uploadProcent.snapshot.ref).then((url) => {
+              fileData.push({ url, file: file.name });
+            })
+        );
+      });
+      return new Promise((resolve) => {
+        resolve(fileData);
+      });
+    };
+    const urls = await load(files);
+    return urls;
+  }
 
   return (
-    <div className={classes.main}>
-      <p className={classes.tittle}>Create New Task</p>
-      <div className={classes.conteiner}>
-        <div className={classes.inputTittle}>
-          <TextField
-            style={{ marginRight: "1%", flex: 5 }}
-            id="outlined-basic"
-            value={titleValue}
-            onChange={(event) => setTittleValue(event.target.value)}
-            variant="outlined"
-          />
-          <HelperModal
-            text={"Please type your new task tittle."}
-            inputName={"Tittle"}
-            style={{
-              marginTop: "auto",
-              marginBottom: "auto",
-              marginLeft: "0.5%",
-              flex: 1,
-            }}
-          />
-        </div>
-        <div className={classes.Nodes}>
-          <TextField
-            style={{ marginRight: "1%", flex: 5 }}
-            id="outlined-basic"
-            value={nodesValue}
-            onChange={(event) => setNodesValue(event.target.value)}
-            variant="outlined"
-          />
-          <HelperModal
-            text={
-              "Please type your notes for your new task.  exapmele...Js Task"
-            }
-            inputName={"Notes"}
-            style={{
-              marginTop: "auto",
-              marginBottom: "auto",
-              marginLeft: "0.5%",
-              flex: 1,
-            }}
-          />
-        </div>
+    <div className={classes1.containerStyle}>
+      <span className={classes1.formName}>Create New Task</span>
+      <div className={classes1.containerProfile}>
+        <React.Fragment>
+          <Container>
+            <Box>
+              <div className={classes1.margin4}></div>
+              <div className={classes.inputTittle}>
+                <TextField
+                  error={error}
+                  style={{ marginRight: "1%", flex: 5 }}
+                  id="outlined-basic"
+                  value={titleValue}
+                  onChange={(event) => setTittleValue(event.target.value)}
+                  variant="outlined"
+                />
+                <HelperModal
+                  text={"Please type your new task tittle."}
+                  inputName={"Tittle"}
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    marginLeft: "0.5%",
+                    flex: 1,
+                  }}
+                />
+              </div>
+              <div className={classes.Nodes}>
+                <TextField
+                  style={{ marginRight: "1%", flex: 5 }}
+                  id="outlined-basic"
+                  value={nodesValue}
+                  onChange={(event) => setNodesValue(event.target.value)}
+                  variant="outlined"
+                />
+                <HelperModal
+                  text={
+                    "Please type your notes for your new task.  exapmele...Js Task"
+                  }
+                  inputName={"Notes"}
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    marginLeft: "0.5%",
+                    flex: 1,
+                  }}
+                />
+              </div>
 
-        <div className={classes.descr}>
-          <TextField
-            value={descrpValue}
-            style={{ marginRight: "1%", flex: 5 }}
-            onChange={(event) => setDescrpValue(event.target.value)}
-            id="outlined-multiline-static"
-            multiline
-            rows={6}
-          />
-          <HelperModal
-            inputName={"Description"}
-            text={
-              "Please describe your new task.Its must include info about your task and have more then 200 character"
-            }
-            style={{ marginTop: "1.8%", marginLeft: "0.5%", flex: 1 }}
-          />
-        </div>
+              <div className={classes.descr}>
+                <TextField
+                  value={descrpValue}
+                  style={{ marginRight: "1%", flex: 5 }}
+                  onChange={(event) => setDescrpValue(event.target.value)}
+                  id="outlined-multiline-static"
+                  multiline
+                  rows={6}
+                />
+                <HelperModal
+                  inputName={"Description"}
+                  text={
+                    "Please describe your new task.Its must include info about your task and have more then 200 character"
+                  }
+                  style={{ marginTop: "1.8%", marginLeft: "0.5%", flex: 1 }}
+                />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  marginBottom: "1%",
+                  marginTop: "1%",
+                  height: "20%",
+                }}
+              >
+                <FileUploader files={files} setFiles={setFiles} />
+                <HelperModal
+                  inputName={"Files"}
+                  text={"If you have files you can upload that"}
+                  style={{ marginTop: "1.8%", marginLeft: "0.5%", flex: 1 }}
+                />
+              </div>
+            </Box>
+          </Container>
+        </React.Fragment>
         <div
           style={{
             display: "flex",
-            marginBottom: "1%",
-            marginTop: "2%",
-            height: "20%",
+            marginTop: 1,
+            marginBottom: 1,
+            marginLeft: "7%",
+            justifyContent: "left",
           }}
         >
-          <FireBaseFileUpload fileData={fileData} setFileData={setFileData} />
-
-          <HelperModal
-            inputName={"Files"}
-            text={"If you have files you can upload that"}
-            style={{ marginTop: "1.8%", marginLeft: "0.5%", flex: 1 }}
-          />
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            position: "absolute",
-            bottom: 20,
-            right: 40,
-            height: "6%",
-          }}
-        >
-          <Button variant="contained" size="medium" onClick={writeData}>
+          <button className={classes1.createTaskBtn} onClick={writeData}>
             Create
-          </Button>
-          <Button
-            style={{
-              marginLeft: "2%",
-              marginRight: "2%",
-            }}
-            variant="contained"
-            size="medium"
-          >
-            overview
-          </Button>
-          <Button variant="contained" size="medium">
-            cencel
-          </Button>
+          </button>
+          {error && (
+            <Stack sx={{ width: "100%" }} spacing={2}>
+              <Alert variant="outlined" severity="error">
+                {error || "An error occurred. Please try again later!"}"
+              </Alert>
+            </Stack>
+          )}
         </div>
       </div>
     </div>

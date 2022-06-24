@@ -3,7 +3,6 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get } from "firebase/database";
 import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
 import States from "../../constants/States";
@@ -20,7 +19,7 @@ function InProgressTasks(props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const gridParams = {
-    checkbox: true,
+    checkbox: false,
     username: { rowGroup: false, hide: true, flex: 3, panel: true },
     title: { rowGroup: false, hide: false, flex: 3, panel: false },
     creationDate: { rowGroup: false, hide: true, flex: 1, panel: false },
@@ -38,7 +37,7 @@ function InProgressTasks(props) {
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: true,
+      editable: false,
       sortable: true,
       minWidth: 100,
       filter: true,
