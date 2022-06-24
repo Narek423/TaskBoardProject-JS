@@ -1,24 +1,16 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get, update } from "firebase/database";
-import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
 import { useSharedStyles } from "../../styles/sharedStyles";
-import Statuses from "../../constants/Statuses";
-import States from "../../constants/States";
 import ViewTask from "../ViewTask/Main";
-import gridPainting from "../../utils/grid";
 import Rolls from "../../constants/Rolls";
 import adminApprovingGridPainting from "../../utils/adminApprovingGrid";
-import { getAuth } from "firebase/auth";
 
 function ApprovingAdminProfile(props) {
   const classes = useSharedStyles();
-  const { user } = useUserAuth(UserAuthContext);
-  const clientId = user.uid;
   const [rowData, setRowData] = useState();
   const [gridApi, setGridApi] = useState("");
   const [data, setData] = useState();
@@ -86,7 +78,6 @@ function ApprovingAdminProfile(props) {
       setGridApi(params.api);
     }
     const dbRef = getDatabase();
-    let data = {};
     let dataGrid = [];
     let clientData = {};
     get(ref(dbRef, "users"))
