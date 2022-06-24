@@ -1,27 +1,27 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
 
+
 const useStyle = createUseStyles(() => {
-  return {};
-});
+    return {
+
+    }
+})
 
 function Statics() {
-  return (
-    <div
-      style={{
+    
+    return <div style={{
         textAlign: "center",
-      }}
-    >
-      <span
-        style={{
-          fontFamily: "cursive",
-          fontSize: 50,
-        }}
-      >
-        Statics
-      </span>
+    }}>
+
+<span style={{
+        
+        fontFamily: "cursive",
+        fontSize: 50,
+    }}>Statics</span>
+
     </div>
-  );
 }
 
-export default Statics;
+
+export default Statics

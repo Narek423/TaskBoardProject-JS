@@ -11,9 +11,9 @@ import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
 import { useSharedStyles } from "../../styles/sharedStyles";
 
-function InProgressTasks(props) {
+function RejectedTasks(props) {
   const classes = useSharedStyles();
-  const { user } = useUserAuth();
+  const { user } = useUserAuth(UserAuthContext);
   const clientId = user.uid;
   const [rowData, setRowData] = useState();
   const [data, setData] = useState();
@@ -23,22 +23,22 @@ function InProgressTasks(props) {
     checkbox: false,
     username: { rowGroup: false, hide: true, flex: 3, panel: true },
     title: { rowGroup: false, hide: false, flex: 3, panel: false },
-    creationDate: { rowGroup: false, hide: true, flex: 1, panel: false },
+    creationDate: { rowGroup: false, hide: false, flex: 1, panel: false },
     description: { rowGroup: false, hide: true, flex: 5, panel: false },
     notes: { rowGroup: false, hide: true, flex: 4, panel: false },
-    quantity: { rowGroup: false, hide: false, flex: 1, panel: false },
+    quantity: { rowGroup: false, hide: true, flex: 1, panel: false },
     unit: { rowGroup: false, hide: true, flex: 1, panel: false },
     costForUnit: { rowGroup: false, hide: true, flex: 1, panel: false },
     totalCost: { rowGroup: false, hide: false, flex: 1, panel: false },
     state: { rowGroup: false, hide: true, flex: 2, panel: true },
-    status: { rowGroup: true, hide: false, flex: 2, panel: true },
+    status: { rowGroup: false, hide: true, flex: 2, panel: true },
   };
   const columnDefs = gridPainting(gridParams);
 
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: false,
+      editable: true,
       sortable: true,
       minWidth: 100,
       filter: true,
@@ -86,7 +86,7 @@ function InProgressTasks(props) {
           for (let key in data) {
             if (
               data[key].clientId === clientId &&
-              data[key].state === States.inProgress
+              data[key].state === States.rejected
             ) {
               data[key].id = key;
               data[key] = { ...data[key], ...clientData };
@@ -125,4 +125,4 @@ function InProgressTasks(props) {
   );
 }
 
-export default InProgressTasks;
+export default RejectedTasks;

@@ -9,11 +9,9 @@ import Spam from "./Spam";
 const useStyle = createUseStyles(() => {
   return {
     title: {
-      flex: 1,
       textAlign: "center",
       fontFamily: "cursive",
       fontSize: 50,
-      color:  "#1264F3"
     },
     emailTable: {
        backgroundColor:' grey',
@@ -24,21 +22,18 @@ const useStyle = createUseStyles(() => {
   };
 });
 
-function Inbox(props) {
+function Inbox() {
   const classes = useStyle();
-  const { create } = props;
   return (
     <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%'
+      position: 'relative'
     }}>
-      <div className={classes.title}> Inbox </div>
+      <div className={classes.title}>Inbox </div>
       <InboxLinks />
      <Routes>
        <Route path="/" element={<Income />}/>
        <Route path="spam" element={<Spam />}/>
-       <Route path="createMail" element={<CreateMail inPage={"inPage"}/>}/>
+       <Route path="createMail" element={<CreateMail />}/>
      </Routes>
     </div>
   );

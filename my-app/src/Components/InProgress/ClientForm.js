@@ -20,7 +20,7 @@ function InProgressTasks(props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const gridParams = {
-    checkbox: false,
+    checkbox: true,
     username: { rowGroup: false, hide: true, flex: 3, panel: true },
     title: { rowGroup: false, hide: false, flex: 3, panel: false },
     creationDate: { rowGroup: false, hide: true, flex: 1, panel: false },
@@ -38,7 +38,7 @@ function InProgressTasks(props) {
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: false,
+      editable: true,
       sortable: true,
       minWidth: 100,
       filter: true,

@@ -1,3 +1,3 @@
-const Statuses = ["Waiting", "In progress", "Testing", "Done"];
+const Statuses = ["Waiting", "In progress", "Tasting", "Done"];
 
 export default Statuses;

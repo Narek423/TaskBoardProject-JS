@@ -38,7 +38,7 @@ function PendingToAcception(props) {
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: false,
+      editable: true,
       sortable: true,
       minWidth: 100,
       filter: true,
@@ -69,7 +69,7 @@ function PendingToAcception(props) {
         costForUnit: selectedRow.costForUnit,
         unit: selectedRow.unit,
         cost: selectedRow.cost,
-        status: Statuses[0],
+        status: Statuses[1],
         state:
           param.target.innerText === "Accept"
             ? States.inProgress

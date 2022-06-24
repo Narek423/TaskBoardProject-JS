@@ -12,6 +12,7 @@ import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
 
 function PendingToAcceptionAdmin(props) {
+  console.log("Admin form");
   const classes = useSharedStyles();
   const [rowData, setRowData] = useState();
   const [data, setData] = useState();
@@ -36,7 +37,7 @@ function PendingToAcceptionAdmin(props) {
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: false,
+      editable: true,
       sortable: true,
       minWidth: 100,
       filter: true,

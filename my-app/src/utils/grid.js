@@ -1,7 +1,4 @@
 import { sharedStyles, useSharedStyles } from "../styles/sharedStyles";
-import EditIcon from "@mui/icons-material/Edit";
-
-export let gridDialogSwitcher = [false];
 
 function gridPainting(props) {
   const classes = sharedStyles;

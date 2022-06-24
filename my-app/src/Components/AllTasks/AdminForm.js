@@ -34,7 +34,7 @@ function AllTasksAdmin(props) {
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: false,
+      editable: true,
       sortable: true,
       minWidth: 100,
       filter: true,

@@ -5,16 +5,15 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get } from "firebase/database";
-import { useUserAuth } from "../../context/UserAuthContext";
-import { useSharedStyles } from "../../styles/sharedStyles";
+import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
 import States from "../../constants/States";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
-import editingGridPainting from "../../utils/gridForEdit";
+import { useSharedStyles } from "../../styles/sharedStyles";
 
 function DoneTasks(props) {
   const classes = useSharedStyles();
-  const { user } = useUserAuth();
+  const { user } = useUserAuth(UserAuthContext);
   const clientId = user.uid;
   const [rowData, setRowData] = useState();
   const [data, setData] = useState();
@@ -39,7 +38,7 @@ function DoneTasks(props) {
   const defaultColDef = useMemo(() => {
     return {
       className: classes.defaultColDef,
-      editable: false,
+      editable: true,
       sortable: true,
       minWidth: 100,
       filter: true,
