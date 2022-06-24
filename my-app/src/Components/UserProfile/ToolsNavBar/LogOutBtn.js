@@ -1,7 +1,6 @@
 import React from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { createUseStyles } from "react-jss";
-import { Logout } from "@mui/icons-material";
 import { useUserAuth } from "../../../context/UserAuthContext";
 
 const useStyle = createUseStyles(() => {
@@ -12,20 +11,25 @@ const useStyle = createUseStyles(() => {
     },
     logOutIconClose: {
       flex: 5,
-      position: "relative",
+      textAlign: "center",
     },
     iconBtnClose: {
       cursor: "pointer",
     },
     iconBtn: {
-      position: "absolute",
-      bottom: "2%",
+      textAlign: "center",
       cursor: "pointer",
     },
     block: {
-      position: 'absolute',
+      position: "absolute",
       bottom: "2%",
-      textAlign: 'center'
+      alignItems: "center",
+      display: "flex",
+    },
+    blockClose: {
+      position: "absolute",
+      bottom: "2%",
+      width: "100%",
     },
   };
 });
@@ -44,7 +48,7 @@ function LogOutBtn(props) {
 
   return (
     <div className={open ? classes.LogoutIcon : classes.logOutIconClose}>
-      <div className={open ? null : classes.block}>
+      <div className={open ? classes.block : classes.blockClose}>
         <LogoutIcon
           onClick={handleLogOut}
           className={open ? classes.iconBtn : classes.iconBtnClose}
