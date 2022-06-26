@@ -17,6 +17,7 @@ import {
   ref,
   uploadBytesResumable,
   deleteObject,
+  uploadBytes,
 } from "firebase/storage";
 import { storage, writeUserTask } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
@@ -128,13 +129,15 @@ function CreateNewTask() {
 
   async function writeData() {
     const createDate = new Date().toLocaleString();
-    const filesUID = uuidv4();
-    const urls = await uploadFiles(files, filesUID);
-
     if (titleValue.length < 4) {
       setError("Title must be at least 4 character.");
       throw "Title must be at least 4 character.";
     }
+    const filesUID = uuidv4();
+    const urls =await uploadFiles(files, filesUID);
+    console.log(urls,'urlsMap')
+
+  
 
     writeUserTask(
       user.uid,
@@ -153,47 +156,89 @@ function CreateNewTask() {
     setProgress(0);
     setFiles([]);
   }
-  async function uploadFiles(files, filesUID) {
-    if (!files) return;
-    const load = (files) => {
-      const fileData = [];
-      files.forEach((file) => {
-        const storageRef = ref(
-          storage,
-          `/${user.uid}/${filesUID}/${file.name}`
-        );
-        const uploadProcent = uploadBytesResumable(storageRef, file);
-        uploadProcent.on(
-          "state_changed",
-          (snapshot) => {
-            const proc = Math.round(
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            );
-          },
-          (err) => console.log(err),
-          () =>
-            getDownloadURL(uploadProcent.snapshot.ref).then((url) => {
-              // setFileData(fileData.push({url,name: file.name}));
-              fileData.push({ url, file: file.name });
-              console.log(fileData, "fileConsole");
-            })
-        );
-      });
-      return new Promise((resolve) => {
-        resolve(fileData);
-      });
-    };
-    const urls = await load(files);
-    console.log(urls, "urls");
-    return urls;
-  }
+  async function uploadFiles(files,filesUID) {
+    if (!files.length) return [];
+    const promises = []
+    const data = []
+    for (const item of files) {
+        const storageRef = ref(storage, `/${user.uid}/${filesUID}/${item.name}`)
+        promises.push(uploadBytes(storageRef, item))
+    }
+    const uploadResults = await Promise.all(promises)
+    const downloadURLs = []
+
+    for (const item of uploadResults) {
+        data.push({ fullPath: item.metadata.fullPath, downloadURL: '', name: '' })
+        downloadURLs.push(getDownloadURL(item.ref))
+    }
+
+    const downloadURLsResult = await Promise.all(downloadURLs)
+
+    for (var i = 0; i < downloadURLsResult.length; i++) {
+        data[i].downloadURL = downloadURLsResult[i]
+        data[i].name = files[i].name
+    }
+
+    return data
+}
+  //  async function uploadFiles(files, filesUID) {
+  //     const fileData = {};
+  //  return    files.map((file,ind) => {
+  //               const storageRef = ref(
+  //                 storage,
+  //                 `/${user.uid}/${filesUID}/${file.name}`
+  //               );
+  //               const uploadProcent = uploadBytesResumable(storageRef, file);
+  //                  uploadProcent.on(
+  //                 "state_changed",
+  //                 (snapshot) => {
+  //                   const proc = Math.round(
+  //                     (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+  //                   );
+  //                 },
+  //                 (err) => console.log(err),
+  //                   () => {
+  //                    getDownloadURL(uploadProcent.snapshot.ref).then((urls) => {
+  //                     fileData[0] = urls
+  //                   })
+  //                 }
+  //               );
+  //               return {url: fileData[0]}
+  //             });
+    //   try{
+    //   files.forEach((file,ind) => {
+    //     const storageRef = ref(
+    //       storage,
+    //       `/${user.uid}/${filesUID}/${file.name}`
+    //     );
+    //     const uploadProcent = uploadBytesResumable(storageRef, file);
+    //     uploadProcent.on(
+    //       "state_changed",
+    //       (snapshot) => {
+    //         const proc = Math.round(
+    //           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+    //         );
+    //       },
+    //       (err) => console.log(err),
+    //       () =>
+    //         getDownloadURL(uploadProcent.snapshot.ref).then((url) => {
+    //           fileData[ind] = { url: url, name: file.name };
+    //         })
+    //     );
+    //   });
+    // }catch{
+    //   alert(error)
+    // }
+  //     console.log(fileData,'filedata')
+  //   return fileData;
+  // }
 
   return (
     <div className={classes1.containerStyle}>
       <span className={classes1.formName}>Create New Task</span>
       <div className={classes1.containerProfile}>
         <React.Fragment>
-          <CssBaseline />
+          {/* <CssBaseline /> */}
           <Container>
             <Box>
               <div className={classes1.margin4}></div>

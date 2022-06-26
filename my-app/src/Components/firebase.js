@@ -85,11 +85,11 @@ export function writeUserTask(
 	filesUID
 ) {
 	const db = getDatabase();
-	// const data = JSON.stringify(fileData);
-	console.log(urls, "filedatafirebse");
+	const data = JSON.stringify(urls);
+	console.log(data,urls, "filedatafirebse");
 	set(ref(db, "tasks/" + uuidv4()), {
 		clientId: userId,
-		files: urls,
+		files: data,
 		title: titleValue,
 		notes: nodesValue,
 		description: descrpValue,

@@ -1,6 +1,7 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
 import { Route, Routes } from "react-router-dom";
+import { useSharedStyles } from "../../../styles/sharedStyles";
 import CreateMail from "./CreateMail";
 import InboxLinks from "./InboxLinks";
 import Income from "./Income";
@@ -27,7 +28,10 @@ const useStyle = createUseStyles(() => {
 function Inbox(props) {
   const classes = useStyle();
   const { create } = props;
+  const classes1 = useSharedStyles();
+
   return (
+    <div className={classes.containerStyle}>
     <div style={{
       display: 'flex',
       flexDirection: 'column',
@@ -40,6 +44,7 @@ function Inbox(props) {
        <Route path="spam" element={<Spam />}/>
        <Route path="createMail" element={<CreateMail inPage={"inPage"}/>}/>
      </Routes>
+    </div>
     </div>
   );
 }

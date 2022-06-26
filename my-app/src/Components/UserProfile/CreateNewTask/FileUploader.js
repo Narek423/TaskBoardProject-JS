@@ -1,13 +1,10 @@
-
 import React, { useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { createUseStyles } from "react-jss";
 import { useUserAuth } from "../../../context/UserAuthContext";
 import { Button, CircularProgress, Input } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import  defaultImg  from "../../../Images/images.png"
 export let avatarUrl = "";
-
 
 const theme = createTheme({
   status: {
@@ -21,96 +18,63 @@ const theme = createTheme({
 });
 const useStyle = createUseStyles(() => {
   return {
-    imgList: {
+    div: {
       height: "100%",
-      width: "80%",
       flex: 5,
       display: "flex",
       marginLeft: "5%",
-      overflowX: "scroll",
-      "&::-webkit-scrollbar": {
-        width: 10,
-      },
-      "&::-webkit-scrollbar-track": {
-        background: "white",
-      },
-      "&::-webkit-scrollbar-thumb": {
-        background: "#019CAD",
-      },
-      "&::-webkit-scrollbar-thumb:hover": {
-        background: "#019CAD",
-      },
     },
     imgBlock: {
-      height: "100%",
-      textAlign: "center",
-      flexDirection: "column",
+      border: "2px solid white",
+      borderRadius: 15,
+      display: "flex",
+      maxWidth: "fit-content",
+      backgroundColor: "rgb(255 194 15 / 80%)",
+      color: "purple",
       "&:hover": {
-        backgroundColor: "white",
-        // boxShadow: "blue 0 -6px 8px inset",
+        backgroundColor: "orange",
         cursor: "pointer",
-        opacity: 0.8,
       },
-      
     },
-    img: {
+    imgList: {
+      display: "flex",
+      flexDirection: "column",
+      height: 200,
       width: "100%",
-      height: "100%",
-      // cursor: "zoom-in",
-      justifyContent: "center",
+    },
+    textspan: {
+      flex: 5,
+      marginLeft: 6,
+      paddingRight: 15,
+    },
+    del: {
+      color: "red",
+      paddingRight: 15,
+      flex: 1,
+      cursor: 'pointer'
     },
   };
 });
 
 function FileUploader(props) {
-  const [file,setFile] = useState('');
-  const [fileSize,setFileSize] = useState(0);
-  const { files,setFiles } = props;
+  const [file, setFile] = useState("");
+  const { files, setFiles } = props;
   const classes = useStyle();
   const { user } = useUserAuth();
 
+ 
 
   const handleChange = (e) => {
     e.preventDefault();
-    if(files.length > 4) return;
+    if (files.length > 4) return;
     setFile(e.target.files[0]);
     setFiles([...files.concat(e.target.files[0])]);
   };
   const delFile = (index) => {
-    setFiles(files.filter((e,ind) => index !== ind ))
-  }
+    setFiles(files.filter((e, ind) => index !== ind));
+  };
   return (
-    <div className={classes.imgList}>
-      {files.map((e,ind) => {
-        return (
-          <div className={classes.imgBlock} key={uuidv4()}>
-            <div style={{
-              backgroundImage: `url(${defaultImg})`,
-              backgroundSize: 'cover',
-             height: "100%",
-             width: 140,
-             position: 'relative'
-            }}
-           >
-             
-            <div  style={{
-                  position: "absolute",
-                  right: 0,
-                  width: '20%',
-                  height: "20%",
-                  borderBottomLeftRadius: "100%",
-                  backgroundColor: 'red',
-                  color: "white"
-                }} 
-                onClick={() => delFile(ind)}
-                >
-                  x
-            </div>
-            {e.name}
-            </div> 
-          </div>
-        );
-      })}
+    <div className={classes.div}>
       <label
         htmlFor="contained-button-file"
         style={{
@@ -132,12 +96,25 @@ function FileUploader(props) {
           variant="contained"
           component="span"
           style={{
-            fontSize: 40,
+            fontSize: 10,
+            height: 30,
           }}
         >
-          +
+          Upload
         </Button>
       </label>
+      <div className={classes.imgList}>
+        {files.map((e, ind) => {
+          return (
+            <div className={classes.imgBlock} key={ind}>
+              <span className={classes.textspan}>{e?.name.replaceAll(" ","_")}</span>
+              <span className={classes.del} onClick={() => delFile(ind)}>
+                X
+              </span>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
