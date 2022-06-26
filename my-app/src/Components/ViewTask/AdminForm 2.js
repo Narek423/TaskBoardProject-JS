@@ -8,7 +8,14 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { useSharedStyles } from "../../styles/sharedStyles";
-import { Box, Card, CardContent, Container, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Container,
+  CssBaseline,
+  Typography,
+} from "@mui/material";
 
 const AdminForm = ({ setIsOpen, data, open = true }) => {
   const theme = useTheme();
@@ -33,6 +40,7 @@ const AdminForm = ({ setIsOpen, data, open = true }) => {
           <DialogContentText>
             <div className={`${classes.containerView}`}>
               <React.Fragment>
+                <CssBaseline />
                 <Container>
                   <Box>
                     <div className={classes.groupingInputsView}>

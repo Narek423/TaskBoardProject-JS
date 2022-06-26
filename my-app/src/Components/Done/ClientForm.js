@@ -3,14 +3,12 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get } from "firebase/database";
 import { useUserAuth } from "../../context/UserAuthContext";
 import { useSharedStyles } from "../../styles/sharedStyles";
 import States from "../../constants/States";
 import ViewTask from "../ViewTask/Main";
 import gridPainting from "../../utils/grid";
-import editingGridPainting from "../../utils/gridForEdit";
 
 function DoneTasks(props) {
   const classes = useSharedStyles();

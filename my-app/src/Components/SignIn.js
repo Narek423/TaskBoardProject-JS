@@ -1,4 +1,4 @@
-import { Outlet, Link, useNavigate, Navigate } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import * as React from "react";
 import { useEffect } from "react";
 import TextField from "@mui/material/TextField";
@@ -10,15 +10,15 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
 import Card from "./Card";
-import { Button, CircularProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import HomeIcon from "./Nav-Bar/HomeIcon";
 import paths from "../constants/Paths";
 import AdminRegister from "./ModalMessages/AdminRegister";
 import Rolls from "../constants/Rolls";
-import { get, getDatabase, ref, update } from "firebase/database";
+import { get, getDatabase, ref } from "firebase/database";
 import { useSharedStyles } from "../styles/sharedStyles";
 
 const useStyles = createUseStyles({
@@ -118,11 +118,6 @@ function resolveGetUserData(usr) {
     }
   });
 }
-// function getUserData(usr) {
-//   const userData = resolveGetUserData(usr);
-//   console.log(userData);
-//   return userData;
-// }
 
 function SignIn(props) {
   const [email, setEmail] = useState("");
@@ -132,13 +127,10 @@ function SignIn(props) {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [newRoll, setNewRoll] = useState("");
-  const [newEnabled, setNewEnabled] = useState("");
   const { Admin } = Rolls;
-  const { USER_PROFILE_PATH, PROFILE_PATH } = paths;
+  const { USER_PROFILE_PATH } = paths;
   const [title, setTitle] = useState("");
   const [typography, setTypography] = useState("");
-  const dbRef = getDatabase();
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({});
 

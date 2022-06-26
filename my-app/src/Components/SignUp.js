@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
 import { writeUserData, storage } from "./firebase";
 import {
-  Button,
   CircularProgress,
   IconButton,
   Input,
@@ -17,12 +16,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import {
-  getDownloadURL,
-  ref,
-  uploadBytesResumable,
-  deleteObject,
-} from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import paths from "../constants/Paths";
 import { PhotoCamera, Visibility, VisibilityOff } from "@mui/icons-material";
 import Card from "./Card";
@@ -139,8 +133,6 @@ function SignUp(props) {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [progress, setProgress] = useState(0);
   const { signUp } = useUserAuth();
-  const [signInButtonHover, setSigInButtonHover] = useState(false);
-  const [signInButtonActive, setSignInButtonActive] = useState(false);
   const navigate = useNavigate();
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
@@ -150,6 +142,10 @@ function SignUp(props) {
   const [countError, setCountError] = useState("");
   const { Admin } = Rolls;
   const signinBtn = useSharedStyles();
+  const errorMessage = {
+    code: 403,
+    message: "Invalid input! Please enter valid credential.",
+  };
 
   const [values, setValues] = useState({
     amount: "",
@@ -248,7 +244,7 @@ function SignUp(props) {
         if (email.length < 4 || !email.includes("@") || !email.includes(".")) {
           setError("Invalid input! Please enter valid credential. ");
         }
-        throw "Invalid input! Please enter valid credential.";
+        throw errorMessage;
       }
       let user = await signUp(email, password, roll);
       let UserData = {
@@ -422,7 +418,6 @@ function SignUp(props) {
             </div>
             <div className={classes.signUp}>
               <TextField
-                // error={true}
                 className={classes.fields}
                 value={phoneNumber}
                 onChange={(e) => {
@@ -511,13 +506,7 @@ function SignUp(props) {
             </div>
             <div className={classes.signUp} id="buttons">
               <button
-                className={
-                  signInButtonHover
-                    ? classes.signInButtOnHover
-                    : signInButtonActive
-                    ? classes.signInButtonActive
-                    : classes.signInButton
-                }
+                className={classes.signInButton}
                 onClick={handleSubmit}
                 id="buttonSignUp"
                 variant="contained"

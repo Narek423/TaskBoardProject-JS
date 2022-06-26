@@ -2,7 +2,6 @@ import { Button, ButtonGroup } from "@mui/material";
 import React from "react";
 import { createUseStyles } from "react-jss";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { PropaneSharp } from "@mui/icons-material";
 
 const theme = createTheme({
   status: {
@@ -41,16 +40,9 @@ function NavBarBtns(props) {
 
   return (
     <div className={classes.navbarbtns}>
-      {/* <span className={classes.aboutus}>About us</span>
-      <span className={classes.contactus}>Contact us</span> */}
       <ThemeProvider theme={theme}>
         <ButtonGroup
           color="primary"
-          // style={{
-          //     position: "absolute",
-          //     top: 21,
-          //     left: 80,
-          // }}
           variant="text"
           aria-label="text button group"
         >

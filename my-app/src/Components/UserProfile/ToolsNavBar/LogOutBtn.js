@@ -1,7 +1,6 @@
 import React from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { createUseStyles } from "react-jss";
-import { Logout } from "@mui/icons-material";
 import { useUserAuth } from "../../../context/UserAuthContext";
 
 const useStyle = createUseStyles(() => {

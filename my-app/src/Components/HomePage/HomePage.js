@@ -6,17 +6,10 @@ import { createUseStyles } from "react-jss";
 import { useUserAuth } from "../../context/UserAuthContext";
 import { Navigate } from "react-router-dom";
 import paths from "../../constants/Paths";
-import { Button, Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import { SocialIcon } from "react-social-icons";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-
-// import {
-//   Facebook,
-//   Instagram,
-//   Linkedin,
-//   Telegram,
-// } from "@trejgun/material-ui-icons-social-networks";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -40,7 +33,6 @@ const useStyle = createUseStyles(() => {
       flex: 10,
       marginTop: 0,
       overflowY: "scroll",
-      //backgroundColor: "#b3ffe6",
 
       "&::-webkit-scrollbar": {
         width: 14,
@@ -89,7 +81,6 @@ function HomePage(params) {
           ref={about}
           style={{
             height: 550,
-            //  backgroundColor: "#99ffdd",
             marginTop: "4%",
             alignItems: "center",
             float: "right",
@@ -124,7 +115,6 @@ function HomePage(params) {
                 height: "2px",
                 borderWidth: 0,
                 color: "#0099ff",
-                //  backgroundColor: "#0099ff",
               }}
             ></hr>
             <Card
@@ -154,7 +144,6 @@ function HomePage(params) {
           ref={product}
           style={{
             height: 550,
-            // backgroundColor: "#99ffdd",
             marginTop: "4%",
             alignItems: "center",
             float: "right",
@@ -175,7 +164,6 @@ function HomePage(params) {
                 height: "2px",
                 borderWidth: 0,
                 color: "#0099ff",
-                // backgroundColor: "#0099ff",
               }}
             ></hr>
             <Card
@@ -222,7 +210,6 @@ function HomePage(params) {
           style={{
             height: 550,
             width: "100%",
-            //  backgroundColor: "#99ffdd",
             marginTop: "4%",
             alignItems: "center",
             float: "right",
@@ -257,7 +244,6 @@ function HomePage(params) {
                 height: "2px",
                 borderWidth: 0,
                 color: "#0099ff",
-                //  backgroundColor: "#0099ff",
               }}
             ></hr>
             <Card
@@ -295,12 +281,6 @@ function HomePage(params) {
                       url="https://github.com/Narek423/TaskBoardProject-JS"
                     />
                   </div>
-
-                  {/* <div>
-                    <Button variant="outlined" className={classes.button}>
-                      <Facebook className={classes.icon} /> Facebook
-                    </Button>
-                  </div> */}
                 </Typography>
               </CardContent>
             </Card>

@@ -10,6 +10,7 @@ import React from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { createUseStyles } from "react-jss";
 import { useSharedStyles } from "../../styles/sharedStyles";
+//import { ModalStyle } from "../../styles/modalStyle";
 
 const useStyles = createUseStyles({
   darkBG: {
@@ -28,6 +29,7 @@ const useStyles = createUseStyles({
     width: "90%",
     top: "5%",
     left: "5%",
+    // transform: "translate(-10%, -10%)",
   },
 
   modal: {
@@ -202,6 +204,7 @@ const useStyles = createUseStyles({
 });
 
 const AdminForm = ({ setIsOpen, data }) => {
+  console.log("data", data);
   const ModalStyle = useStyles();
   const classes = useSharedStyles();
   return (

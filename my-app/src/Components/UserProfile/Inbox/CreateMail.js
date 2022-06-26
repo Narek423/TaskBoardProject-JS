@@ -1,21 +1,9 @@
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Card } from "@mui/material";
 import { createUseStyles } from "react-jss";
 import { useUserAuth } from "../../../context/UserAuthContext";
 import Autocomplete from "@mui/material/Autocomplete";
-import Chip from "@mui/material/Chip";
-import {
-  getDatabase,
-  ref,
-  get,
-  set,
-  push,
-  query,
-  limitToFirst,
-} from "firebase/database";
-import Rolls from "../../../constants/Rolls";
-import { v4 as uuidv4 } from "uuid";
-import { useNavigate } from "react-router-dom";
+import { getDatabase, ref, get, set, push } from "firebase/database";
 
 const useStyle = createUseStyles(() => {
   return {
@@ -42,9 +30,7 @@ function CreateMail(props) {
   const classes = useStyle();
   const [emails, setEmails] = useState([]);
   const { user } = useUserAuth();
-  const { Admin } = Rolls;
   const [choosenEmail, setChoosenEmail] = useState([]);
-  const navigate = useNavigate();
   const [value, setValue] = useState(null);
   const { inPage } = props;
 
@@ -57,34 +43,6 @@ function CreateMail(props) {
     setValue(null);
   };
 
-  // function writeUserEmailTask(choosenEmails, emailTittle, emailText, date) {
-  //   const db = getDatabase();
-  //   choosenEmails.forEach((email) => {
-  //     const userGetter = emails.find((e) => email === e.email);
-  //     console.log(userGetter, user, "USERS");
-  //     const fromRef = ref(db, `inbox/${user.uid}/`);
-  //     const newfromPostRef = push(fromRef);
-  //     set(newfromPostRef, {
-  //       emailTittle: emailTittle,
-  //       emailText: emailText,
-  //       state: true,
-  //       date: date,
-  //       to: { id: userGetter.clientId, email: userGetter.email },
-  //       from: { id: user.uid, email: user.email },
-  //     });
-
-  //     const toRef = ref(db, `inbox/${userGetter.clientId}/`);
-  //     const newtoPostRef = push(toRef);
-  //     set(newtoPostRef, {
-  //       emailTittle: emailTittle,
-  //       emailText: emailText,
-  //       state: false,
-  //       date: date,
-  //       to: { id: userGetter.clientId, email: userGetter.email },
-  //       from: { id: user.uid, email: user.email },
-  //     });
-  //   });
-  // }
   function writeUserEmailTask(choosenEmail, emailTittle, emailText, date) {
     const db = getDatabase();
     const userGetter = emails.find((e) => choosenEmail === e.email);
@@ -132,16 +90,6 @@ function CreateMail(props) {
       });
   }, [user]);
 
-  // const autoComplete = (value, getTagProps) => {
-  //   if (value.length > 2) {
-  //     value.pop();
-  //   }
-  //   setChoosenEmails(value);
-  //   return value.map((option, index) => (
-  //     <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-  //   ));
-  // };
-
   return (
     <Card
       style={{
@@ -149,7 +97,6 @@ function CreateMail(props) {
         height: "100%",
         width: "60%",
         margin: "auto",
-        // backgroundImage: "linear-gradient(to Top,#e6eeff, #1264F3 )",
         marginTop: "2%",
         textAlign: "center",
         border: "4px solid #1264F3",
@@ -160,41 +107,6 @@ function CreateMail(props) {
           inPage === "inPage" ? classes.sentMail : classes.sentMailModal
         }
       >
-        {/* <Autocomplete
-        multiple
-        id="tags-filled"
-        options={emails.map((option) => option.email)}
-        style={{
-          flex: 5,
-          marginBottom: "1%",
-        }}
-        freeSolo
-        value={value}
-        onChange={(event, value) => {
-          setValue(value);
-        }}
-        renderTags={(value, getTagProps) => {
-          if (value.length > 2) {
-            value.pop();
-          }
-          setChoosenEmails(value);
-          return value.map((option, index) => (
-            <Chip
-              variant="outlined"
-              label={option}
-              {...getTagProps({ index })}
-            />
-          ));
-        }}
-        renderInput={(choosenEmails) => (
-          <TextField
-            {...choosenEmails}
-            variant="filled"
-            label="To"
-            placeholder="Email"
-          />
-        )}
-      /> */}
         <Autocomplete
           disablePortal
           id="combo-box-demo"

@@ -7,7 +7,6 @@ import { Alert, Box, Container, Stack, TextField } from "@mui/material";
 import { getDatabase, ref, update } from "firebase/database";
 import formatPhoneNumber from "../../utils/formatPhoneNumber";
 import formatTaxCode from "../../utils/formatTaxCode";
-import CssBaseline from "@mui/material/CssBaseline";
 
 function Form({ data }) {
   const theme = useTheme();
@@ -25,6 +24,10 @@ function Form({ data }) {
   );
   const [name, setName] = useState(data.name);
   const [lastName, setLastName] = useState(data.lastName);
+  const errorMsg = {
+    code: 403,
+    message: "Invalid input! Please enter valid credential.",
+  };
 
   useEffect(() => {
     const timeId = setTimeout(() => {
@@ -63,7 +66,7 @@ function Form({ data }) {
         }
         setSuccess(false);
         setError(true);
-        throw "Invalid input! Please enter valid credential.";
+        throw errorMsg;
       }
       data.name = name;
       data.lastName = lastName;
@@ -104,7 +107,6 @@ function Form({ data }) {
       <span className={classes.formName}>Profile</span>
       <div className={classes.containerProfile}>
         <React.Fragment>
-          <CssBaseline />
           <Container>
             <Box>
               <div className={classes.groupingInputsEvaluation}>

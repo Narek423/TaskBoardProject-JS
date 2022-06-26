@@ -3,15 +3,12 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
-import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import { getDatabase, ref, get, update } from "firebase/database";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -29,7 +26,6 @@ function PendingToEvaluationAdmin(props) {
     { unit: "unit", cost: 0 },
   ];
   const classes = useSharedStyles();
-  const [avatar, setAvatar] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -161,7 +157,6 @@ function PendingToEvaluationAdmin(props) {
   const onSelectionChanged = useCallback((param) => {
     const selectedRows = param.api.getSelectedRows();
     if (selectedRows.length === 1) {
-      setAvatar(selectedRows[0].avatar || "");
       setUsername(selectedRows[0].username);
       setClientId(selectedRows[0].clientId);
       setEmail(selectedRows[0].email);
@@ -201,7 +196,6 @@ function PendingToEvaluationAdmin(props) {
       <span className={classes.formName}>Evaluation tasks</span>
       <div className={classes.containerEvaluation}>
         <React.Fragment>
-          <CssBaseline />
           <Container>
             <Box>
               <div className={classes.groupingInputsEvaluation}>

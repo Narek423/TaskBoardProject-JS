@@ -2,7 +2,6 @@ import "./App.css";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
 import { Route, Routes } from "react-router-dom";
-import NavMainBar from "./components/Nav-Bar/HomePageNavBar";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import paths from "./constants/Paths";

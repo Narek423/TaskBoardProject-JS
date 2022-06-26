@@ -3,7 +3,6 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get, update } from "firebase/database";
 import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
 import { useSharedStyles } from "../../styles/sharedStyles";

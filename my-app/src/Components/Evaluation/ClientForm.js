@@ -1,11 +1,10 @@
-import React, { useCallback, useMemo, useState, useRef } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { createUseStyles } from "react-jss";
 import { getDatabase, ref, get } from "firebase/database";
-import { UserAuthContext, useUserAuth } from "../../context/UserAuthContext";
+import { useUserAuth } from "../../context/UserAuthContext";
 import ViewTask from "../ViewTask/Main";
 import { useSharedStyles } from "../../styles/sharedStyles";
 import EditDialog from "../EditDialog";
@@ -109,9 +108,7 @@ function PendingToEvaluation(props) {
   const gridStyle = () => {
     return { width: "100%", margin: "auto", flex: 10 };
   };
-  const editData = [];
   const dialogOpeningFunction = (e) => {
-    console.log(gridDialogSwitcher[0]);
     if (gridDialogSwitcher[0]) {
       setPassEvent(e);
       setEdit(true);

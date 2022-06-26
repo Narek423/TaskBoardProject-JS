@@ -22,7 +22,6 @@ const {
   REJECTED_TASKS_PATH,
   IN_PROCCESS_TASKS_PATH,
   DONE_TASKS_PATH,
-  STATICS_PATH,
   ADMIN_USER_REQUESTS_PATH,
 } = paths;
 
@@ -79,12 +78,6 @@ export function AdminTools() {
       id: 7,
       path: REJECTED_TASKS_PATH,
     },
-    // {
-    // 	icon: <EqualizerIcon className={classes.icon} />,
-    // 	text: "Statics",
-    // 	path: STATICS_PATH,
-    // 	id: 9,
-    // },
     {
       icon: <NewReleasesIcon className={classes.icon} />,
       text: "Requests",
@@ -151,12 +144,6 @@ export function ClientTools() {
       path: CREATE_TASK_PATH,
       id: 8,
     },
-    // {
-    //   icon: <EqualizerIcon className={classes.icon} />,
-    //   text: "Statics",
-    //   path: STATICS_PATH,
-    //   id: 9,
-    // },
     {
       icon: <MailIcon className={classes.icon} />,
       text: "Inbox",

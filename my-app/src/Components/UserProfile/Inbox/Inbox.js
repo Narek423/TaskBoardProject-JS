@@ -14,37 +14,34 @@ const useStyle = createUseStyles(() => {
       textAlign: "center",
       fontFamily: "cursive",
       fontSize: 50,
-      color:  "#1264F3"
+      color: "#1264F3",
     },
     emailTable: {
-       backgroundColor:' grey',
-       width: '120vh',
-       height: "80vh",
-       marginLeft: "2%"
-    }
+      backgroundColor: " grey",
+      width: "120vh",
+      height: "80vh",
+      marginLeft: "2%",
+    },
   };
 });
 
 function Inbox(props) {
   const classes = useStyle();
-  const { create } = props;
-  const classes1 = useSharedStyles();
-
   return (
-    <div className={classes.containerStyle}>
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%'
-    }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+      }}
+    >
       <div className={classes.title}> Inbox </div>
       <InboxLinks />
-     <Routes>
-       <Route path="/" element={<Income />}/>
-       <Route path="spam" element={<Spam />}/>
-       <Route path="createMail" element={<CreateMail inPage={"inPage"}/>}/>
-     </Routes>
-    </div>
+      <Routes>
+        <Route path="/" element={<Income />} />
+        <Route path="spam" element={<Spam />} />
+        <Route path="createMail" element={<CreateMail inPage={"inPage"} />} />
+      </Routes>
     </div>
   );
 }

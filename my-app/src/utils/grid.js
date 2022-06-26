@@ -1,5 +1,4 @@
-import { sharedStyles, useSharedStyles } from "../styles/sharedStyles";
-import EditIcon from "@mui/icons-material/Edit";
+import { sharedStyles } from "../styles/sharedStyles";
 
 export let gridDialogSwitcher = [false];
 

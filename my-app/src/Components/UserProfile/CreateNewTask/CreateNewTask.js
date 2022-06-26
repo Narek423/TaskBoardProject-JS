@@ -1,27 +1,12 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Container,
-  CssBaseline,
-  Stack,
-  TextField,
-} from "@mui/material";
+import { Alert, Box, Container, Stack, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { useUserAuth } from "../../../context/UserAuthContext";
 import FileUploader from "./FileUploader";
 import HelperModal from "./HelperModal";
-import {
-  getDownloadURL,
-  ref,
-  uploadBytesResumable,
-  deleteObject,
-  uploadBytes,
-} from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
 import { storage, writeUserTask } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
-import { async } from "@firebase/util";
 import { useSharedStyles } from "../../../styles/sharedStyles";
 
 const useStyle = createUseStyles(() => {
@@ -112,10 +97,7 @@ function CreateNewTask() {
   const [descrpValue, setDescrpValue] = useState("");
   const [error, setError] = useState("");
   const { user } = useUserAuth();
-  // const [fileData, setFileData] = useState([]);
   const [files, setFiles] = useState([]);
-  const [progress, setProgress] = useState(0);
-  // const fileData = [];
 
   useEffect(() => {
     const timeId = setTimeout(() => {
@@ -129,14 +111,17 @@ function CreateNewTask() {
 
   async function writeData() {
     const createDate = new Date().toLocaleString();
+    const filesUID = uuidv4();
+    const urls = await uploadFiles(files, filesUID);
+    const errorMsg = {
+      code: 403,
+      message: "Title must be at least 4 character.",
+    };
+
     if (titleValue.length < 4) {
       setError("Title must be at least 4 character.");
-      throw "Title must be at least 4 character.";
+      throw errorMsg;
     }
-    const filesUID = uuidv4();
-    const urls =await uploadFiles(files, filesUID);
-    console.log(urls,'urlsMap')
-
   
 
     writeUserTask(
@@ -153,7 +138,6 @@ function CreateNewTask() {
     setDescrpValue("");
     setDescrpValue("");
     setTittleValue("");
-    setProgress(0);
     setFiles([]);
   }
   async function uploadFiles(files,filesUID) {
@@ -238,7 +222,6 @@ function CreateNewTask() {
       <span className={classes1.formName}>Create New Task</span>
       <div className={classes1.containerProfile}>
         <React.Fragment>
-          {/* <CssBaseline /> */}
           <Container>
             <Box>
               <div className={classes1.margin4}></div>
